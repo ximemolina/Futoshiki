@@ -1,7 +1,7 @@
 package vistaFutoshiki;
 
 import javax.swing.JOptionPane;
-import vistaFutoshiki.*;
+
 /**
  *
  * @author ximena molina - juan pablo cambronero
@@ -132,19 +132,19 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfiguracionActionPerformed
-        // TODO add your handling code here:
+     
     }//GEN-LAST:event_btnConfiguracionActionPerformed
 
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
-        // TODO add your handling code here:
+     
     }//GEN-LAST:event_btnJugarActionPerformed
 
     private void btnTop10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTop10ActionPerformed
-        // TODO add your handling code here:
+     
     }//GEN-LAST:event_btnTop10ActionPerformed
 
     private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
-        // TODO add your handling code here:
+        //aqui añadir codigo para desplegar manual de usuario
     }//GEN-LAST:event_btnAyudaActionPerformed
 
     private void btnAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcercaActionPerformed
@@ -190,9 +190,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel MenuPrincial;
     private javax.swing.JButton btnAcerca;
     private javax.swing.JButton btnAyuda;
-    private javax.swing.JButton btnConfiguracion;
-    private javax.swing.JButton btnJugar;
-    private javax.swing.JButton btnTop10;
+    public javax.swing.JButton btnConfiguracion;
+    public javax.swing.JButton btnJugar;
+    public javax.swing.JButton btnTop10;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

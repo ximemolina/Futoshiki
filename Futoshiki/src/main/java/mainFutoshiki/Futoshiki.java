@@ -11,7 +11,13 @@ import controladorFutoshiki.*;//paquete de controlador, aqui se encontrarán tod
 public class Futoshiki {
 
     public static void main(String[] args) {
+        //inicializa y/o carga config juego
+        Juego juego = new Juego();
+        //inicializa vista
         MenuPrincipal menu  = new MenuPrincipal();
         menu.setVisible(true);
+        //inicializa controlador
+        MenuPrincipalControlador controlador = new MenuPrincipalControlador(juego, menu);
+        
     }
 }
