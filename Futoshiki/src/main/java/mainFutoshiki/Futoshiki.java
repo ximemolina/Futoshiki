@@ -4,7 +4,6 @@ import modeloFutoshiki.*; //paquete de modelo, aqui se encontrarán todas las cl
 import vistaFutoshiki.*; //paquete de vista, aqui se encontrarán todos las clases de Swing
 import controladorFutoshiki.*;//paquete de controlador, aqui se encontrarán todas las clases que conectan interfaz
                               //con las acciones de las clases del modelo
-
 /**
  *
  * @author ximena molina - juan pablo cambronero
@@ -12,6 +11,7 @@ import controladorFutoshiki.*;//paquete de controlador, aqui se encontrarán tod
 public class Futoshiki {
 
     public static void main(String[] args) {
-
+        MenuPrincipal menu  = new MenuPrincipal();
+        menu.setVisible(true);
     }
 }
