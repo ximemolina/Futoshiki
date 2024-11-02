@@ -1,12 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package vistaFutoshiki;
 
 /**
  *
- * @author ximen
+ * @author ximena molina - juan pablo cambronero
  */
 public class PantallaTop10 extends javax.swing.JFrame {
 
