@@ -1,7 +1,8 @@
 package modeloFutoshiki;
 
 import java.io.*;
-
+import javax.xml.parsers.*;
+import org.w3c.dom.*;
 /**
  *
  * @author ximena molina - juan pablo cambronero
@@ -28,5 +29,33 @@ public class Archivo {
        } catch(Exception e){
            System.out.print(e.getMessage());
        }
+    }
+    //cargar archivo tipo xml que contiene todas las posibles combinaciones de partidas
+    void cargarArchivoPartidas(){
+        try {
+            // Configurar para leer el archivo XML
+            DocumentBuilderFactory configuracion = DocumentBuilderFactory.newInstance();
+            DocumentBuilder constructor = configuracion.newDocumentBuilder();
+            Document documento = constructor.parse("futoshiki2024partidas.xml");
+
+            documento.getDocumentElement().normalize();
+
+            NodeList listaPartidas = documento.getElementsByTagName("partida");
+
+            // Recorrer cada partida en el archivo
+            for (int i = 0; i < listaPartidas.getLength(); i++) {
+                Element elementoPartida = (Element) listaPartidas.item(i);
+
+                //***********************************************************Revisar como vamos a utilizar la info de este archivo**************************
+                String nivel = elementoPartida.getElementsByTagName("nivel").item(0).getTextContent();
+                String tamañoCuadricula = elementoPartida.getElementsByTagName("cuadricula").item(0).getTextContent();
+                String desigualdades = elementoPartida.getElementsByTagName("des").item(0).getTextContent();
+                String constantes = elementoPartida.getElementsByTagName("cons").item(0).getTextContent();
+               
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
