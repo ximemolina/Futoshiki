@@ -1,6 +1,4 @@
 package modeloFutoshiki;
-
-
 /**
  *
  * @author ximena molina - juan pablo cambronero

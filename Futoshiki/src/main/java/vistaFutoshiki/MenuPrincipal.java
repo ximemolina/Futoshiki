@@ -144,7 +144,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAyudaActionPerformed
 
     private void btnAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcercaActionPerformed
-        JOptionPane.showMessageDialog(null, "Versión: 1.0\nDesarrollado por: Ximena Molina y Juan Pablo Cambronero", "Acerca de", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Nombre del programa: Futoshiki\nVersión: 1.0\nFecha de Creación:24/11/2024\nDesarrollado por: Ximena Molina y Juan Pablo Cambronero", "Acerca de", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnAcercaActionPerformed
     // </editor-fold>
     
