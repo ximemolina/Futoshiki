@@ -3,6 +3,7 @@ package controladorFutoshiki;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
 import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -32,6 +33,77 @@ public class MenuConfiguracionControlador {
                                                                                             //necesarias al controlador del menu principal
             }
         });
+        
+        this.menu.btnAceptar.addActionListener(new ActionListener() { // Espera a que el usuario presione el botón de Aceptar
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Configurar el tamaño de la cuadrícula en el objeto `Juego`
+                if (menu.btnTamano3.isSelected()) {
+                    juego.setTamano(3);
+                } else if (menu.btnTamano4.isSelected()) {
+                    juego.setTamano(4);
+                } else if (menu.btnTamano5.isSelected()) {
+                    juego.setTamano(5);
+                } else if (menu.btnTamano6.isSelected()) {
+                    juego.setTamano(6);
+                } else if (menu.btnTamano7.isSelected()) {
+                    juego.setTamano(7);
+                } else if (menu.btnTamano8.isSelected()) {
+                    juego.setTamano(8);
+                } else if (menu.btnTamano9.isSelected()) {
+                    juego.setTamano(9);
+                } else if (menu.btnTamano10.isSelected()) {
+                    juego.setTamano(10);
+                }
+
+                // Configurar el nivel de juego
+                if (menu.btnFacil.isSelected()) {
+                    juego.setNivel(1); // Nivel fácil
+                } else if (menu.btnIntermedio.isSelected()) {
+                    juego.setNivel(2); // Nivel intermedio
+                } else if (menu.btnDificil.isSelected()) {
+                    juego.setNivel(3); // Nivel difícil
+                }
+
+                // Configurar multivel
+                juego.setMultinivel(menu.btnMultinivelSi.isSelected());
+
+                // Configurar posición en la ventana del panel de dígitos
+                juego.setPosicion(menu.btnDerecha.isSelected());
+
+                // Configurar el reloj (dependiendo de la selección)
+                Reloj reloj = new Reloj();
+                if (menu.btnCronometro.isSelected()) {
+                    reloj.setTipo(1);
+                } else if (menu.btnTemporizador.isSelected()) {
+                    reloj.setTipo(2);
+                    try {
+                        int horas = Integer.parseInt(menu.inpHoras.getText());
+                        int minutos = Integer.parseInt(menu.inpMinutos.getText());
+                        int segundos = Integer.parseInt(menu.inpSegundos.getText());
+                        reloj.setHoras(horas);
+                        reloj.setMinutos(minutos);
+                        reloj.setSegundos(segundos);
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(menu, "Por favor ingrese valores numéricos válidos para el temporizador", "Error", JOptionPane.ERROR_MESSAGE);
+                        return; // Salir del método si hay un error de formato
+                    }
+
+                }
+                juego.setReloj(reloj);
+                
+                
+
+
+                // Confirmar configuración completada
+                JOptionPane.showMessageDialog(menu, "Configuración guardada exitosamente", "Configuración", JOptionPane.INFORMATION_MESSAGE);
+
+                // Cambiar a la siguiente pantalla o cerrar la configuración según sea necesario
+            }
+        });
+
+        
+        
         
         this.menu.btnTamano3.addActionListener(new ActionListener() { //espera a que usuario presione el boton de tamaño de cuadricula
             @Override
@@ -197,7 +269,17 @@ public class MenuConfiguracionControlador {
             public void actionPerformed(ActionEvent e) {
                 if (!(menu.inpNombreIngresar.getText()).equals("")){ //validar que si se haya ingresado un usuario del cual agarrar el correo
                     String pin = generarPin();
-                    //******************************************aqui incluir llamada a funcion/clase de correo con el pin*****************************
+                    // Crear una instancia de la clase Correo
+                    Correo correo = new Correo("juanpacamal08@gmail.com", "adqs eueu mrbs vngz", "smtp.gmail.com"); // Usa tu correo y contraseña aquí
+            
+                    // Definir el destinatario y el contenido del mensaje
+                    String destinatario = "juanpacamal08@gmail.com";
+                    String asunto = "Código de recuperación de contraseña";
+                    String cuerpo = "Su código de recuperación es: " + pin;
+
+                    // Enviar el correo con el PIN
+                    correo.enviarCorreo(destinatario, asunto, cuerpo);
+                    
                     PantallaOlvidoContraseña pantalla = new PantallaOlvidoContraseña();
                     menu.setVisible(false);
                     pantalla.setVisible(true);

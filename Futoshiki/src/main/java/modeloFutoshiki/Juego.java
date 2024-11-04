@@ -13,7 +13,7 @@ public class Juego {
     private String nombre;
     private Jugador jugador;
     private Reloj reloj;
-    
+
     // <editor-fold defaultstate="collapsed" desc="Setters-Getters">
     public int getTamano() {
         return tamano;
@@ -71,4 +71,5 @@ public class Juego {
         this.reloj = reloj;
     }
     //</editor-fold>
+    
 }

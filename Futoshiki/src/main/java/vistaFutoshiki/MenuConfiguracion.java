@@ -1,11 +1,12 @@
 package vistaFutoshiki;
+import modeloFutoshiki.Juego;
 
 /**
  *
  * @author ximena molina - juan pablo cambronero
  */
 public class MenuConfiguracion extends javax.swing.JFrame {
-
+    Juego juego;
     /**
      * Creates new form MenuConfiguracion
      */
@@ -290,6 +291,11 @@ public class MenuConfiguracion extends javax.swing.JFrame {
         jSeparator7.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         inpNombre.setFont(new java.awt.Font("Leelawadee UI", 0, 16)); // NOI18N
+        inpNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpNombreActionPerformed(evt);
+            }
+        });
 
         btnVolver.setFont(new java.awt.Font("Leelawadee UI", 0, 14)); // NOI18N
         btnVolver.setText("Volver");
@@ -322,6 +328,11 @@ public class MenuConfiguracion extends javax.swing.JFrame {
 
         btnAceptar.setFont(new java.awt.Font("Leelawadee UI", 0, 16)); // NOI18N
         btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
 
         inpHoras.setFont(new java.awt.Font("Leelawadee UI", 0, 14)); // NOI18N
         inpHoras.setEnabled(false);
@@ -601,64 +612,79 @@ public class MenuConfiguracion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCronometroActionPerformed
 
     private void btnIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzquierdaActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnIzquierdaActionPerformed
 
     private void btnDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDerechaActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_btnDerechaActionPerformed
 
     private void btnMultinivelSiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMultinivelSiActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnMultinivelSiActionPerformed
 
     private void btnMultinivelNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMultinivelNoActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnMultinivelNoActionPerformed
 
     private void btnDificilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDificilActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnDificilActionPerformed
 
     private void btnIntermedioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIntermedioActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnIntermedioActionPerformed
 
     private void btnFacilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacilActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnFacilActionPerformed
 
     private void btnTamano10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTamano10ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnTamano10ActionPerformed
 
     private void btnTamano9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTamano9ActionPerformed
-        // TODO add your handling code here:
+        
+
     }//GEN-LAST:event_btnTamano9ActionPerformed
 
     private void btnTamano8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTamano8ActionPerformed
-        // TODO add your handling code here:
+        
+
     }//GEN-LAST:event_btnTamano8ActionPerformed
 
     private void btnTamano7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTamano7ActionPerformed
-        // TODO add your handling code here:
+        
+
     }//GEN-LAST:event_btnTamano7ActionPerformed
 
     private void btnTamano6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTamano6ActionPerformed
-        // TODO add your handling code here:
+        
+
     }//GEN-LAST:event_btnTamano6ActionPerformed
 
     private void btnTamano5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTamano5ActionPerformed
-        // TODO add your handling code here:
+        
+
     }//GEN-LAST:event_btnTamano5ActionPerformed
 
     private void btnTamano4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTamano4ActionPerformed
-        // TODO add your handling code here:
+        
+
     }//GEN-LAST:event_btnTamano4ActionPerformed
 
     private void btnTamano3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTamano3ActionPerformed
-        // TODO add your handling code here:
+        
+
     }//GEN-LAST:event_btnTamano3ActionPerformed
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+                // TODO add your handling code here:
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void inpNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpNombreActionPerformed
     // </editor-fold>
     /**
      * @param args the command line arguments
