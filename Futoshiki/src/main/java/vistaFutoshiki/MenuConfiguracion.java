@@ -97,6 +97,8 @@ public class MenuConfiguracion extends javax.swing.JFrame {
 
         btnTamano5.setBackground(new java.awt.Color(255, 255, 255));
         btnTamano5.setFont(new java.awt.Font("Leelawadee UI", 0, 16)); // NOI18N
+        btnTamano5.setForeground(new java.awt.Color(255, 0, 0));
+        btnTamano5.setSelected(true);
         btnTamano5.setText("5 x 5");
         btnTamano5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,6 +156,8 @@ public class MenuConfiguracion extends javax.swing.JFrame {
 
         btnFacil.setBackground(new java.awt.Color(255, 255, 255));
         btnFacil.setFont(new java.awt.Font("Leelawadee UI", 0, 16)); // NOI18N
+        btnFacil.setForeground(new java.awt.Color(255, 0, 0));
+        btnFacil.setSelected(true);
         btnFacil.setText("Fácil");
         btnFacil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -184,6 +188,8 @@ public class MenuConfiguracion extends javax.swing.JFrame {
 
         btnMultinivelNo.setBackground(new java.awt.Color(255, 255, 255));
         btnMultinivelNo.setFont(new java.awt.Font("Leelawadee UI", 0, 16)); // NOI18N
+        btnMultinivelNo.setForeground(new java.awt.Color(255, 0, 0));
+        btnMultinivelNo.setSelected(true);
         btnMultinivelNo.setText("No");
         btnMultinivelNo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -208,6 +214,8 @@ public class MenuConfiguracion extends javax.swing.JFrame {
 
         btnDerecha.setBackground(new java.awt.Color(255, 255, 255));
         btnDerecha.setFont(new java.awt.Font("Leelawadee UI", 0, 16)); // NOI18N
+        btnDerecha.setForeground(new java.awt.Color(255, 0, 0));
+        btnDerecha.setSelected(true);
         btnDerecha.setText("Derecha");
         btnDerecha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -229,6 +237,8 @@ public class MenuConfiguracion extends javax.swing.JFrame {
 
         btnCronometro.setBackground(new java.awt.Color(255, 255, 255));
         btnCronometro.setFont(new java.awt.Font("Leelawadee UI", 0, 16)); // NOI18N
+        btnCronometro.setForeground(new java.awt.Color(255, 0, 0));
+        btnCronometro.setSelected(true);
         btnCronometro.setText("Cronometro");
         btnCronometro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

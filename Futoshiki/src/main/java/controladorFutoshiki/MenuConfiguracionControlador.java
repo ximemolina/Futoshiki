@@ -3,6 +3,8 @@ package controladorFutoshiki;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import vistaFutoshiki.*;
 import modeloFutoshiki.*;
@@ -189,6 +191,23 @@ public class MenuConfiguracionControlador {
                menu.inpSegundos.setEnabled(false);
             }
         });
+        
+        this.menu.btnContraseña.addActionListener(new ActionListener() { //espera a que usuario presione el boton de Olvido de contraseña
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!(menu.inpNombreIngresar.getText()).equals("")){ //validar que si se haya ingresado un usuario del cual agarrar el correo
+                    String pin = generarPin();
+                    //******************************************aqui incluir llamada a funcion/clase de correo con el pin*****************************
+                    PantallaOlvidoContraseña pantalla = new PantallaOlvidoContraseña();
+                    menu.setVisible(false);
+                    pantalla.setVisible(true);
+                    PantallaOlvidoContraseñaControlador controlador = new PantallaOlvidoContraseñaControlador(pantalla,juego, pin);
+                    System.out.println(pin); //solo para pruebas. se quita cuando ya se envie correo
+                }else
+                    JOptionPane.showMessageDialog(null, "Debe ingresar un usuario válido", "ERROR", JOptionPane.ERROR_MESSAGE);
+               
+            }
+        });
     }
     
     //evita que varios botones de tamaño de cuadricula estén presionados al mismo tiempo
@@ -245,5 +264,20 @@ public class MenuConfiguracionControlador {
                     comp.setForeground(Color.black);
                 }
         }
+    }
+    
+    //genera Pin al azar
+    String generarPin(){
+        String caracteresPermitidos = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            Random random = new Random();
+            StringBuilder sb = new StringBuilder(4);
+
+            for (int i = 0; i < 4; i++) {
+                int indiceAleatorio = random.nextInt(caracteresPermitidos.length());
+                char caracterAleatorio = caracteresPermitidos.charAt(indiceAleatorio);
+                sb.append(caracterAleatorio);
+            }
+            String pin = sb.toString();
+        return pin;
     }
 }

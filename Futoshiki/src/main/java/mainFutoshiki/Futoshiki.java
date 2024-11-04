@@ -30,6 +30,14 @@ public class Futoshiki {
         catch(Exception e){
             e.getMessage();
         }
+        File archivoJugadores = new File("futoshiki2024jugadores.txt");
+        try{
+            if(!archivoJugadores.exists())
+                archivoJugadores.createNewFile();
+        }
+        catch(Exception e){
+            e.getMessage();
+        }
         //inicializa y/o carga config juego
         Juego juego = new Juego();
         //inicializa vista
