@@ -34,6 +34,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnTamano3.addActionListener(new ActionListener() { //espera a que usuario presione el boton de tamaño de cuadricula
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnTamano3.setForeground(Color.red);
                resetearBotonesTamaño(menu.btnTamano3);
             }
         });
@@ -41,6 +42,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnTamano4.addActionListener(new ActionListener() { //espera a que usuario presione el boton de tamaño de cuadricula
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnTamano4.setForeground(Color.red);
                resetearBotonesTamaño(menu.btnTamano4);
             }
         });
@@ -48,6 +50,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnTamano5.addActionListener(new ActionListener() { //espera a que usuario presione el boton de tamaño de cuadricula
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnTamano5.setForeground(Color.red);
                resetearBotonesTamaño(menu.btnTamano5);
             }
         });
@@ -55,6 +58,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnTamano6.addActionListener(new ActionListener() { //espera a que usuario presione el boton de tamaño de cuadricula
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnTamano6.setForeground(Color.red);
                resetearBotonesTamaño(menu.btnTamano6);
             }
         });
@@ -62,6 +66,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnTamano7.addActionListener(new ActionListener() { //espera a que usuario presione el boton de tamaño de cuadricula
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnTamano7.setForeground(Color.red);
                resetearBotonesTamaño(menu.btnTamano7);
             }
         });
@@ -69,6 +74,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnTamano8.addActionListener(new ActionListener() { //espera a que usuario presione el boton de tamaño de cuadricula
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnTamano8.setForeground(Color.red);
                resetearBotonesTamaño(menu.btnTamano8);
             }
         });
@@ -76,6 +82,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnTamano9.addActionListener(new ActionListener() { //espera a que usuario presione el boton de tamaño de cuadricula
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnTamano9.setForeground(Color.red);
                resetearBotonesTamaño(menu.btnTamano9);
             }
         });
@@ -83,6 +90,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnTamano10.addActionListener(new ActionListener() { //espera a que usuario presione el boton de tamaño de cuadricula
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnTamano10.setForeground(Color.red);
                resetearBotonesTamaño(menu.btnTamano10);
             }
         });
@@ -90,6 +98,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnFacil.addActionListener(new ActionListener() { //espera a que usuario presione el boton de nivel
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnFacil.setForeground(Color.red);
                resetearBotonesNivel(menu.btnFacil);
             }
         });
@@ -97,6 +106,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnIntermedio.addActionListener(new ActionListener() { //espera a que usuario presione el boton de nivel
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnIntermedio.setForeground(Color.red);
                resetearBotonesNivel(menu.btnIntermedio);
             }
         });
@@ -104,6 +114,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnDificil.addActionListener(new ActionListener() { //espera a que usuario presione el boton de nivel
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnDificil.setForeground(Color.red);
                resetearBotonesNivel(menu.btnDificil);
             }
         });
@@ -111,6 +122,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnMultinivelNo.addActionListener(new ActionListener() { //espera a que usuario presione el boton de multinivel
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnMultinivelNo.setForeground(Color.red);
                resetearBotonesMultinivel(menu.btnMultinivelNo);
             }
         });
@@ -118,6 +130,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnMultinivelSi.addActionListener(new ActionListener() { //espera a que usuario presione el boton de multinivel
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnMultinivelSi.setForeground(Color.red);
                resetearBotonesMultinivel(menu.btnMultinivelSi);
             }
         });
@@ -125,6 +138,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnDerecha.addActionListener(new ActionListener() { //espera a que usuario presione el boton de posicion
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnDerecha.setForeground(Color.red);
                resetearBotonesLados(menu.btnDerecha);
             }
         });
@@ -132,6 +146,7 @@ public class MenuConfiguracionControlador {
         this.menu.btnIzquierda.addActionListener(new ActionListener() { //espera a que usuario presione el boton de posicion
             @Override
             public void actionPerformed(ActionEvent e) {
+                menu.btnIzquierda.setForeground(Color.red);
                resetearBotonesLados(menu.btnIzquierda);
             }
         });
@@ -140,6 +155,7 @@ public class MenuConfiguracionControlador {
             @Override
             public void actionPerformed(ActionEvent e) {
                resetearBotonesReloj(menu.btnCronometro);
+               menu.btnCronometro.setForeground(Color.red);
                menu.inpHoras.setText("");
                menu.inpMinutos.setText("");
                menu.inpSegundos.setText("");
@@ -153,6 +169,7 @@ public class MenuConfiguracionControlador {
             @Override
             public void actionPerformed(ActionEvent e) { //si es seleccionado, habilitar los inputs del reloj
                resetearBotonesReloj(menu.btnTemporizador);
+               menu.btnTemporizador.setForeground(Color.red);
                menu.inpHoras.setEnabled(true);
                menu.inpMinutos.setEnabled(true);
                menu.inpSegundos.setEnabled(true);
@@ -163,6 +180,7 @@ public class MenuConfiguracionControlador {
             @Override
             public void actionPerformed(ActionEvent e) {
                resetearBotonesReloj(menu.btnSinReloj);
+               menu.btnSinReloj.setForeground(Color.red);
                menu.inpHoras.setText("");
                menu.inpMinutos.setText("");
                menu.inpSegundos.setText("");
@@ -178,8 +196,10 @@ public class MenuConfiguracionControlador {
         for (Component comp: menu.PanelConfig.getComponents()){
             if(comp instanceof JRadioButton) //verificar que sea un boton de tipo JRadioButton
                 if(comp.equals(menu.btnTamano10) || comp.equals(menu.btnTamano9)|| comp.equals(menu.btnTamano8)|| comp.equals(menu.btnTamano7)|| comp.equals(menu.btnTamano6)|| comp.equals(menu.btnTamano5)|| comp.equals(menu.btnTamano4)|| comp.equals(menu.btnTamano3))
-                    if (!comp.equals(boton)) //verificar que no sea el boton que está siendo seleccionado
+                    if (!comp.equals(boton)){ //verificar que no sea el boton que está siendo seleccionado
                         ((JRadioButton)comp).setSelected(false); 
+                        comp.setForeground(Color.black);
+                    }
         }
     }
     
@@ -187,8 +207,10 @@ public class MenuConfiguracionControlador {
     void resetearBotonesNivel(JRadioButton boton){
         for(Component comp: menu.PanelConfig.getComponents()){
             if(comp instanceof JRadioButton && !comp.equals(boton)) //verificar que sea un boton de tipo JRadioButton y diferente al que está presionado
-                if(comp.equals(menu.btnFacil) || comp.equals(menu.btnIntermedio) || comp.equals(menu.btnDificil))
+                if(comp.equals(menu.btnFacil) || comp.equals(menu.btnIntermedio) || comp.equals(menu.btnDificil)){
                     ((JRadioButton)comp).setSelected(false); 
+                    comp.setForeground(Color.black);
+                }
         }
     }
     
@@ -196,8 +218,10 @@ public class MenuConfiguracionControlador {
     void resetearBotonesMultinivel(JRadioButton boton){
         for(Component comp: menu.PanelConfig.getComponents()){
             if(comp instanceof JRadioButton && !comp.equals(boton)) //verificar que sea un boton de tipo JRadioButton y diferente al que está presionado
-                if(comp.equals(menu.btnMultinivelNo) || comp.equals(menu.btnMultinivelSi))
+                if(comp.equals(menu.btnMultinivelNo) || comp.equals(menu.btnMultinivelSi)){
                     ((JRadioButton)comp).setSelected(false); 
+                    comp.setForeground(Color.black);
+                }
         }
     }
     
@@ -205,8 +229,10 @@ public class MenuConfiguracionControlador {
     void resetearBotonesLados(JRadioButton boton){
         for(Component comp: menu.PanelConfig.getComponents()){
             if(comp instanceof JRadioButton && !comp.equals(boton)) //verificar que sea un boton de tipo JRadioButton y diferente al que está presionado
-                if(comp.equals(menu.btnDerecha) || comp.equals(menu.btnIzquierda))
+                if(comp.equals(menu.btnDerecha) || comp.equals(menu.btnIzquierda)){
                     ((JRadioButton)comp).setSelected(false); 
+                    comp.setForeground(Color.black);
+                }
         }
     }
     
@@ -214,8 +240,10 @@ public class MenuConfiguracionControlador {
     void resetearBotonesReloj(JRadioButton boton){
         for(Component comp: menu.PanelConfig.getComponents()){
             if(comp instanceof JRadioButton && !comp.equals(boton)) //verificar que sea un boton de tipo JRadioButton y diferente al que está presionado
-                if(comp.equals(menu.btnCronometro) || comp.equals(menu.btnSinReloj) || comp.equals(menu.btnTemporizador))
+                if(comp.equals(menu.btnCronometro) || comp.equals(menu.btnSinReloj) || comp.equals(menu.btnTemporizador)){
                     ((JRadioButton)comp).setSelected(false); 
+                    comp.setForeground(Color.black);
+                }
         }
     }
 }
