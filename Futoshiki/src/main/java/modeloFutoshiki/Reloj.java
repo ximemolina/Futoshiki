@@ -21,7 +21,11 @@ public class Reloj {
     }
     
     public void setHoras(int horas){
-        this.horas = horas;
+        if (horas >= 0 && horas <= 5){
+            this.horas = horas;
+        } else {
+            throw new IllegalArgumentException("Las horas deben estar entre 0 y 5.");
+        }
     }
     
     public int getMinutos(){
@@ -29,7 +33,11 @@ public class Reloj {
     }
     
     public void setMinutos(int minutos){
-        this.minutos = minutos;
+        if (minutos >= 0 && minutos <= 59 ){
+            this.minutos = minutos;
+        } else {
+            throw new IllegalArgumentException("Los minutos deben estar entre 0 y 59.");
+        }
     }
     
     public int getSegundos(){
@@ -37,7 +45,12 @@ public class Reloj {
     }
     
     public void setSegundos(int segundos){
-        this.segundos = segundos;
+        if (segundos >= 0 && segundos <= 59 ){
+            this.segundos = segundos;
+        } else {
+            throw new IllegalArgumentException("Los segundos deben estar entre 0 y 59.");
+        }
+
     }
     // </editor-fold>
 }

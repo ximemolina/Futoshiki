@@ -8,9 +8,16 @@ import java.time.*;
 public class Jugador {
     //atributos
     private String nombre;
-    private String pin;
+    private String contrasena;
     private LocalTime tiempoActual;
     private LocalTime tiempoTerminaPartida; //este tiempo solo sería en caso de que se juegue con temporizador
+    
+    public Jugador(String nombre, String contrasena){
+        this.nombre = nombre;
+        this.contrasena = contrasena;
+        this.tiempoActual = null;
+        this.tiempoTerminaPartida = null;
+    }
     
     // <editor-fold defaultstate="collapsed" desc="Setters-Getters">
     public String getNombre() {
@@ -21,12 +28,12 @@ public class Jugador {
         this.nombre = nombre;
     }
 
-    public String getPin() {
-        return pin;
+    public String getContrasena() {
+        return contrasena;
     }
 
-    public void setPin(String pin) {
-        this.pin = pin;
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public LocalTime getTiempoActual() {

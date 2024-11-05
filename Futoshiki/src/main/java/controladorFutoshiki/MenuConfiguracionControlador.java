@@ -87,10 +87,14 @@ public class MenuConfiguracionControlador {
                     } catch (NumberFormatException ex) {
                         JOptionPane.showMessageDialog(menu, "Por favor ingrese valores numéricos válidos para el temporizador", "Error", JOptionPane.ERROR_MESSAGE);
                         return; // Salir del método si hay un error de formato
+                    } catch (IllegalArgumentException x){
+                        JOptionPane.showMessageDialog(menu, "Error de Configuracion", "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
                 }
                 juego.setReloj(reloj);
+                Jugador jugador = new Jugador(menu.inpNombre.getText(), menu.inpContraseña.getText());
+                juego.setJugador(jugador);
                 
                 
 

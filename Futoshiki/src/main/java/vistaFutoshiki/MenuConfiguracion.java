@@ -1,5 +1,6 @@
 package vistaFutoshiki;
 import modeloFutoshiki.Juego;
+import modeloFutoshiki.Reloj;
 
 /**
  *
@@ -7,6 +8,7 @@ import modeloFutoshiki.Juego;
  */
 public class MenuConfiguracion extends javax.swing.JFrame {
     Juego juego;
+    Reloj reloj;
     /**
      * Creates new form MenuConfiguracion
      */
@@ -304,6 +306,11 @@ public class MenuConfiguracion extends javax.swing.JFrame {
         jLabel11.setText("Contraseña:");
 
         inpContraseña.setFont(new java.awt.Font("Leelawadee UI", 0, 16)); // NOI18N
+        inpContraseña.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpContraseñaActionPerformed(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("Leelawadee UI", 0, 16)); // NOI18N
         jLabel12.setText("Correo:");
@@ -336,6 +343,11 @@ public class MenuConfiguracion extends javax.swing.JFrame {
 
         inpHoras.setFont(new java.awt.Font("Leelawadee UI", 0, 14)); // NOI18N
         inpHoras.setEnabled(false);
+        inpHoras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpHorasActionPerformed(evt);
+            }
+        });
 
         inpMinutos.setFont(new java.awt.Font("Leelawadee UI", 0, 14)); // NOI18N
         inpMinutos.setEnabled(false);
@@ -685,6 +697,14 @@ public class MenuConfiguracion extends javax.swing.JFrame {
     private void inpNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNombreActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_inpNombreActionPerformed
+
+    private void inpHorasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpHorasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpHorasActionPerformed
+
+    private void inpContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpContraseñaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpContraseñaActionPerformed
     // </editor-fold>
     /**
      * @param args the command line arguments
