@@ -96,13 +96,15 @@ public class MenuConfiguracionControlador {
                 Jugador jugador = new Jugador(menu.inpNombre.getText(), menu.inpContraseña.getText());
                 juego.setJugador(jugador);
                 
-                
-
-
                 // Confirmar configuración completada
                 JOptionPane.showMessageDialog(menu, "Configuración guardada exitosamente", "Configuración", JOptionPane.INFORMATION_MESSAGE);
-
-                // Cambiar a la siguiente pantalla o cerrar la configuración según sea necesario
+                
+                //salir de pantalla
+                MenuPrincipal pantalla = new MenuPrincipal(); //inicializa pantalla configuracion
+                menu.setVisible(false);
+                pantalla.setVisible(true);
+                MenuPrincipalControlador controlador = new MenuPrincipalControlador(juego,pantalla);
+                
             }
         });
 
@@ -288,7 +290,6 @@ public class MenuConfiguracionControlador {
                     menu.setVisible(false);
                     pantalla.setVisible(true);
                     PantallaOlvidoContraseñaControlador controlador = new PantallaOlvidoContraseñaControlador(pantalla,juego, pin);
-                    System.out.println(pin); //solo para pruebas. se quita cuando ya se envie correo
                 }else
                     JOptionPane.showMessageDialog(null, "Debe ingresar un usuario válido", "ERROR", JOptionPane.ERROR_MESSAGE);
                

@@ -9,6 +9,12 @@ public class Reloj {
     private int horas;
     private int minutos;
     private int segundos;
+    
+    public String toString(){
+        if (getTipo() == 2) return String.valueOf(tipo) + String.valueOf(horas) + String.valueOf(minutos) + String.valueOf(segundos);
+        else return String.valueOf(tipo);
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="Setters-Getters">
     public int getTipo() {
         return tipo;

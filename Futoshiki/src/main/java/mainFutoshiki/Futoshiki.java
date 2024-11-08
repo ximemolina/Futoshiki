@@ -43,6 +43,8 @@ public class Futoshiki {
         //inicializa vista
         MenuPrincipal menu  = new MenuPrincipal();
         menu.setVisible(true);
+        /*          Solo para pruebas de cuadricula pq aún no agrego XML    */
+        juego.setTamano(10);
         //inicializa controlador
         MenuPrincipalControlador controlador = new MenuPrincipalControlador(juego, menu);
         

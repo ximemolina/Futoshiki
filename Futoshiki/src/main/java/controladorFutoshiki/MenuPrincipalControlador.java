@@ -31,10 +31,10 @@ public class MenuPrincipalControlador {
         this.menu.btnJugar.addActionListener(new ActionListener() { //espera a que usuario presione el boton de jugar
             @Override
             public void actionPerformed(ActionEvent e) {
-                PantallaJuego pantalla = new PantallaJuego(); //inicializa pantalla jugar
+                PantallaJuego2 pantalla = new PantallaJuego2(juego); //inicializa pantalla jugar
                 menu.setVisible(false);
                 pantalla.setVisible(true);
-                PantallaJuegoControlador controlador = new PantallaJuegoControlador(juego,pantalla);// envia las clases
+                //PantallaJuegoControlador controlador = new PantallaJuegoControlador(juego,pantalla);// envia las clases
                                                                                            //necesarias al controlador de la pantalla jugar
             }
         });

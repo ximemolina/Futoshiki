@@ -13,7 +13,12 @@ public class Juego {
     private String nombre;
     private Jugador jugador;
     private Reloj reloj;
-
+    
+    //retorna información del juego en un solo string
+    public String toString(){
+        return String.valueOf(getTamano()) + String.valueOf(getNivel()) + isMultinivel() + isPosicion() + getNombre()+ getReloj().toString();
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="Setters-Getters">
     public int getTamano() {
         return tamano;
