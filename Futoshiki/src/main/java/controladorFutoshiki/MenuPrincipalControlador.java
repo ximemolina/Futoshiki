@@ -34,7 +34,7 @@ public class MenuPrincipalControlador {
                 PantallaJuego2 pantalla = new PantallaJuego2(juego); //inicializa pantalla jugar
                 menu.setVisible(false);
                 pantalla.setVisible(true);
-                //PantallaJuegoControlador controlador = new PantallaJuegoControlador(juego,pantalla);// envia las clases
+                PantallaJuegoControlador controlador = new PantallaJuegoControlador(juego,pantalla);// envia las clases
                                                                                            //necesarias al controlador de la pantalla jugar
             }
         });
