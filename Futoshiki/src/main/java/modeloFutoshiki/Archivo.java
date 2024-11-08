@@ -41,6 +41,19 @@ public class Archivo {
            System.out.print(e.getMessage());
        }
     }
+    
+    //guardar el juego actual
+    void guardarArchivoJuegoActual(String mensaje){
+        try{
+            File nombreArchivo = new File("futoshiki2024juegoactual.txt");
+            FileWriter escribir = new FileWriter(nombreArchivo, true); //permite escribir en diferentes ocasiones en archivos
+            escribir.write(mensaje); //escribe informarion de usuario
+            escribir.close(); //cierra escritor
+       } catch(Exception e){
+           System.out.print(e.getMessage());
+       }
+    }
+    
     //cargar archivo tipo xml que contiene todas las posibles combinaciones de partidas
     void cargarArchivoPartidas(){
         try {

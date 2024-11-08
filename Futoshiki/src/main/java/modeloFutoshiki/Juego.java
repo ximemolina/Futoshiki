@@ -9,14 +9,13 @@ public class Juego {
     private int tamano;
     private int nivel;
     private boolean multinivel;
-    private boolean posicion;
-    private String nombre;
+    private boolean posicion; // true: derecho | false: izquierdo
     private Jugador jugador;
     private Reloj reloj;
     
     //retorna información del juego en un solo string
     public String toString(){
-        return String.valueOf(getTamano()) + String.valueOf(getNivel()) + isMultinivel() + isPosicion() + getNombre()+ getReloj().toString();
+        return String.valueOf(getTamano()) + String.valueOf(getNivel()) + isMultinivel() + isPosicion() + getReloj().toString();
     }
     
     // <editor-fold defaultstate="collapsed" desc="Setters-Getters">
@@ -50,14 +49,6 @@ public class Juego {
 
     public void setPosicion(boolean posicion) {
         this.posicion = posicion;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public Jugador getJugador() {

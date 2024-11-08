@@ -38,6 +38,14 @@ public class Futoshiki {
         catch(Exception e){
             e.getMessage();
         }
+        File archivoJuegoActual = new File("futoshiki2024juegoactual.txt");
+        try{
+            if(!archivoJuegoActual.exists())
+                archivoJuegoActual.createNewFile();
+        }
+        catch(Exception e){
+            e.getMessage();
+        }
         //inicializa y/o carga config juego
         Juego juego = new Juego();
         //inicializa vista
@@ -45,6 +53,8 @@ public class Futoshiki {
         menu.setVisible(true);
         /*          Solo para pruebas de cuadricula pq aún no agrego XML    */
         juego.setTamano(10);
+        juego.setPosicion(true);
+        juego.setNivel(2);
         //inicializa controlador
         MenuPrincipalControlador controlador = new MenuPrincipalControlador(juego, menu);
         

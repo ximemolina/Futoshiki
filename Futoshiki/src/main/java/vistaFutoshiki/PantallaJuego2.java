@@ -1,8 +1,12 @@
 package vistaFutoshiki;
 
+import java.awt.Color;
+import java.awt.Image;
 import modeloFutoshiki.*;
 import java.util.*;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 /**
  *
@@ -42,6 +46,7 @@ public class PantallaJuego2 extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         
         ArrayList <JButton> botones= new ArrayList<>(); //*****************************Debe ser añadido a la clase que maneje todo lo de la partida del juego***************
+        ArrayList <JButton> botonesNumeros = new ArrayList<>();//*****************************Debe ser añadido a la clase que maneje todo lo de la partida del juego************
         
         // Inicialización tamaño de botones
         int tamano = 40;
@@ -50,22 +55,86 @@ public class PantallaJuego2 extends javax.swing.JFrame {
         
          // tamaño de los ubicacion y contador
         int x = 30, y =170,cont = 0;
-        
-        for (int i = 0; i < 100; i++) {
-            
-            if (i == juego.getTamano()*juego.getTamano()) break; //revisar tamaño de cuadricula
-            
-            JButton boton = new JButton("");
-            if (cont >= juego.getTamano()){ // una vez que termina fila, baja una columna y continua con la siguiente fila
-                y = y+tamano + 20;
-                cont = 0;
-                x = 30;
+        if (juego.isPosicion()){ // si es para derechos
+            for (int i = 0; i < 100; i++) {
+
+                if (i == juego.getTamano()*juego.getTamano()) break; //revisar tamaño de cuadricula
+
+                JButton boton = new JButton("");
+                if (cont >= juego.getTamano()){ // una vez que termina fila, baja una columna y continua con la siguiente fila
+                    y = y+tamano + 20;
+                    cont = 0;
+                    x = 30;
+                }
+                boton.setBounds(x, y, tamano, tamano);
+                botones.add(boton);
+                add(boton);
+                x = x+ tamano + 20;
+                cont ++;
             }
-            boton.setBounds(x, y, tamano, tamano);
-            botones.add(boton);
-            add(boton);
-            x = x+ tamano + 20;
-            cont ++;
+            x=600; y=170;   
+            for (int i = 1; i <= juego.getTamano(); i++) { //desplegar botones de numeros
+                if (i == 6)
+                { 
+                    x=680;
+                    y = 170;
+                }
+                JButton boton = new JButton(String.valueOf(i));
+                boton.setFont(new java.awt.Font("Leelawadee UI", 1, 20));
+                boton.setBounds(x, y, 60, 60);
+                botonesNumeros.add(boton);
+                add(boton);
+                y = y+85;
+            } 
+            ImageIcon imagen = new ImageIcon("src/main/java/imagenes/borrador.png");  // Ruta a la imagen
+            Image imagen2 = imagen.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            ImageIcon imagenTamanoCorrecto = new ImageIcon(imagen2);
+            JButton btnBorrador = new JButton(imagenTamanoCorrecto);
+            btnBorrador.setBackground(new java.awt.Color(255, 255, 255));
+            btnBorrador.setBounds(770, 200, 90, 80);
+            btnBorrador.setBorderPainted(false);
+            add(btnBorrador);
+        } else { // si es para zurdos
+            x= 465;
+            for (int i = 0; i < 100; i++) {
+
+                if (i == juego.getTamano()*juego.getTamano()) break; //revisar tamaño de cuadricula
+
+                JButton boton = new JButton("");
+                if (cont >= juego.getTamano()){ // una vez que termina fila, baja una columna y continua con la siguiente fila
+                    y = y+tamano + 20;
+                    cont = 0;
+                    x = 465;
+                }
+                boton.setBounds(x, y, tamano, tamano);
+                botones.add(boton);
+                add(boton);
+                x = x+ tamano + 20;
+                cont ++;
+            }
+            x=150; y=170;   
+            for (int i = 1; i <= juego.getTamano(); i++) { //desplegar botones de numeros
+                if (i == 6)
+                { 
+                    x=230;
+                    y = 170;
+                }
+                JButton boton = new JButton(String.valueOf(i));
+                boton.setFont(new java.awt.Font("Leelawadee UI", 1, 20));
+                boton.setBounds(x, y, 60, 60);
+                botonesNumeros.add(boton);
+                add(boton);
+                y = y+85;
+            } 
+            ImageIcon imagen = new ImageIcon("src/main/java/imagenes/borrador.png");  // Ruta a la imagen
+            Image imagen2 = imagen.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            ImageIcon imagenTamanoCorrecto = new ImageIcon(imagen2);
+            JButton btnBorrador = new JButton(imagenTamanoCorrecto);
+            btnBorrador.setBackground(new java.awt.Color(255, 255, 255));
+            btnBorrador.setBounds(30, 200, 90, 80);
+            btnBorrador.setBorderPainted(false);
+            add(btnBorrador);
+
         }
         
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -313,11 +382,7 @@ public class PantallaJuego2 extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
