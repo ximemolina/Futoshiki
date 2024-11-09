@@ -93,7 +93,18 @@ public class MenuConfiguracionControlador {
 
                 }
                 juego.setReloj(reloj);
-                Jugador jugador = new Jugador(menu.inpNombre.getText(), menu.inpContraseña.getText());
+                String nombre = menu.inpNombre.getText();
+                String contraseña = menu.inpContraseña.getText();
+                String correo = menu.inpCorreo.getText();
+                
+                 if (!nombre.isEmpty() && (contraseña.isEmpty() || correo.isEmpty())) {
+                    JOptionPane.showMessageDialog(menu, 
+                        "Por favor complete los campos de Contraseña y Correo si ha ingresado un Nombre", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                    return; // Salir del método si la validación falla
+                }
+                Jugador jugador = new Jugador(nombre, contraseña);
                 juego.setJugador(jugador);
                 
                 // Confirmar configuración completada
