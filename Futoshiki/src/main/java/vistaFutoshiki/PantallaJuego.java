@@ -35,7 +35,7 @@ public class PantallaJuego extends javax.swing.JFrame {
         btnTerminarJuego = new javax.swing.JButton();
         btnCargarJuego = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblTemporizador = new javax.swing.JTable();
         btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -134,7 +134,7 @@ public class PantallaJuego extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblTemporizador.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null}
             },
@@ -150,11 +150,11 @@ public class PantallaJuego extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jTable1.setGridColor(new java.awt.Color(0, 0, 0));
-        jTable1.setSelectionBackground(new java.awt.Color(204, 204, 204));
-        jTable1.setShowGrid(true);
-        jTable1.setShowHorizontalLines(false);
-        jScrollPane1.setViewportView(jTable1);
+        tblTemporizador.setGridColor(new java.awt.Color(0, 0, 0));
+        tblTemporizador.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        tblTemporizador.setShowGrid(true);
+        tblTemporizador.setShowHorizontalLines(false);
+        jScrollPane1.setViewportView(tblTemporizador);
 
         btnVolver.setFont(new java.awt.Font("Leelawadee UI", 0, 14)); // NOI18N
         btnVolver.setText("Volver");
@@ -328,9 +328,9 @@ public class PantallaJuego extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JTable jTable1;
     public javax.swing.JLabel lblNivel;
     public javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblNombre2;
+    public javax.swing.JTable tblTemporizador;
     // End of variables declaration//GEN-END:variables
 }

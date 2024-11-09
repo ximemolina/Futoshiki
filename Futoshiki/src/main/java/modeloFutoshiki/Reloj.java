@@ -15,6 +15,16 @@ public class Reloj {
         else return String.valueOf(tipo);
     }
     
+    // Método en la clase Reloj para obtener datos del temporizador
+    public int[] obtenerDatosTemporizador() {
+        if (tipo == 2) { // Tipo 2 es temporizador
+            return new int[]{horas, minutos, segundos};
+        } else {
+            return new int[]{0, 0, 0}; // O valores que indiquen que no hay temporizador activo
+        }
+}
+
+    
     // <editor-fold defaultstate="collapsed" desc="Setters-Getters">
     public int getTipo() {
         return tipo;

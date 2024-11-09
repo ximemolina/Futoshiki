@@ -93,6 +93,7 @@ public class MenuConfiguracionControlador {
 
                 }
                 juego.setReloj(reloj);
+                
                 String nombre = menu.inpNombre.getText();
                 String contraseña = menu.inpContraseña.getText();
                 String correo = menu.inpCorreo.getText();

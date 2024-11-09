@@ -6,7 +6,7 @@ import modeloFutoshiki.*;
 import java.util.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import javax.swing.*;
 
 /**
  *
@@ -21,7 +21,14 @@ public class PantallaJuego2 extends javax.swing.JFrame {
     public PantallaJuego2(Juego juego) {
         this.juego = juego;
         initComponents();
+        System.out.println("jTable1 después de initComponents(): " + jTable1);
+        
     }
+    
+    public JTable getTblTemporizador() {
+        return jTable1;
+    }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
