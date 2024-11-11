@@ -10,6 +10,11 @@ public class Reloj {
     private int minutos;
     private int segundos;
     
+    //constructor
+    public Reloj (int tipo){
+        setTipo(tipo);
+    }
+    
     public String toString(){
         if (getTipo() == 2) return String.valueOf(tipo) + String.valueOf(horas) + String.valueOf(minutos) + String.valueOf(segundos);
         else return String.valueOf(tipo);

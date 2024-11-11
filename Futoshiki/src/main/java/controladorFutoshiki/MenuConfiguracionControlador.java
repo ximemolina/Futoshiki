@@ -3,7 +3,6 @@ package controladorFutoshiki;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashSet;
 import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -22,6 +21,8 @@ public class MenuConfiguracionControlador {
     public MenuConfiguracionControlador(Juego juego, MenuConfiguracion menu) {
         this.juego = juego;
         this.menu = menu;
+        
+        seleccionarBotones();
         
         this.menu.btnVolver.addActionListener(new ActionListener() { //espera a que usuario presione el boton de volver
             @Override
@@ -58,11 +59,11 @@ public class MenuConfiguracionControlador {
 
                 // Configurar el nivel de juego
                 if (menu.btnFacil.isSelected()) {
-                    juego.setNivel(1); // Nivel fácil
+                    juego.setNivel(0); // Nivel fácil
                 } else if (menu.btnIntermedio.isSelected()) {
-                    juego.setNivel(2); // Nivel intermedio
+                    juego.setNivel(1); // Nivel intermedio
                 } else if (menu.btnDificil.isSelected()) {
-                    juego.setNivel(3); // Nivel difícil
+                    juego.setNivel(2); // Nivel difícil
                 }
 
                 // Configurar multivel
@@ -72,18 +73,18 @@ public class MenuConfiguracionControlador {
                 juego.setPosicion(menu.btnDerecha.isSelected());
 
                 // Configurar el reloj (dependiendo de la selección)
-                Reloj reloj = new Reloj();
+                
                 if (menu.btnCronometro.isSelected()) {
-                    reloj.setTipo(1);
+                    juego.getReloj().setTipo(1);
                 } else if (menu.btnTemporizador.isSelected()) {
-                    reloj.setTipo(2);
+                    juego.getReloj().setTipo(2);
                     try {
                         int horas = Integer.parseInt(menu.inpHoras.getText());
                         int minutos = Integer.parseInt(menu.inpMinutos.getText());
                         int segundos = Integer.parseInt(menu.inpSegundos.getText());
-                        reloj.setHoras(horas);
-                        reloj.setMinutos(minutos);
-                        reloj.setSegundos(segundos);
+                        juego.getReloj().setHoras(horas);
+                        juego.getReloj().setMinutos(minutos);
+                        juego.getReloj().setSegundos(segundos);
                     } catch (NumberFormatException ex) {
                         JOptionPane.showMessageDialog(menu, "Por favor ingrese valores numéricos válidos para el temporizador", "Error", JOptionPane.ERROR_MESSAGE);
                         return; // Salir del método si hay un error de formato
@@ -91,8 +92,7 @@ public class MenuConfiguracionControlador {
                         JOptionPane.showMessageDialog(menu, "Error de Configuracion", "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
-                }
-                juego.setReloj(reloj);
+                } else if (menu.btnSinReloj.isSelected()) juego.getReloj().setTipo(0);
                 
                 String nombre = menu.inpNombre.getText();
                 String contraseña = menu.inpContraseña.getText();
@@ -378,5 +378,112 @@ public class MenuConfiguracionControlador {
             }
             String pin = sb.toString();
         return pin;
+    }
+    
+    void seleccionarBotones(){
+        //revisar botones de tamaño
+        if (juego.getTamano() == 3) {
+            menu.btnTamano3.setSelected(true); 
+            menu.btnTamano3.setForeground(Color.red);
+            resetearBotonesTamaño(menu.btnTamano3); 
+            
+        }
+        if (juego.getTamano() == 4) {
+            menu.btnTamano4.setSelected(true);
+            menu.btnTamano4.setForeground(Color.red);
+            resetearBotonesTamaño(menu.btnTamano4); 
+        }
+        if (juego.getTamano() == 5) {
+            menu.btnTamano5.setSelected(true);
+            menu.btnTamano5.setForeground(Color.red);
+            resetearBotonesTamaño(menu.btnTamano5); 
+        }
+        if (juego.getTamano() == 6) {
+            menu.btnTamano6.setSelected(true);
+            menu.btnTamano6.setForeground(Color.red);
+            resetearBotonesTamaño(menu.btnTamano6); 
+        }
+        if (juego.getTamano() == 7) {
+            menu.btnTamano7.setSelected(true);
+            menu.btnTamano7.setForeground(Color.red);
+            resetearBotonesTamaño(menu.btnTamano7); 
+        }
+        if (juego.getTamano() == 8) {
+            menu.btnTamano8.setSelected(true);
+            menu.btnTamano8.setForeground(Color.red);
+            resetearBotonesTamaño(menu.btnTamano8); 
+        }
+        if (juego.getTamano() == 9) {
+            menu.btnTamano9.setSelected(true);
+            menu.btnTamano9.setForeground(Color.red);
+            resetearBotonesTamaño(menu.btnTamano9); 
+        }
+        if (juego.getTamano() == 10) {
+            menu.btnTamano10.setSelected(true);
+            menu.btnTamano10.setForeground(Color.red);
+            resetearBotonesTamaño(menu.btnTamano10);
+        }
+        //revisar botones dificultad
+        if (juego.getNivel() == 0) {
+            menu.btnFacil.setSelected(true);
+            menu.btnFacil.setForeground(Color.red);
+            resetearBotonesNivel(menu.btnFacil); 
+        }
+        if (juego.getNivel() == 1) {
+            menu.btnIntermedio.setSelected(true);
+            menu.btnIntermedio.setForeground(Color.red);
+            resetearBotonesNivel(menu.btnIntermedio);
+        }
+        if (juego.getNivel() == 2) {
+            menu.btnDificil.setSelected(true);
+            menu.btnDificil.setForeground(Color.red);
+            resetearBotonesNivel(menu.btnDificil); 
+        }  
+        //revisar botones de lado de pantalla
+        if (juego.isPosicion()) {
+            menu.btnDerecha.setSelected(true);
+            menu.btnDerecha.setForeground(Color.red);
+            resetearBotonesLados(menu.btnDerecha);
+        }
+        if (!juego.isPosicion()) {
+            menu.btnIzquierda.setSelected(true);
+            menu.btnIzquierda.setForeground(Color.red);
+            resetearBotonesLados(menu.btnIzquierda);
+        }
+        //revisar boton de multinivel
+        if (juego.isMultinivel()) {
+            menu.btnMultinivelSi.setSelected(true);
+            menu.btnMultinivelSi.setForeground(Color.red);
+            resetearBotonesMultinivel(menu.btnMultinivelSi);
+        }
+        if (!juego.isMultinivel()) {
+            menu.btnMultinivelNo.setSelected(true);
+            menu.btnMultinivelNo.setForeground(Color.red);
+            resetearBotonesMultinivel(menu.btnMultinivelNo);
+        }
+        //revisar boton de reloj
+        try{
+            if (juego.getReloj().getTipo() == 0){
+                menu.btnSinReloj.setSelected(true);
+                menu.btnSinReloj.setForeground(Color.red);
+                resetearBotonesReloj(menu.btnSinReloj);
+            }
+            if (juego.getReloj().getTipo() == 1){
+                menu.btnCronometro.setSelected(true);
+                menu.btnCronometro.setForeground(Color.red);
+                resetearBotonesReloj(menu.btnCronometro);
+            }
+            if (juego.getReloj().getTipo() == 2){
+                menu.btnTemporizador.setSelected(true);
+                menu.btnTemporizador.setForeground(Color.red);
+                resetearBotonesReloj(menu.btnTemporizador);
+                menu.inpHoras.setText(String.valueOf(juego.getReloj().getHoras()));
+                menu.inpHoras.setEditable(true);
+                menu.inpMinutos.setText(String.valueOf(juego.getReloj().getMinutos()));
+                menu.inpMinutos.setEditable(true);
+                menu.inpSegundos.setText(String.valueOf(juego.getReloj().getSegundos()));
+                menu.inpSegundos.setEditable(true);
+            }
+        }catch (Exception e){}
     }
 }

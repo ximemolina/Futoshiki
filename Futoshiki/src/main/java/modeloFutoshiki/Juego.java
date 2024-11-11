@@ -7,11 +7,21 @@ package modeloFutoshiki;
 public class Juego {
     //atributos
     private int tamano;
-    private int nivel;
+    private int nivel; // 0: facil | 1: intermedio | 2: dificil
     private boolean multinivel;
     private boolean posicion; // true: derecho | false: izquierdo
     private Jugador jugador;
     private Reloj reloj;
+    
+    //constructor
+    public Juego (int tamano, int nivel, boolean multinivel, boolean posicion, int tipoReloj){
+        setTamano(tamano);
+        setNivel(nivel);
+        setMultinivel(multinivel);
+        setPosicion(posicion);
+        Reloj reloj = new Reloj(tipoReloj);
+        setReloj(reloj);
+    }
     
     //retorna información del juego en un solo string
     public String toString(){

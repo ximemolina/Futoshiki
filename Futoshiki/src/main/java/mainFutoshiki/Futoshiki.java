@@ -46,15 +46,16 @@ public class Futoshiki {
         catch(Exception e){
             e.getMessage();
         }
-        //inicializa y/o carga config juego
-        Juego juego = new Juego();
+        Juego juego;
+        //verifica si hay configuración cargada, sino carga default
+        if (archivoConfiguracion.length() == 0){
+            juego =  new Juego(5,0,false, true,1);
+        
+        } else juego = new Juego(5,0,false, true,0); //añadir aqui cargar info txt config
+
         //inicializa vista
         MenuPrincipal menu  = new MenuPrincipal();
         menu.setVisible(true);
-        /*          Solo para pruebas de cuadricula pq aún no agrego XML    */
-        juego.setTamano(10);
-        juego.setPosicion(true);
-        juego.setNivel(2);
         //inicializa controlador
         MenuPrincipalControlador controlador = new MenuPrincipalControlador(juego, menu);
         

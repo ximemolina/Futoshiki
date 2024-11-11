@@ -21,7 +21,6 @@ public class PantallaJuego2 extends javax.swing.JFrame {
     public PantallaJuego2(Juego juego) {
         this.juego = juego;
         initComponents();
-        System.out.println("jTable1 después de initComponents(): " + jTable1);
         
     }
     

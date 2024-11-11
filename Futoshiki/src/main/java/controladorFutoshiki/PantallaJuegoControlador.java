@@ -43,15 +43,8 @@ public class PantallaJuegoControlador {
             }
         });
         
-        String nombre = juego.getJugador() != null ? juego.getJugador().getNombre() : null;
-
-        if (nombre == null || nombre.trim().isEmpty()) {
-            this.pantalla.lblNombre.setText("Incógnito");
-        } else {
-            this.pantalla.lblNombre.setText(nombre);
-        }
-
-        this.pantalla.lblNivel.setText("Nivel " + juego.getNivel());
+        mostrarNombreJugador();
+        mostrarNivel();
     }
 
     
@@ -151,22 +144,25 @@ public class PantallaJuegoControlador {
     
     // Muestra el nombre del jugador en la etiqueta lblNombre
     private void mostrarNombreJugador() {
-        try {
-            String nombre = juego.getJugador().getNombre();
-            this.pantalla.lblNombre.setText(nombre != null ? nombre : "Incógnito");
-        } catch (NullPointerException e) {
+        String nombre = juego.getJugador() != null ? juego.getJugador().getNombre() : null;
+
+        if (nombre == null || nombre.trim().isEmpty()) {
             this.pantalla.lblNombre.setText("Incógnito");
+        } else {
+            this.pantalla.lblNombre.setText(nombre);
         }
     }
 
     // Muestra el nivel del juego en la etiqueta lblNivel
     private void mostrarNivel() {
-        this.pantalla.lblNivel.setText("Nivel " + juego.getNivel());
+        if (juego.getNivel() == 0)this.pantalla.lblNivel.setText("Nivel fácil");
+        if (juego.getNivel() == 1)this.pantalla.lblNivel.setText("Nivel intermedio");
+        if (juego.getNivel() == 3)this.pantalla.lblNivel.setText("Nivel difícil");
     }
     
     
     
-    }
+}
 
     
     
