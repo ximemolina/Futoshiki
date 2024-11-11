@@ -52,7 +52,14 @@ public class Futoshiki {
             juego =  new Juego(5,0,false, true,1);
         
         } else juego = new Juego(5,0,false, true,0); //añadir aqui cargar info txt config
-
+        
+        Archivo archivo = new Archivo();
+        
+        //****para pruebas de uso del archivo xml*******************
+        juego.setNivel(2);
+        juego.setTamano(4);
+        
+        archivo.cargarArchivoPartidas(juego.getNivel(),juego.getTamano()); // carga info de partidas
         //inicializa vista
         MenuPrincipal menu  = new MenuPrincipal();
         menu.setVisible(true);
