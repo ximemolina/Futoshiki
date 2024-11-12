@@ -1,11 +1,8 @@
 package vistaFutoshiki;
 
-import java.awt.Color;
-import java.awt.Image;
+import java.awt.*;
 import modeloFutoshiki.*;
 import java.util.*;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.*;
 
 /**
@@ -15,12 +12,20 @@ import javax.swing.*;
 public class PantallaJuego2 extends javax.swing.JFrame {
 
     private Juego juego;
+    private MatrizJuego matriz;
+    ArrayList <JButton> botones; 
+    ArrayList <JButton> botonesNumeros ;
+    
     /**
      * Creates new form PantallaJuego
      */
     public PantallaJuego2(Juego juego) {
         this.juego = juego;
+        this.matriz = juego.getMatriz();
+        this.botones = matriz.getBotonesCasillas();
+        this.botonesNumeros = matriz.getBotonesNumeros();
         initComponents();
+        
         
     }
     
@@ -28,11 +33,10 @@ public class PantallaJuego2 extends javax.swing.JFrame {
         return jTable1;
     }
 
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
-
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lblNivel = new javax.swing.JLabel();
@@ -51,98 +55,11 @@ public class PantallaJuego2 extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         
-        ArrayList <JButton> botones= new ArrayList<>(); //*****************************Debe ser añadido a la clase que maneje todo lo de la partida del juego***************
-        ArrayList <JButton> botonesNumeros = new ArrayList<>();//*****************************Debe ser añadido a la clase que maneje todo lo de la partida del juego************
+        //*****************************Debe ser añadido a la clase que maneje todo lo de la partida del juego***************
+        //*****************************Debe ser añadido a la clase que maneje todo lo de la partida del juego************
         
-        // Inicialización tamaño de botones
-        int tamano = 40;
-        if (juego.getTamano()== 8 ||juego.getTamano()== 9 ) tamano =25; //si la cuadricula es de 8x8 o 9x9 los btns deben ser mas pequeños
-        if (juego.getTamano() == 10) tamano= 22; //si la cuadricula es de  los btns es de 10x10 deben ser aún mas pequeños
-        
-         // tamaño de los ubicacion y contador
-        int x = 30, y =170,cont = 0;
-        if (juego.isPosicion()){ // si es para derechos
-            for (int i = 0; i < 100; i++) {
-
-                if (i == juego.getTamano()*juego.getTamano()) break; //revisar tamaño de cuadricula
-
-                JButton boton = new JButton("");
-                if (cont >= juego.getTamano()){ // una vez que termina fila, baja una columna y continua con la siguiente fila
-                    y = y+tamano + 20;
-                    cont = 0;
-                    x = 30;
-                }
-                boton.setBounds(x, y, tamano, tamano);
-                botones.add(boton);
-                add(boton);
-                x = x+ tamano + 20;
-                cont ++;
-            }
-            x=600; y=170;   
-            for (int i = 1; i <= juego.getTamano(); i++) { //desplegar botones de numeros
-                if (i == 6)
-                { 
-                    x=680;
-                    y = 170;
-                }
-                JButton boton = new JButton(String.valueOf(i));
-                boton.setFont(new java.awt.Font("Leelawadee UI", 1, 20));
-                boton.setBounds(x, y, 60, 60);
-                botonesNumeros.add(boton);
-                add(boton);
-                y = y+85;
-            } 
-            ImageIcon imagen = new ImageIcon("src/main/java/imagenes/borrador.png");  // Ruta a la imagen
-            Image imagen2 = imagen.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-            ImageIcon imagenTamanoCorrecto = new ImageIcon(imagen2);
-            JButton btnBorrador = new JButton(imagenTamanoCorrecto);
-            btnBorrador.setBackground(new java.awt.Color(255, 255, 255));
-            btnBorrador.setBounds(770, 200, 90, 80);
-            btnBorrador.setBorderPainted(false);
-            add(btnBorrador);
-        } else { // si es para zurdos
-            x= 465;
-            for (int i = 0; i < 100; i++) {
-
-                if (i == juego.getTamano()*juego.getTamano()) break; //revisar tamaño de cuadricula
-
-                JButton boton = new JButton("");
-                if (cont >= juego.getTamano()){ // una vez que termina fila, baja una columna y continua con la siguiente fila
-                    y = y+tamano + 20;
-                    cont = 0;
-                    x = 465;
-                }
-                boton.setBounds(x, y, tamano, tamano);
-                botones.add(boton);
-                add(boton);
-                x = x+ tamano + 20;
-                cont ++;
-            }
-            x=150; y=170;   
-            for (int i = 1; i <= juego.getTamano(); i++) { //desplegar botones de numeros
-                if (i == 6)
-                { 
-                    x=230;
-                    y = 170;
-                }
-                JButton boton = new JButton(String.valueOf(i));
-                boton.setFont(new java.awt.Font("Leelawadee UI", 1, 20));
-                boton.setBounds(x, y, 60, 60);
-                botonesNumeros.add(boton);
-                add(boton);
-                y = y+85;
-            } 
-            ImageIcon imagen = new ImageIcon("src/main/java/imagenes/borrador.png");  // Ruta a la imagen
-            Image imagen2 = imagen.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-            ImageIcon imagenTamanoCorrecto = new ImageIcon(imagen2);
-            JButton btnBorrador = new JButton(imagenTamanoCorrecto);
-            btnBorrador.setBackground(new java.awt.Color(255, 255, 255));
-            btnBorrador.setBounds(30, 200, 90, 80);
-            btnBorrador.setBorderPainted(false);
-            add(btnBorrador);
-
-        }
-        
+        botonesJuego(botones, botonesNumeros);
+        elementosJuego();
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setBackground(new java.awt.Color(204, 0, 0));
@@ -413,6 +330,157 @@ public class PantallaJuego2 extends javax.swing.JFrame {
                 new PantallaJuego2(juego).setVisible(true);
             }
         });
+    }
+    public void botonesJuego(ArrayList <JButton> botones, ArrayList <JButton> botonesNumeros){
+    // Inicialización tamaño de botones
+        int tamano = 40;
+        if (juego.getTamano()== 8 ||juego.getTamano()== 9 ) tamano =25; //si la cuadricula es de 8x8 o 9x9 los btns deben ser mas pequeños
+        if (juego.getTamano() == 10) tamano= 22; //si la cuadricula es de  los btns es de 10x10 deben ser aún mas pequeños
+        
+         // tamaño de los ubicacion y contador
+        int x = 30, y =170,cont = 0;
+        if (juego.isPosicion()){ // si es para derechos
+            for (int i = 0; i < 100; i++) {
+
+                if (i == juego.getTamano()*juego.getTamano()) break; //revisar tamaño de cuadricula
+
+                JButton boton = new JButton("");
+                if (cont >= juego.getTamano()){ // una vez que termina fila, baja una columna y continua con la siguiente fila
+                    y = y+tamano + 20;
+                    cont = 0;
+                    x = 30;
+                }
+                boton.setBounds(x, y, tamano, tamano);
+                botones.add(boton);
+                add(boton);
+                x = x+ tamano + 20;
+                cont ++;
+            }
+            x=600; y=170;   
+            for (int i = 1; i <= juego.getTamano(); i++) { //desplegar botones de numeros
+                if (i == 6)
+                { 
+                    x=680;
+                    y = 170;
+                }
+                JButton boton = new JButton(String.valueOf(i));
+                boton.setFont(new java.awt.Font("Leelawadee UI", 1, 20));
+                boton.setBounds(x, y, 60, 60);
+                botonesNumeros.add(boton);
+                add(boton);
+                y = y+85;
+            } 
+            ImageIcon imagen = new ImageIcon("src/main/java/imagenes/borrador.png");  // Ruta a la imagen
+            Image imagen2 = imagen.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            ImageIcon imagenTamanoCorrecto = new ImageIcon(imagen2);
+            JButton btnBorrador = new JButton(imagenTamanoCorrecto);
+            btnBorrador.setBackground(new java.awt.Color(255, 255, 255));
+            btnBorrador.setBounds(770, 200, 90, 80);
+            btnBorrador.setBorderPainted(false);
+            add(btnBorrador);
+        } else { // si es para zurdos
+            x= 465;
+            for (int i = 0; i < 100; i++) {
+
+                if (i == juego.getTamano()*juego.getTamano()) break; //revisar tamaño de cuadricula
+
+                JButton boton = new JButton("");
+                if (cont >= juego.getTamano()){ // una vez que termina fila, baja una columna y continua con la siguiente fila
+                    y = y+tamano + 20;
+                    cont = 0;
+                    x = 465;
+                }
+                boton.setBounds(x, y, tamano, tamano);
+                botones.add(boton);
+                add(boton);
+                x = x+ tamano + 20;
+                cont ++;
+            }
+            x=150; y=170;   
+            for (int i = 1; i <= juego.getTamano(); i++) { //desplegar botones de numeros
+                if (i == 6)
+                { 
+                    x=230;
+                    y = 170;
+                }
+                JButton boton = new JButton(String.valueOf(i));
+                boton.setFont(new java.awt.Font("Leelawadee UI", 1, 20));
+                boton.setBounds(x, y, 60, 60);
+                botonesNumeros.add(boton);
+                add(boton);
+                y = y+85;
+            } 
+            ImageIcon imagen = new ImageIcon("src/main/java/imagenes/borrador.png");  // Ruta a la imagen
+            Image imagen2 = imagen.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            ImageIcon imagenTamanoCorrecto = new ImageIcon(imagen2);
+            JButton btnBorrador = new JButton(imagenTamanoCorrecto);
+            btnBorrador.setBackground(new java.awt.Color(255, 255, 255));
+            btnBorrador.setBounds(30, 200, 90, 80);
+            btnBorrador.setBorderPainted(false);
+            add(btnBorrador);
+
+        }
+        matriz.setBotonesCasillas(botones);
+        matriz.setBotonesNumeros(botonesNumeros);
+    }
+        // selecciona al azar cual partida mostrar
+    private int partidaAzar(){
+        Random random = new Random();
+        return random.nextInt((matriz.getValoresArchivoPartida().size()-1 - 0) + 1) + 0;
+        
+    }
+    
+    private void mostrarConstante(int columna, int fila, int constante){
+        ArrayList<JButton> lista = botones;
+        int contadorColum = 0;
+        int contadorFila = 0;
+        for (JButton boton : lista){
+            if (contadorColum == juego.getTamano()) {
+                contadorColum = 0;
+                contadorFila ++;
+            }
+            if (contadorColum == columna && contadorFila == fila){
+                
+               boton.setText("<html>" + String.valueOf(constante) + "</html>");
+
+               // Condición para cambiar el color y la fuente dependiendo del nivel del juego
+               if(juego.getNivel() == 9 || juego.getNivel() == 8 || juego.getNivel() == 10){
+                   boton.setForeground(Color.BLACK); // Establecer el color del texto
+                   boton.setFont(new Font(boton.getFont().getName(), Font.BOLD, 14)); 
+               }
+               boton.setEnabled(false);
+
+            }
+            contadorColum ++;
+        }
+ 
+    }
+    
+    
+    // muestra constantes y desigualdades del tablero
+    private void elementosJuego(){
+        int indice = partidaAzar();
+        String lista = String.valueOf(matriz.getValoresArchivoPartida().get(indice));
+        String[] valores = lista.split(",");
+        int columna = 0;
+        int fila = 0;
+        int constante = 0;
+        for (int i=0; i<valores.length;i++){
+            System.out.println(valores[i]);
+            if ((String.valueOf(valores[i])).trim().equals("const")){
+
+                constante = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
+
+                columna= Integer.parseInt((String.valueOf(valores[i+3]).replaceAll("[\\[\\]]", "").trim()));
+                fila = Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
+
+                mostrarConstante(columna,fila, constante);
+
+            }
+        
+        }
+        juego.getMatriz().getValoresArchivoPartida().remove(indice); //eliminar de lista para que no vuelva a aparecer
+        
     }
 
     // Variables declaration - do not modify                     

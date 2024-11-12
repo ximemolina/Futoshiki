@@ -2,6 +2,8 @@ package controladorFutoshiki;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Random;
 import vistaFutoshiki.*;
 import modeloFutoshiki.*;
 import javax.swing.Timer;
@@ -16,15 +18,17 @@ public class PantallaJuegoControlador {
     private Juego juego;
     private PantallaJuego2 pantalla;
     private Timer temporizador;
-    
+    private MatrizJuego matriz;
     
     //constructor
     public PantallaJuegoControlador(Juego juego, PantallaJuego2 pantalla) {
         this.juego = juego;
         this.pantalla = pantalla;
+        this.matriz = juego.getMatriz();
         
         inicializarVista();
-                
+
+        
         this.pantalla.btnVolver.addActionListener(new ActionListener() { //espera a que usuario presione el boton de volver
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -43,8 +47,6 @@ public class PantallaJuegoControlador {
             }
         });
         
-        mostrarNombreJugador();
-        mostrarNivel();
     }
 
     
@@ -157,11 +159,11 @@ public class PantallaJuegoControlador {
     private void mostrarNivel() {
         if (juego.getNivel() == 0)this.pantalla.lblNivel.setText("Nivel fácil");
         if (juego.getNivel() == 1)this.pantalla.lblNivel.setText("Nivel intermedio");
-        if (juego.getNivel() == 3)this.pantalla.lblNivel.setText("Nivel difícil");
+        if (juego.getNivel() == 2)this.pantalla.lblNivel.setText("Nivel difícil");
     }
     
-    
-    
+
+      
 }
 
     

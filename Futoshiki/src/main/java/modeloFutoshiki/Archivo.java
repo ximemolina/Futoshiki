@@ -56,11 +56,12 @@ public class Archivo {
     }
     
     //cargar archivo tipo xml que contiene todas las posibles combinaciones de partidas
-    public void cargarArchivoPartidas(int numNivel, int cuadricula){
+    public List cargarArchivoPartidas(int numNivel, int cuadricula){
         String nivelDeseado = "";
         if(numNivel == 0) nivelDeseado = "Facil";
         if(numNivel == 1) nivelDeseado = "Intermedio";
         if(numNivel == 2) nivelDeseado = "Dificil";
+        List<List<String>> partidasValidas = new ArrayList<>();
         
         try {
             // Configurar para leer el archivo XML
@@ -72,7 +73,7 @@ public class Archivo {
 
             NodeList listaPartidas = documento.getElementsByTagName("partida");
             
-            List<List<String>> partidasValidas = new ArrayList<>();
+            
             ArrayList<String> partidaIndividual;
             String nivel="" ;
             String tamañoCuadricula="" ;
@@ -115,9 +116,10 @@ public class Archivo {
             for (List lista : partidasValidas){
                 System.out.println(lista);
             }
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return partidasValidas;
     }
 }

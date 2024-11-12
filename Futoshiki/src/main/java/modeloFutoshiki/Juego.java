@@ -1,4 +1,5 @@
 package modeloFutoshiki;
+
 /**
  *
  * @author ximena molina - juan pablo cambronero
@@ -12,6 +13,7 @@ public class Juego {
     private boolean posicion; // true: derecho | false: izquierdo
     private Jugador jugador;
     private Reloj reloj;
+    private MatrizJuego matriz;
     
     //constructor
     public Juego (int tamano, int nivel, boolean multinivel, boolean posicion, int tipoReloj){
@@ -27,6 +29,8 @@ public class Juego {
     public String toString(){
         return String.valueOf(getTamano()) + String.valueOf(getNivel()) + isMultinivel() + isPosicion() + getReloj().toString();
     }
+    
+    
     
     // <editor-fold defaultstate="collapsed" desc="Setters-Getters">
     public int getTamano() {
@@ -76,6 +80,15 @@ public class Juego {
     public void setReloj(Reloj reloj) {
         this.reloj = reloj;
     }
+    
+    public MatrizJuego getMatriz() {
+        return matriz;
+    }
+
+    public void setMatriz(MatrizJuego matriz) {
+        this.matriz = matriz;
+    }
+     
     //</editor-fold>
     
 }

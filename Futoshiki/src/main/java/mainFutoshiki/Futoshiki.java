@@ -56,10 +56,9 @@ public class Futoshiki {
         Archivo archivo = new Archivo();
         
         //****para pruebas de uso del archivo xml*******************
-        juego.setNivel(2);
-        juego.setTamano(4);
-        
-        archivo.cargarArchivoPartidas(juego.getNivel(),juego.getTamano()); // carga info de partidas
+        juego.setNivel(1);
+        juego.setTamano(9);
+     
         //inicializa vista
         MenuPrincipal menu  = new MenuPrincipal();
         menu.setVisible(true);

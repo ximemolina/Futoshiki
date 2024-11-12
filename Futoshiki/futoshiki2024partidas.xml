@@ -89,7 +89,7 @@
 
     <partida>
         <nivel>Intermedio</nivel>
-        <cuadricula>7</cuadricula>
+        <cuadricula>9</cuadricula>
         
         <des>mef,0,0</des>
         <des>mef,0,2</des>
@@ -157,7 +157,7 @@
 
     <partida>
         <nivel>Intermedio</nivel>
-        <cuadricula>8</cuadricula>
+        <cuadricula>9</cuadricula>
         
         <!-- Desigualdades -->
         <!-- Fila 1 -->

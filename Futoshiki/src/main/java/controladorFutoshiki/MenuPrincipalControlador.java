@@ -1,8 +1,8 @@
 package controladorFutoshiki;
 
+import java.util.*;
 import vistaFutoshiki.*;
 import modeloFutoshiki.*;
-
 import java.awt.event.*;
 /**
  *
@@ -31,6 +31,10 @@ public class MenuPrincipalControlador {
         this.menu.btnJugar.addActionListener(new ActionListener() { //espera a que usuario presione el boton de jugar
             @Override
             public void actionPerformed(ActionEvent e) {
+                Archivo archivo = new Archivo();
+                List datosJuego = archivo.cargarArchivoPartidas(juego.getNivel(),juego.getTamano()); // carga info de partidas
+                MatrizJuego matriz = new MatrizJuego(juego.getTamano(), datosJuego);
+                juego.setMatriz(matriz);
                 PantallaJuego2 pantalla = new PantallaJuego2(juego); //inicializa pantalla jugar
                 menu.setVisible(false);
                 pantalla.setVisible(true);
@@ -50,6 +54,7 @@ public class MenuPrincipalControlador {
             }
         });
     }
+    
     
     
 }
