@@ -27,7 +27,7 @@ public class Juego {
     
     //retorna información del juego en un solo string
     public String toString(){
-        return String.valueOf(getTamano()) + String.valueOf(getNivel()) + isMultinivel() + isPosicion() + getReloj().toString();
+        return String.valueOf(getTamano())+ "," + String.valueOf(getNivel())+ "," + isMultinivel()+ "," + isPosicion()+ "," + getReloj().toString();
     }
     
     

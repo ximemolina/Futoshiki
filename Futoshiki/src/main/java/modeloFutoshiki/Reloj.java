@@ -16,7 +16,7 @@ public class Reloj {
     }
     
     public String toString(){
-        if (getTipo() == 2) return String.valueOf(tipo) + String.valueOf(horas) + String.valueOf(minutos) + String.valueOf(segundos);
+        if (getTipo() == 2) return String.valueOf(tipo) + ","+ String.valueOf(horas)+ "," + String.valueOf(minutos) + ","+ String.valueOf(segundos);
         else return String.valueOf(tipo);
     }
     

@@ -47,18 +47,17 @@ public class Futoshiki {
             e.getMessage();
         }
         Juego juego;
+        Archivo archivo = new Archivo();
         //verifica si hay configuración cargada, sino carga default
         if (archivoConfiguracion.length() == 0){
             juego =  new Juego(5,0,false, true,1);
         
-        } else juego = new Juego(5,0,false, true,0); //añadir aqui cargar info txt config
+        } else {
+            juego = archivo.cargarConfiguracion();
+        }
         
-        Archivo archivo = new Archivo();
         
-        //****para pruebas de uso del archivo xml*******************
-        juego.setNivel(1);
-        juego.setTamano(9);
-        juego.setPosicion(false);
+
         //inicializa vista
         MenuPrincipal menu  = new MenuPrincipal();
         menu.setVisible(true);

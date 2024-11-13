@@ -430,14 +430,14 @@ public class PantallaJuego2 extends javax.swing.JFrame {
         if (juego.getTamano() == 10) tamano= 22; //si la cuadricula es de  los btns es de 10x10 deben ser aún mas pequeños
         
          // tamaño de los ubicacion y contador
-        int x = 60, y =165,cont = 0;//*************
+        int x = 60, y =165,cont = 0;
         if (juego.isPosicion()){ // si es para derechos
             for (int i = 0; i < (juego.getTamano()-2)*juego.getTamano()+ juego.getTamano()*juego.getTamano(); i++) {
 
                 JLabel desigualdad = new JLabel("<");
                 desigualdad.setSize(WIDTH, tamano);
                 if (cont+1 >= juego.getTamano() && filaOColumna){ // una vez que termina fila, baja una columna y continua con la siguiente fila
-                    y = y+tamano-tamano/7;
+                    y = y+tamano-tamano/6;
                     cont = 0;
                     x = 40;
                     filaOColumna = false;

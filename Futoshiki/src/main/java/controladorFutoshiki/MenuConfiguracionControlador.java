@@ -108,6 +108,9 @@ public class MenuConfiguracionControlador {
                 Jugador jugador = new Jugador(nombre, contraseña);
                 juego.setJugador(jugador);
                 
+                Archivo archivo = new Archivo();
+                archivo.guardarArchivoConfiguracion(juego.toString());
+                
                 // Confirmar configuración completada
                 JOptionPane.showMessageDialog(menu, "Configuración guardada exitosamente", "Configuración", JOptionPane.INFORMATION_MESSAGE);
                 
@@ -476,13 +479,13 @@ public class MenuConfiguracionControlador {
             if (juego.getReloj().getTipo() == 2){
                 menu.btnTemporizador.setSelected(true);
                 menu.btnTemporizador.setForeground(Color.red);
-                resetearBotonesReloj(menu.btnTemporizador);
                 menu.inpHoras.setText(String.valueOf(juego.getReloj().getHoras()));
-                menu.inpHoras.setEditable(true);
+                menu.inpHoras.setEnabled(true);
                 menu.inpMinutos.setText(String.valueOf(juego.getReloj().getMinutos()));
-                menu.inpMinutos.setEditable(true);
+                menu.inpMinutos.setEnabled(true);
                 menu.inpSegundos.setText(String.valueOf(juego.getReloj().getSegundos()));
-                menu.inpSegundos.setEditable(true);
+                menu.inpSegundos.setEnabled(true);
+                resetearBotonesReloj(menu.btnTemporizador);
             }
         }catch (Exception e){}
     }

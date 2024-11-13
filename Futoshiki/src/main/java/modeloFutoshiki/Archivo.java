@@ -13,13 +13,37 @@ public class Archivo {
     public void guardarArchivoConfiguracion(String mensaje){
         try{
             File nombreArchivo = new File("futoshiki2024configuracion.txt");
-            FileWriter escribir = new FileWriter(nombreArchivo, true); //permite escribir en diferentes ocasiones en archivos
+            FileWriter escribir = new FileWriter(nombreArchivo, false); //permite escribir en diferentes ocasiones en archivos
             escribir.write(mensaje); //escribe informarion de usuario
             escribir.close(); //cierra escritor
        } catch(Exception e){
            System.out.print(e.getMessage());
        }
     }
+    //cargar archivo de configuracion del juego
+    public Juego cargarConfiguracion(){
+        Juego juego = null;
+        File archivo = new File("futoshiki2024configuracion.txt");
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            String[] datos= null;
+            while ((linea = br.readLine()) != null) {
+                datos = linea.split(",");
+            }
+            juego = new Juego(Integer.parseInt(datos[0]),Integer.parseInt(datos[1]), Boolean.parseBoolean(datos[2]),Boolean.parseBoolean(datos[3]),Integer.parseInt(datos[4]));
+
+            if (Integer.parseInt(datos[4]) == 2){
+                juego.getReloj().setHoras(Integer.parseInt(datos[5]));
+                juego.getReloj().setMinutos(Integer.parseInt(datos[6]));
+                juego.getReloj().setSegundos(Integer.parseInt(datos[7]));
+            }
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return juego;
+    }
+    
     //guardar la informacion del top10
     public void guardarArchivoTop10(String mensaje){
         try{
@@ -47,7 +71,7 @@ public class Archivo {
     public void guardarArchivoJuegoActual(String mensaje){
         try{
             File nombreArchivo = new File("futoshiki2024juegoactual.txt");
-            FileWriter escribir = new FileWriter(nombreArchivo, true); //permite escribir en diferentes ocasiones en archivos
+            FileWriter escribir = new FileWriter(nombreArchivo, false); //permite escribir en diferentes ocasiones en archivos
             escribir.write(mensaje); //escribe informarion de usuario
             escribir.close(); //cierra escritor
        } catch(Exception e){
@@ -111,10 +135,6 @@ public class Archivo {
                     
                     partidasValidas.add(partidaIndividual);
                     }
-            }
-            //********************************para revisar que se esté guardando bien**********************************************************************
-            for (List lista : partidasValidas){
-                System.out.println(lista);
             }
             
         } catch (Exception e) {
