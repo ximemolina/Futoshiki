@@ -1,7 +1,8 @@
 package vistaFutoshiki;
 
-import java.awt.*;
 import modeloFutoshiki.*;
+
+import java.awt.Image;
 import java.util.*;
 import javax.swing.*;
 
@@ -13,9 +14,7 @@ public class PantallaJuego2 extends javax.swing.JFrame {
 
     private Juego juego;
     private MatrizJuego matriz;
-    ArrayList <JButton> botones; 
-    ArrayList <JButton> botonesNumeros ;
-    
+
     /**
      * Creates new form PantallaJuego
      */
@@ -24,6 +23,7 @@ public class PantallaJuego2 extends javax.swing.JFrame {
         this.matriz = juego.getMatriz();
         this.botones = matriz.getBotonesCasillas();
         this.botonesNumeros = matriz.getBotonesNumeros();
+        this.desigualdades = matriz.getDesigualdades();
         initComponents();
         
         
@@ -55,11 +55,9 @@ public class PantallaJuego2 extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         
-        //*****************************Debe ser añadido a la clase que maneje todo lo de la partida del juego***************
-        //*****************************Debe ser añadido a la clase que maneje todo lo de la partida del juego************
+        botonesJuego(botones,botonesNumeros);
+        desigualdadesLabels(desigualdades);
         
-        botonesJuego(botones, botonesNumeros);
-        elementosJuego();
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setBackground(new java.awt.Color(204, 0, 0));
@@ -273,6 +271,7 @@ public class PantallaJuego2 extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
+    // <editor-fold defaultstate="collapsed" desc="Botones">   
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {                                         
 
     }                                        
@@ -300,10 +299,9 @@ public class PantallaJuego2 extends javax.swing.JFrame {
     private void btnCargarJuegoActionPerformed(java.awt.event.ActionEvent evt) {                                               
         // TODO add your handling code here:
     }                                              
-
-    /**
-     * @param args the command line arguments
-     */
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Main">   
     public void main(String args[]) {
 
         try {
@@ -322,7 +320,6 @@ public class PantallaJuego2 extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(PantallaJuego.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -331,6 +328,8 @@ public class PantallaJuego2 extends javax.swing.JFrame {
             }
         });
     }
+    //</editor-fold>
+    
     public void botonesJuego(ArrayList <JButton> botones, ArrayList <JButton> botonesNumeros){
     // Inicialización tamaño de botones
         int tamano = 40;
@@ -423,64 +422,67 @@ public class PantallaJuego2 extends javax.swing.JFrame {
         matriz.setBotonesCasillas(botones);
         matriz.setBotonesNumeros(botonesNumeros);
     }
-        // selecciona al azar cual partida mostrar
-    private int partidaAzar(){
-        Random random = new Random();
-        return random.nextInt((matriz.getValoresArchivoPartida().size()-1 - 0) + 1) + 0;
-        
-    }
     
-    private void mostrarConstante(int columna, int fila, int constante){
-        ArrayList<JButton> lista = botones;
-        int contadorColum = 0;
-        int contadorFila = 0;
-        for (JButton boton : lista){
-            if (contadorColum == juego.getTamano()) {
-                contadorColum = 0;
-                contadorFila ++;
-            }
-            if (contadorColum == columna && contadorFila == fila){
+    public void desigualdadesLabels(ArrayList <JLabel> desigualdades){
+        int tamano = 40;
+        boolean filaOColumna = true;
+        if (juego.getTamano()== 8 ||juego.getTamano()== 9 ) tamano =25; //si la cuadricula es de 8x8 o 9x9 los btns deben ser mas pequeños
+        if (juego.getTamano() == 10) tamano= 22; //si la cuadricula es de  los btns es de 10x10 deben ser aún mas pequeños
+        
+         // tamaño de los ubicacion y contador
+        int x = 60, y =165,cont = 0;//*************
+        if (juego.isPosicion()){ // si es para derechos
+            for (int i = 0; i < (juego.getTamano()-2)*juego.getTamano()+ juego.getTamano()*juego.getTamano(); i++) {
+
+                JLabel desigualdad = new JLabel("<");
+                desigualdad.setSize(WIDTH, tamano);
+                if (cont+1 >= juego.getTamano() && filaOColumna){ // una vez que termina fila, baja una columna y continua con la siguiente fila
+                    y = y+tamano-tamano/7;
+                    cont = 0;
+                    x = 40;
+                    filaOColumna = false;
+                } else if (cont >= juego.getTamano() && !filaOColumna){
+                    y = y+tamano;
+                    cont = 0;
+                    x = 60;
+                    filaOColumna = true;
                 
-               boton.setText("<html>" + String.valueOf(constante) + "</html>");
-
-               // Condición para cambiar el color y la fuente dependiendo del nivel del juego
-               if(juego.getNivel() == 9 || juego.getNivel() == 8 || juego.getNivel() == 10){
-                   boton.setForeground(Color.BLACK); // Establecer el color del texto
-                   boton.setFont(new Font(boton.getFont().getName(), Font.BOLD, 14)); 
-               }
-               boton.setEnabled(false);
-
+                }
+                desigualdad.setBounds(x, y, tamano, tamano);
+                desigualdades.add(desigualdad);
+                add(desigualdad);
+                x = x+ tamano + 20;
+                cont ++;
             }
-            contadorColum ++;
-        }
- 
-    }
-    
-    
-    // muestra constantes y desigualdades del tablero
-    private void elementosJuego(){
-        int indice = partidaAzar();
-        String lista = String.valueOf(matriz.getValoresArchivoPartida().get(indice));
-        String[] valores = lista.split(",");
-        int columna = 0;
-        int fila = 0;
-        int constante = 0;
-        for (int i=0; i<valores.length;i++){
-            System.out.println(valores[i]);
-            if ((String.valueOf(valores[i])).trim().equals("const")){
 
-                constante = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
+        } else { // si es para zurdos
+            filaOColumna = true;
+            x= 495;
+            for (int i = 0; i < (juego.getTamano()-2)*juego.getTamano()+ juego.getTamano()*juego.getTamano(); i++) {
 
-                columna= Integer.parseInt((String.valueOf(valores[i+3]).replaceAll("[\\[\\]]", "").trim()));
-                fila = Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
-
-                mostrarConstante(columna,fila, constante);
-
+                JLabel desigualdad = new JLabel("<");
+                desigualdad.setSize(WIDTH, tamano);
+                if (cont+1 >= juego.getTamano() && filaOColumna){ // una vez que termina fila, baja una columna y continua con la siguiente fila
+                    y = y+tamano-4;
+                    cont = 0;
+                    x = 475;
+                    filaOColumna = false;
+                } else if (cont >= juego.getTamano() && !filaOColumna){
+                    y = y+tamano;
+                    cont = 0;
+                    x = 495;
+                    filaOColumna = true;
+                
+                }
+                desigualdad.setBounds(x, y, tamano, tamano);
+                desigualdades.add(desigualdad);
+                add(desigualdad);
+                x = x+ tamano + 20;
+                cont ++;
             }
-        
+
         }
-        juego.getMatriz().getValoresArchivoPartida().remove(indice); //eliminar de lista para que no vuelva a aparecer
-        
+        matriz.setBotonesCasillas(botones);
     }
 
     // Variables declaration - do not modify                     
@@ -498,6 +500,9 @@ public class PantallaJuego2 extends javax.swing.JFrame {
     public javax.swing.JTable jTable1;
     public javax.swing.JLabel lblNivel;
     public javax.swing.JLabel lblNombre;
+    public ArrayList <JButton> botones; 
+    public ArrayList <JButton> botonesNumeros ;
+    public ArrayList <JLabel> desigualdades;
     private javax.swing.JLabel lblNombre2;
     // End of variables declaration                   
 }

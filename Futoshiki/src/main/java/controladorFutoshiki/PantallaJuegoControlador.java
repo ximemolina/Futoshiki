@@ -1,5 +1,8 @@
 package controladorFutoshiki;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -27,7 +30,7 @@ public class PantallaJuegoControlador {
         this.matriz = juego.getMatriz();
         
         inicializarVista();
-
+        elementosJuego();
         
         this.pantalla.btnVolver.addActionListener(new ActionListener() { //espera a que usuario presione el boton de volver
             @Override
@@ -162,7 +165,80 @@ public class PantallaJuegoControlador {
         if (juego.getNivel() == 2)this.pantalla.lblNivel.setText("Nivel difícil");
     }
     
+        // selecciona al azar cual partida mostrar
+    private int partidaAzar(){
+        Random random = new Random();
+        return random.nextInt((matriz.getValoresArchivoPartida().size()-1 - 0) + 1) + 0;
+        
+    }
+    
+    private void mostrarConstante(int columna, int fila, int constante){
+        ArrayList<JButton> lista = pantalla.botones;
+        int contadorColum = 0;
+        int contadorFila = 0;
+        for (JButton boton : lista){
+            if (contadorColum == juego.getTamano()) {
+                contadorColum = 0;
+                contadorFila ++;
+            }
+            if (contadorColum == columna && contadorFila == fila){
+                
+               boton.setText("<html>" + String.valueOf(constante) + "</html>");
 
+               // Condición para cambiar el color y la fuente dependiendo del nivel del juego
+               if(juego.getNivel() == 9 || juego.getNivel() == 8 || juego.getNivel() == 10){
+                   boton.setForeground(Color.BLACK); // Establecer el color del texto
+                   boton.setFont(new Font(boton.getFont().getName(), Font.BOLD, 14)); 
+               }
+               boton.setEnabled(false); // *****************************************aqui faltaría revisar pq no logré q se pusiera en negrita las constantes************
+
+            }
+            contadorColum ++;
+        }
+ 
+    }
+    
+    private void mostrarDesigualdades(int columna, int fila){
+    
+    }
+    
+    
+    // muestra constantes y desigualdades del tablero
+    private void elementosJuego(){
+        int indice = partidaAzar();
+        String lista = String.valueOf(matriz.getValoresArchivoPartida().get(indice));
+        String[] valores = lista.split(",");
+        int columna = 0;
+        int fila = 0;
+        int constante = 0;
+        for (int i=0; i<valores.length;i++){
+            if ((String.valueOf(valores[i])).trim().equals("const")){
+
+                constante = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
+                columna= Integer.parseInt((String.valueOf(valores[i+3]).replaceAll("[\\[\\]]", "").trim()));
+                fila = Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
+
+                mostrarConstante(columna,fila, constante); //actualiza la pantalla con las constantes
+            }
+            
+            if ((String.valueOf(valores[i])).trim().equals("des")){ //revisar cual desigualdad es 
+                
+                if ((String.valueOf(valores[i+1])).trim().equals("maf")){ //mayor en fila
+                
+                } else if ((String.valueOf(valores[i+1])).trim().equals("mef")){ // menor en fila
+                
+                } else if ((String.valueOf(valores[i+1])).trim().equals("mac")){ // mayor en columna
+                    
+                }else if ((String.valueOf(valores[i+1])).trim().equals("mec")){ // menor en columna
+                
+                }
+            }
+        
+        }
+        juego.getMatriz().getValoresArchivoPartida().remove(indice); //eliminar de lista para que no vuelva a aparecer
+        
+    }
+    
       
 }
 

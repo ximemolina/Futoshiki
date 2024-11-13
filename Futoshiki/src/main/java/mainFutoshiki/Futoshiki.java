@@ -58,7 +58,7 @@ public class Futoshiki {
         //****para pruebas de uso del archivo xml*******************
         juego.setNivel(1);
         juego.setTamano(9);
-     
+        juego.setPosicion(false);
         //inicializa vista
         MenuPrincipal menu  = new MenuPrincipal();
         menu.setVisible(true);
