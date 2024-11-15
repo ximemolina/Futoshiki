@@ -113,8 +113,7 @@ public class Archivo {
                 tamañoCuadricula = elementoPartida.getElementsByTagName("cuadricula").item(0).getTextContent();
                 numItem = 0;
                 numItem2 = 0;
-                
-                if (nivel.trim().equals(nivelDeseado) && Integer.parseInt(tamañoCuadricula) == cuadricula) //revisar que sea la dificultad y numero de cuadricula que se desea
+                if (nivelDeseado.trim().equals(nivel) && Integer.parseInt(tamañoCuadricula) == cuadricula) //revisar que sea la dificultad y numero de cuadricula que se desea
                 {
                     partidaIndividual = new ArrayList<>();
                     try{
@@ -140,6 +139,7 @@ public class Archivo {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return partidasValidas;
     }
 }

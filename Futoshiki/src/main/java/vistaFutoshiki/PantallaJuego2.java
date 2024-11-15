@@ -1,5 +1,6 @@
 package vistaFutoshiki;
 
+import java.awt.Dimension;
 import modeloFutoshiki.*;
 
 import java.awt.Image;
@@ -425,26 +426,36 @@ public class PantallaJuego2 extends javax.swing.JFrame {
     
     public void desigualdadesLabels(ArrayList <JLabel> desigualdades){
         int tamano = 40;
+        int x = 80;
         boolean filaOColumna = true;
-        if (juego.getTamano()== 8 ||juego.getTamano()== 9 ) tamano =25; //si la cuadricula es de 8x8 o 9x9 los btns deben ser mas pequeños
-        if (juego.getTamano() == 10) tamano= 22; //si la cuadricula es de  los btns es de 10x10 deben ser aún mas pequeños
+        if (juego.getTamano()== 8 ||juego.getTamano()== 9 ) {tamano =25; x=60;}//si la cuadricula es de 8x8 o 9x9 los btns deben ser mas pequeños
+        if (juego.getTamano() == 10) {tamano= 22;x=60;} //si la cuadricula es de  los btns es de 10x10 deben ser aún mas pequeños
         
          // tamaño de los ubicacion y contador
-        int x = 60, y =165,cont = 0;
+         
+        int y =165,cont = 0;
         if (juego.isPosicion()){ // si es para derechos
             for (int i = 0; i < (juego.getTamano()-2)*juego.getTamano()+ juego.getTamano()*juego.getTamano(); i++) {
 
                 JLabel desigualdad = new JLabel("<");
                 desigualdad.setSize(WIDTH, tamano);
                 if (cont+1 >= juego.getTamano() && filaOColumna){ // una vez que termina fila, baja una columna y continua con la siguiente fila
-                    y = y+tamano-tamano/6;
+                    if (juego.getTamano()== 8 ||juego.getTamano()== 9 )y = y+tamano-tamano/6;
+                    else if (juego.getTamano() == 10) y = y+tamano-tamano/10;
+                    else y= y+tamano-tamano/4;
                     cont = 0;
-                    x = 40;
+                    if (juego.getTamano()== 8 ||juego.getTamano()== 9 )x = 40;
+                    else if (juego.getTamano() == 10) x = 40;
+                    else x= 50;
                     filaOColumna = false;
                 } else if (cont >= juego.getTamano() && !filaOColumna){
-                    y = y+tamano;
+                    if (juego.getTamano()== 8 ||juego.getTamano()== 9 )y = y+tamano;
+                    else if (juego.getTamano() == 10) y = y+tamano;
+                    else y= y+tamano-tamano/4;
                     cont = 0;
-                    x = 60;
+                     if (juego.getTamano()== 8 ||juego.getTamano()== 9 )x = 60;
+                     else if (juego.getTamano() == 10) x = 60;
+                     else x= 80;
                     filaOColumna = true;
                 
                 }
@@ -457,20 +468,27 @@ public class PantallaJuego2 extends javax.swing.JFrame {
 
         } else { // si es para zurdos
             filaOColumna = true;
-            x= 495;
+            if (juego.getTamano()== 8 ||juego.getTamano()== 9 || juego.getTamano()==10) x= 495;
+            else x = 510;
             for (int i = 0; i < (juego.getTamano()-2)*juego.getTamano()+ juego.getTamano()*juego.getTamano(); i++) {
 
                 JLabel desigualdad = new JLabel("<");
                 desigualdad.setSize(WIDTH, tamano);
                 if (cont+1 >= juego.getTamano() && filaOColumna){ // una vez que termina fila, baja una columna y continua con la siguiente fila
-                    y = y+tamano-4;
+                    if (juego.getTamano()== 8 ||juego.getTamano()== 9 )y = y+tamano-tamano/6;
+                    else if (juego.getTamano() == 10) y = y+tamano-tamano/10;
+                    else y= y+tamano-tamano/4;
                     cont = 0;
-                    x = 475;
+                    if (juego.getTamano()== 8 ||juego.getTamano()== 9 || juego.getTamano()==10)x = 475;
+                    else x= 480;
                     filaOColumna = false;
                 } else if (cont >= juego.getTamano() && !filaOColumna){
-                    y = y+tamano;
+                    if (juego.getTamano()== 8 ||juego.getTamano()== 9 )y = y+tamano;
+                    else if (juego.getTamano() == 10) y = y+tamano;
+                    else y= y+tamano-tamano/4;
                     cont = 0;
-                    x = 495;
+                    if (juego.getTamano()== 8 ||juego.getTamano()== 9 || juego.getTamano()==10)x = 495;
+                    else x= 510;
                     filaOColumna = true;
                 
                 }
