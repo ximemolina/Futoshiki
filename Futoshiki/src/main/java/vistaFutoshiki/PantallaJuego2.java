@@ -437,7 +437,7 @@ public class PantallaJuego2 extends javax.swing.JFrame {
         if (juego.isPosicion()){ // si es para derechos
             for (int i = 0; i < (juego.getTamano()-2)*juego.getTamano()+ juego.getTamano()*juego.getTamano(); i++) {
 
-                JLabel desigualdad = new JLabel("<");
+                JLabel desigualdad = new JLabel("");
                 desigualdad.setSize(WIDTH, tamano);
                 if (cont+1 >= juego.getTamano() && filaOColumna){ // una vez que termina fila, baja una columna y continua con la siguiente fila
                     if (juego.getTamano()== 8 ||juego.getTamano()== 9 )y = y+tamano-tamano/6;
@@ -472,7 +472,7 @@ public class PantallaJuego2 extends javax.swing.JFrame {
             else x = 510;
             for (int i = 0; i < (juego.getTamano()-2)*juego.getTamano()+ juego.getTamano()*juego.getTamano(); i++) {
 
-                JLabel desigualdad = new JLabel("<");
+                JLabel desigualdad = new JLabel("");
                 desigualdad.setSize(WIDTH, tamano);
                 if (cont+1 >= juego.getTamano() && filaOColumna){ // una vez que termina fila, baja una columna y continua con la siguiente fila
                     if (juego.getTamano()== 8 ||juego.getTamano()== 9 )y = y+tamano-tamano/6;

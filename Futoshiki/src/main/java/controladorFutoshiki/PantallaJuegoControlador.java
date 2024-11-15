@@ -198,10 +198,58 @@ public class PantallaJuegoControlador {
  
     }
     
-    private void mostrarDesigualdades(int columna, int fila){
-    
+    private void desigualdadesFila(int columna, int fila, boolean identificador){
+        ArrayList<JLabel> lista = pantalla.desigualdades;
+        int contadorColum = 0;
+        int contadorFila = 0;
+        boolean revisar = true;
+        for (JLabel label : lista){
+            if (contadorColum >= juego.getTamano()-1) {
+                
+                if (!revisar && contadorColum >= juego.getTamano() ) {
+                    contadorFila++;
+                    revisar = true;
+                    contadorColum = 0;
+                }else if (revisar ){
+                    contadorColum = 0;
+                    revisar = false;
+                }
+            }
+            if (contadorFila == fila && contadorColum == columna && revisar){
+                if(identificador) label.setText(">");
+                else label.setText("<");
+                break;
+            }
+            contadorColum ++;
+        }
     }
     
+    private void desigualdadesColumna(int columna, int fila, boolean identificador){
+        ArrayList<JLabel> lista = pantalla.desigualdades;
+        int contadorColum = 0;
+        int contadorFila = 0;
+        boolean revisar = true;
+        for (JLabel label : lista){
+            if (contadorColum >= juego.getTamano()-1) {
+                
+                if (!revisar && contadorColum >= juego.getTamano() ) {
+                    contadorFila++;
+                    revisar = true;
+                    contadorColum = 0;
+                }else if (revisar ){
+                    contadorColum = 0;
+                    revisar = false;
+                }
+            }
+            if (contadorFila == fila && contadorColum == columna && !revisar){
+                if(identificador) label.setText("V");
+                else label.setText("^");
+                break;
+            }
+            contadorColum ++;
+        }
+    
+    }
     
     // muestra constantes y desigualdades del tablero
     private void elementosJuego(){
@@ -211,28 +259,37 @@ public class PantallaJuegoControlador {
         int columna = 0;
         int fila = 0;
         int constante = 0;
+        boolean identificador; //false: menor || true: mayor
         for (int i=0; i<valores.length;i++){
             if ((String.valueOf(valores[i])).trim().equals("const")){
 
                 constante = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
                 columna= Integer.parseInt((String.valueOf(valores[i+3]).replaceAll("[\\[\\]]", "").trim()));
                 fila = Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
-
                 mostrarConstante(columna,fila, constante); //actualiza la pantalla con las constantes
             }
-            
-            if ((String.valueOf(valores[i])).trim().equals("des")){ //revisar cual desigualdad es 
-                
-                if ((String.valueOf(valores[i+1])).trim().equals("maf")){ //mayor en fila
-                
-                } else if ((String.valueOf(valores[i+1])).trim().equals("mef")){ // menor en fila
-                
-                } else if ((String.valueOf(valores[i+1])).trim().equals("mac")){ // mayor en columna
-                    
-                }else if ((String.valueOf(valores[i+1])).trim().equals("mec")){ // menor en columna
-                
-                }
+            if ((String.valueOf(valores[i]).replaceAll("[\\[\\]]", "")).trim().equals("maf")){ //mayor en fila 
+                fila = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
+                columna= Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
+                identificador = true;
+                desigualdadesFila(columna, fila, identificador);
+            } else if((String.valueOf(valores[i]).replaceAll("[\\[\\]]", "").trim().equals("mef"))){ // menor en fila
+                fila = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
+                columna= Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
+                identificador = false;
+                desigualdadesFila(columna, fila, identificador);
+            } else if ((String.valueOf(valores[i])).trim().equals("mac")){ // mayor en columna
+                fila = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
+                columna= Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
+                identificador = true;
+                desigualdadesColumna(columna, fila, identificador);
+            } else if ((String.valueOf(valores[i])).trim().equals("mec")){ // menor en columna
+                fila = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
+                columna= Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
+                identificador = false;
+                desigualdadesColumna(columna, fila, identificador);
             }
+            
         
         }
         juego.getMatriz().getValoresArchivoPartida().remove(indice); //eliminar de lista para que no vuelva a aparecer
