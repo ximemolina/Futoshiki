@@ -53,7 +53,7 @@ public class PantallaJuego2 extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         btnVolver = new javax.swing.JButton();
-
+        btnBorrador = new JButton(setearBorrador());
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         
         botonesJuego(botones,botonesNumeros);
@@ -370,10 +370,7 @@ public class PantallaJuego2 extends javax.swing.JFrame {
                 add(boton);
                 y = y+85;
             } 
-            ImageIcon imagen = new ImageIcon("src/main/java/imagenes/borrador.png");  // Ruta a la imagen
-            Image imagen2 = imagen.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-            ImageIcon imagenTamanoCorrecto = new ImageIcon(imagen2);
-            JButton btnBorrador = new JButton(imagenTamanoCorrecto);
+
             btnBorrador.setBackground(new java.awt.Color(255, 255, 255));
             btnBorrador.setBounds(770, 200, 90, 80);
             btnBorrador.setBorderPainted(false);
@@ -410,10 +407,6 @@ public class PantallaJuego2 extends javax.swing.JFrame {
                 add(boton);
                 y = y+85;
             } 
-            ImageIcon imagen = new ImageIcon("src/main/java/imagenes/borrador.png");  // Ruta a la imagen
-            Image imagen2 = imagen.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-            ImageIcon imagenTamanoCorrecto = new ImageIcon(imagen2);
-            JButton btnBorrador = new JButton(imagenTamanoCorrecto);
             btnBorrador.setBackground(new java.awt.Color(255, 255, 255));
             btnBorrador.setBounds(30, 200, 90, 80);
             btnBorrador.setBorderPainted(false);
@@ -502,6 +495,13 @@ public class PantallaJuego2 extends javax.swing.JFrame {
         }
         matriz.setBotonesCasillas(botones);
     }
+    
+    public ImageIcon setearBorrador(){
+        ImageIcon imagen = new ImageIcon("src/main/java/imagenes/borrador.png");  // Ruta a la imagen
+        Image imagen2 = imagen.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon imagenTamanoCorrecto = new ImageIcon(imagen2);
+        return imagenTamanoCorrecto;
+    }
 
     // Variables declaration - do not modify                     
     public javax.swing.JButton btnBorrarJuego;
@@ -522,5 +522,6 @@ public class PantallaJuego2 extends javax.swing.JFrame {
     public ArrayList <JButton> botonesNumeros ;
     public ArrayList <JLabel> desigualdades;
     private javax.swing.JLabel lblNombre2;
+    public javax.swing.JButton btnBorrador;
     // End of variables declaration                   
 }

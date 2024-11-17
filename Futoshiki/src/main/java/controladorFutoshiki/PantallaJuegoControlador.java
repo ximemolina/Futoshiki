@@ -1,8 +1,11 @@
 package controladorFutoshiki;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -12,6 +15,7 @@ import modeloFutoshiki.*;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 /**
  *
@@ -50,6 +54,35 @@ public class PantallaJuegoControlador {
             }
         });
         
+        for (JButton boton : this.pantalla.botonesNumeros){
+            boton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    resetearBotonesNumeros(boton);
+                }
+            });
+        }
+        
+        for(JButton boton : this.pantalla.botones){
+            boton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    seleccionarBoton(boton);
+                }
+            });
+        }
+        
+        this.pantalla.btnBorrador.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetearBotonesNumeros(pantalla.btnBorrador);
+                Border borde = BorderFactory.createLineBorder(Color.GREEN, 10);
+                System.out.println("hola");
+                pantalla.btnBorrador.setBackground(Color.GREEN);
+                
+            }
+            
+        });
     }
 
     
@@ -165,13 +198,14 @@ public class PantallaJuegoControlador {
         if (juego.getNivel() == 2)this.pantalla.lblNivel.setText("Nivel difícil");
     }
     
-        // selecciona al azar cual partida mostrar
+    // selecciona al azar cual partida mostrar
     private int partidaAzar(){
         Random random = new Random();
         return random.nextInt((matriz.getValoresArchivoPartida().size()-1 - 0) + 1) + 0;
         
     }
     
+    //despliega todas las constantes en la plantilla
     private void mostrarConstante(int columna, int fila, int constante){
         ArrayList<JButton> lista = pantalla.botones;
         int contadorColum = 0;
@@ -201,6 +235,7 @@ public class PantallaJuegoControlador {
  
     }
     
+    //se encargar de mostrar las desigualdades que están en las filas (maf - mef)
     private void desigualdadesFila(int columna, int fila, boolean identificador){
         ArrayList<JLabel> lista = pantalla.desigualdades;
         int contadorColum = 0;
@@ -227,6 +262,7 @@ public class PantallaJuegoControlador {
         }
     }
     
+    //se encargar de mostrar las desigualdades que están en las columnas(mac - mec)
     private void desigualdadesColumna(int columna, int fila, boolean identificador){
         ArrayList<JLabel> lista = pantalla.desigualdades;
         int contadorColum = 0;
@@ -299,7 +335,28 @@ public class PantallaJuegoControlador {
         
     }
     
+    // pone el boton seleccionado en verde y hace que los demás sean blancos
+    void resetearBotonesNumeros(JButton boton){
+        for (Component comp: matriz.getBotonesNumeros()){
+            if (!comp.equals(boton)){ //verificar que no sea el boton que está siendo seleccionado
+                comp.setBackground(Color.WHITE);
+            } else comp.setBackground(Color.GREEN);
+        }
+        if(!boton.equals(pantalla.btnBorrador)) pantalla.btnBorrador.setBackground(Color.WHITE);
+    }
       
+    // pone en el boton el número seleccionado
+    void seleccionarBoton(JButton boton){
+        for(Component comp : matriz.getBotonesCasillas()){
+            if (comp.equals(boton)){}
+                for (JButton comp2 : matriz.getBotonesNumeros()){
+                    if (comp2.getBackground() == Color.GREEN){
+                        boton.setText("<html>" + comp2.getText() + "</html>");
+                    }
+                }
+        }
+        if (pantalla.btnBorrador.getBackground()== Color.GREEN) boton.setText("");
+    }
 }
 
     

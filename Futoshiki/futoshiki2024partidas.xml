@@ -105,7 +105,7 @@
         <des>mec,1,8</des>
         
 
-        <des>mef,2,1</des>
+        <des>mef,2,0</des>
         <des>mef,2,5</des>
         <des>mec,2,1</des>
         <des>mac,2,3</des>
@@ -136,10 +136,10 @@
         <des>maf,7,4</des>
         <des>mec,7,0</des>
 
-        <des>maf,9,0</des>
-        <des>maf,9,1</des>
-        <des>mef,9,2</des>
-        <des>maf,9,6</des>
+        <des>maf,8,0</des>
+        <des>maf,8,1</des>
+        <des>mef,8,2</des>
+        <des>maf,8,6</des>
 
         
 
@@ -165,7 +165,7 @@
         <des>maf,0,5</des>
         <des>mac,0,2</des>
         <des>mac,0,6</des>
-
+        <des>mac,0,8</des>
 
         <!-- Fila 2 -->
         <des>mef,1,1</des>
@@ -173,7 +173,7 @@
         <des>mec,1,4</des>
 
         <!-- Fila 3 -->
-        <des>mef,2,2</des>
+        <des>mef,2,1</des>
         <des>mec,2,6</des>
         <des>mac,2,7</des>
         
