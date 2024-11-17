@@ -182,15 +182,18 @@ public class PantallaJuegoControlador {
                 contadorFila ++;
             }
             if (contadorColum == columna && contadorFila == fila){
-                
-               boton.setText("<html>" + String.valueOf(constante) + "</html>");
+               boton.setText("<html><b style='color: black; font-size: 14px;'>" + constante + "</b></html>");
+               
 
                // Condición para cambiar el color y la fuente dependiendo del nivel del juego
                if(juego.getNivel() == 9 || juego.getNivel() == 8 || juego.getNivel() == 10){
                    boton.setForeground(Color.BLACK); // Establecer el color del texto
                    boton.setFont(new Font(boton.getFont().getName(), Font.BOLD, 14)); 
                }
-               boton.setEnabled(false); // *****************************************aqui faltaría revisar pq no logré q se pusiera en negrita las constantes************
+               boton.setEnabled(false); // creo que ya funciona lo de negrita
+               
+               
+
 
             }
             contadorColum ++;
