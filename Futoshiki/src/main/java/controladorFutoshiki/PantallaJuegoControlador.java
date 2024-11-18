@@ -101,6 +101,20 @@ public class PantallaJuegoControlador {
             }
             
         });
+        
+        this.pantalla.btnBorrarJuego.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        int confirmacion = JOptionPane.showConfirmDialog(pantalla, 
+            "¿Estás seguro de que deseas reiniciar el tablero (excepto constantes)?", 
+            "Confirmación", 
+            JOptionPane.YES_NO_OPTION);
+        
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            borrarJuego();
+        }
+    }
+});
     }
 
     
@@ -365,35 +379,34 @@ public class PantallaJuegoControlador {
       
     // pone en el boton el número seleccionado
     void seleccionarBoton(JButton boton) {
-    // Obtén la fila y columna del botón
-    int fila = obtenerFila(boton);
-    int columna = obtenerColumna(boton);
+        // Obtén la fila y columna del botón
+        int fila = obtenerFila(boton);
+        int columna = obtenerColumna(boton);
 
-    // Si un número está seleccionado
-    for (Component comp : matriz.getBotonesCasillas()) {
-        if (comp.equals(boton)) {
-            for (JButton comp2 : matriz.getBotonesNumeros()) {
-                if (comp2.getBackground() == Color.GREEN) { // Número seleccionado en verde
-                    String valor = comp2.getText();
-                    boton.setText("<html>" + valor + "</html>");
-                    registrarJugada(fila, columna, valor); // Registrar la jugada en la pila principal
+        // Si un número está seleccionado
+        for (Component comp : matriz.getBotonesCasillas()) {
+            if (comp.equals(boton)) {
+                for (JButton comp2 : matriz.getBotonesNumeros()) {
+                    if (comp2.getBackground() == Color.GREEN) { // Número seleccionado en verde
+                        String valor = comp2.getText();
+                        boton.setText("<html>" + valor + "</html>");
+                        registrarJugada(fila, columna, valor); // Registrar la jugada en la pila principal
+                    }
                 }
             }
         }
-    }
-
-    // Si el botón borrador está seleccionado (en verde)
-    if (pantalla.btnBorrador.getBackground() == Color.GREEN) {
-        // Registra la jugada actual en la pila principal antes de moverla a jugadas borradas
-        String valorActual = boton.getText();
-        if (!valorActual.isEmpty()) { // Solo registrar si hay algo que borrar
-            Movimiento jugadaActual = new Movimiento(fila, columna, valorActual);
-            pilaJugadas.push(jugadaActual); // Registra la jugada en la pila principal
-            pilaJugadasBorradas.push(jugadaActual); // Mueve la jugada a la pila de borradas
+        // Si el botón borrador está seleccionado (en verde)
+        if (pantalla.btnBorrador.getBackground() == Color.GREEN) {
+            // Registra la jugada actual en la pila principal antes de moverla a jugadas borradas
+            String valorActual = boton.getText();
+            if (!valorActual.isEmpty()) { // Solo registrar si hay algo que borrar
+                Movimiento jugadaActual = new Movimiento(fila, columna, valorActual);
+                pilaJugadas.push(jugadaActual); // Registra la jugada en la pila principal
+                pilaJugadasBorradas.push(jugadaActual); // Mueve la jugada a la pila de borradas
+            }
+            boton.setText(""); // Borra el texto del botón
         }
-        boton.setText(""); // Borra el texto del botón
     }
-}
 
     
     private void registrarJugada(int fila, int columna, String valor) {
@@ -444,6 +457,32 @@ public class PantallaJuegoControlador {
     }
     
     
+    private void borrarJuego() {
+        // Recorrer todos los botones del tablero
+        for (int i = 0; i < pantalla.botones.size(); i++) {
+            JButton boton = pantalla.botones.get(i);
+
+            // Verifica si el botón está deshabilitado (indicador de constante)
+            if (!boton.isEnabled()) {
+                continue; // Si es una constante, no lo borres
+            }
+
+            // Borra el contenido del botón
+            boton.setText("");
+            boton.setEnabled(true); // Reactiva el botón si estaba deshabilitado
+        }
+
+        // No borrar las desigualdades, así que no iteramos sobre pantalla.desigualdades
+        // Dejar explícito que no se hace nada aquí es opcional
+
+        // Limpiar las pilas de jugadas
+        pilaJugadas.clear();
+        pilaJugadasBorradas.clear();
+
+        // Mostrar mensaje de confirmación
+        JOptionPane.showMessageDialog(pantalla, "El tablero ha sido reiniciado, excepto las constantes y desigualdades.");
+    }
+
 
 
 
