@@ -1,0 +1,7 @@
+d,re,KZyr
+q,e,KZyr
+
+e,fas,KZyr
+f,ad,KZyr
+s,a,KZyr
+hola,hola,KZyr

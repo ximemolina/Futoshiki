@@ -2,6 +2,7 @@ package controladorFutoshiki;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import vistaFutoshiki.*;
@@ -24,6 +25,7 @@ public class PantallaOlvidoContraseñaControlador {
         this.menu.btnVolver.addActionListener(new ActionListener() { //espera a que usuario presione el boton de volver
             @Override
             public void actionPerformed(ActionEvent e) {
+                juego.setJugador(null); //se borra jugador previamente asignado
                 MenuConfiguracion pantalla = new MenuConfiguracion(); //inicializa pantalla configuracion
                 menu.setVisible(false);
                 pantalla.setVisible(true);
@@ -50,6 +52,23 @@ public class PantallaOlvidoContraseñaControlador {
             }
         });
         
+        this.menu.btnAceptar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!menu.inpNuevaContraseña.getText().isEmpty()){
+                    Archivo archivo = new Archivo();
+                    archivo.modificarContrasena(juego.getJugador().getNombre(), menu.inpNuevaContraseña.getText()); //modifica la contrasena en el archivo
+                    juego.setJugador(null); // borra jugador que se habia guardado ya que ya fue utilizada su informacion
+                    MenuConfiguracion pantalla = new MenuConfiguracion(); //inicializa pantalla configuracion
+                    menu.setVisible(false);
+                    pantalla.setVisible(true);
+                    MenuConfiguracionControlador controlador = new MenuConfiguracionControlador(juego,pantalla);// envia las clases
+                                                                                            //necesarias al controlador del menu de config
+                    
+                } else JOptionPane.showMessageDialog(null, "Debe ingresar una nueva contraseña", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        
+        });
         
     }
     

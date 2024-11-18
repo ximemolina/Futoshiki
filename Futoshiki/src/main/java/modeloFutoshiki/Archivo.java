@@ -142,4 +142,107 @@ public class Archivo {
 
         return partidasValidas;
     }
+    
+    // válida que no exista otro nombre en el archivo igual al que se desea agregar
+    public boolean validarNombreUnico(String nombre){
+        try (BufferedReader reader = new BufferedReader(new FileReader("futoshiki2024jugadores.txt"))) {
+            String linea;
+            int numeroLinea = 1;
+
+            while ((linea = reader.readLine()) != null) {
+                String[] elementos = linea.split(",");
+                if (elementos.length > 0) {
+                    String primerElemento = elementos[0].trim();
+                    if (primerElemento.equals(nombre)) {
+                        return false;
+                    }
+                }
+                numeroLinea++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+        return true;
+    }
+    
+    //valida que la contrasena y el nombre de usuario coincidan. En caso de que coincidan retorna el String del correo, sino null
+    public String validarContrasena(String nombre, String contrasena){
+        try (BufferedReader reader = new BufferedReader(new FileReader("futoshiki2024jugadores.txt"))) {
+            String linea;
+            int numeroLinea = 1;
+
+            while ((linea = reader.readLine()) != null) {
+                String[] elementos = linea.split(",");
+                try{
+                    if (elementos.length > 0) {
+                        String primerElemento = elementos[0].trim();
+                        String segundoElemento = elementos[1].trim();
+                        if (primerElemento.equals(nombre) && segundoElemento.equals(contrasena)) {
+                            return elementos[2].trim();
+                        }
+                    }
+                }catch(ArrayIndexOutOfBoundsException e){}
+                numeroLinea++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+        return null;
+    }
+    
+    // retorna el correo del usuario, si no encuentra usuario, retorna null
+    public String recuperarCorreo(String nombre){
+        try (BufferedReader reader = new BufferedReader(new FileReader("futoshiki2024jugadores.txt"))) {
+            String linea;
+            int numeroLinea = 1;
+
+            while ((linea = reader.readLine()) != null) {
+                String[] elementos = linea.split(",");
+                try{
+                    if (elementos.length > 0) {
+                        String primerElemento = elementos[0].trim();
+                        if (primerElemento.equals(nombre)) {
+                            return elementos[1].trim();
+                        }
+                    }
+                }catch(ArrayIndexOutOfBoundsException e){}
+                numeroLinea++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+        return null;
+    }
+    
+    // cambia el segundo elemento de la línea (contrasena) que contenga el nombre del jugador
+    public void modificarContrasena(String nombre, String contrasenaNueva){
+        List<String> lineas = new ArrayList<>();
+
+        // Leer todas las líneas del archivo
+        try (BufferedReader reader = new BufferedReader(new FileReader("futoshiki2024jugadores.txt"))) {
+            String linea;
+
+            while ((linea = reader.readLine()) != null) {
+                String[] elementos = linea.split(",");
+                if (elementos.length >= 2 && elementos[0].trim().equals(nombre)) {
+                    elementos[1] = contrasenaNueva; // Modificar el segundo elemento
+                    linea = String.join(",", elementos); // Reconstruir la línea
+                }
+                lineas.add(linea);
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo: " + e.getMessage());
+            return;
+        }
+
+        // Escribir las líneas modificadas de nuevo en el archivo
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("futoshiki2024jugadores.txt"))) {
+            for (String linea : lineas) {
+                writer.write(linea);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error al escribir en el archivo: " + e.getMessage());
+        }
+    }
 }

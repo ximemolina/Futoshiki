@@ -59,7 +59,6 @@ public class Correo {
 
             // Enviar el mensaje
             Transport.send(message);
-            System.out.println("Correo enviado con éxito a: " + to);
 
         } catch (MessagingException e) {
             System.err.println("Error al enviar el mensaje de correo: " + e.getMessage());

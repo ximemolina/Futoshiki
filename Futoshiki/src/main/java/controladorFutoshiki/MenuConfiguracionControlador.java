@@ -98,17 +98,40 @@ public class MenuConfiguracionControlador {
                 String contraseña = menu.inpContraseña.getText();
                 String correo = menu.inpCorreo.getText();
                 
-                 if (!nombre.isEmpty() && (contraseña.isEmpty() || correo.isEmpty())) {
-                    JOptionPane.showMessageDialog(menu, 
-                        "Por favor complete los campos de Contraseña y Correo si ha ingresado un Nombre", 
-                        "Error", 
-                        JOptionPane.ERROR_MESSAGE);
-                    return; // Salir del método si la validación falla
-                }
-                Jugador jugador = new Jugador(nombre, contraseña);
-                juego.setJugador(jugador);
-                
                 Archivo archivo = new Archivo();
+                
+                if (!nombre.isEmpty()){
+                    if (contraseña.isEmpty() || correo.isEmpty()) {
+                        JOptionPane.showMessageDialog(menu, 
+                            "Por favor complete los campos de Contraseña y Correo si ha ingresado un Nombre", 
+                            "Error", 
+                            JOptionPane.ERROR_MESSAGE);
+                        return; // Salir del método si la validación falla
+                    }else {
+                        if (archivo.validarNombreUnico(nombre)){ //validar que el nombre sea único
+                            Jugador jugador = new Jugador(nombre, contraseña, correo);
+                            juego.setJugador(jugador);
+                            archivo.guardarArchivoJugadores(jugador.toString());
+                        }else{
+                            JOptionPane.showMessageDialog(menu, "Debe registrar otro nombre, ese ya está siendo utilizado", "Error",JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                    }
+                }
+                
+                if(!menu.inpNombreIngresar.getText().isEmpty() && !menu.inpContraseñaIngresar.getText().isEmpty()){
+                    String correo2 = archivo.validarContrasena(menu.inpNombreIngresar.getText(), menu.inpContraseñaIngresar.getText());
+                    if (correo2 != null){
+                       Jugador jugador = new Jugador(menu.inpNombreIngresar.getText(),menu.inpContraseñaIngresar.getText(),correo2);
+                       juego.setJugador(jugador);
+                   } else{
+                        JOptionPane.showMessageDialog(menu, "Usuario no encontrado", "Error",JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                       
+                }
+                
+                
                 archivo.guardarArchivoConfiguracion(juego.toString());
                 
                 // Confirmar configuración completada
@@ -289,22 +312,31 @@ public class MenuConfiguracionControlador {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!(menu.inpNombreIngresar.getText()).equals("")){ //validar que si se haya ingresado un usuario del cual agarrar el correo
-                    String pin = generarPin();
-                    // Crear una instancia de la clase Correo
-                    Correo correo = new Correo("juanpacamal08@gmail.com", "adqs eueu mrbs vngz", "smtp.gmail.com"); // Usa tu correo y contraseña aquí
-            
-                    // Definir el destinatario y el contenido del mensaje
-                    String destinatario = "juanpacamal08@gmail.com";
-                    String asunto = "Código de recuperación de contraseña";
-                    String cuerpo = "Su código de recuperación es: " + pin;
+                    Archivo archivo = new Archivo();
+                    String correoUsuario = archivo.recuperarCorreo(menu.inpNombreIngresar.getText());
+                    if (correoUsuario != null){
+                        
+                        Jugador jugador = new Jugador(menu.inpNombreIngresar.getText(), menu.inpContraseñaIngresar.getText(), correoUsuario);
+                        juego.setJugador(jugador); //se setea para utilizar datos en pantalla de olvido de contraseña
+                        
+                        String pin = generarPin();
+                        // Crear una instancia de la clase Correo
+                        Correo correo = new Correo("juanpacamal08@gmail.com", "adqs eueu mrbs vngz", "smtp.gmail.com"); 
 
-                    // Enviar el correo con el PIN
-                    correo.enviarCorreo(destinatario, asunto, cuerpo);
-                    
-                    PantallaOlvidoContraseña pantalla = new PantallaOlvidoContraseña();
-                    menu.setVisible(false);
-                    pantalla.setVisible(true);
-                    PantallaOlvidoContraseñaControlador controlador = new PantallaOlvidoContraseñaControlador(pantalla,juego, pin);
+                        // Definir el destinatario y el contenido del mensaje
+                        String destinatario = correoUsuario;
+                        String asunto = "Código de recuperación de contraseña";
+                        String cuerpo = "Su código de recuperación es: " + pin;
+
+                        // Enviar el correo con el PIN
+                        correo.enviarCorreo(destinatario, asunto, cuerpo);
+
+                        PantallaOlvidoContraseña pantalla = new PantallaOlvidoContraseña();
+                        menu.setVisible(false);
+                        pantalla.setVisible(true);
+                        PantallaOlvidoContraseñaControlador controlador = new PantallaOlvidoContraseñaControlador(pantalla,juego, pin);
+                    }else
+                        JOptionPane.showMessageDialog(null, "Debe ingresar un usuario válido", "ERROR", JOptionPane.ERROR_MESSAGE);
                 }else
                     JOptionPane.showMessageDialog(null, "Debe ingresar un usuario válido", "ERROR", JOptionPane.ERROR_MESSAGE);
                
