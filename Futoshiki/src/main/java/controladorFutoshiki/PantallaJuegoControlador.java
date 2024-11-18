@@ -16,6 +16,8 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 import javax.swing.border.Border;
+import java.util.Stack;
+
 
 /**
  *
@@ -26,6 +28,8 @@ public class PantallaJuegoControlador {
     private PantallaJuego2 pantalla;
     private Timer temporizador;
     private MatrizJuego matriz;
+    private Stack<Movimiento> pilaJugadas = new Stack<>();
+    private Stack<Movimiento> pilaJugadasBorradas = new Stack<>();
     
     //constructor
     public PantallaJuegoControlador(Juego juego, PantallaJuego2 pantalla) {
@@ -51,6 +55,20 @@ public class PantallaJuegoControlador {
             @Override
             public void actionPerformed(ActionEvent e) {
                 iniciarTemporizadorSiEsNecesario();
+            }
+        });
+        
+        this.pantalla.btnBorrarJugada.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                borrarJugada();
+            }
+        });
+
+        this.pantalla.btnRehacerJugada.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                rehacerJugada();
             }
         });
         
@@ -346,17 +364,92 @@ public class PantallaJuegoControlador {
     }
       
     // pone en el boton el número seleccionado
-    void seleccionarBoton(JButton boton){
-        for(Component comp : matriz.getBotonesCasillas()){
-            if (comp.equals(boton)){}
-                for (JButton comp2 : matriz.getBotonesNumeros()){
-                    if (comp2.getBackground() == Color.GREEN){
-                        boton.setText("<html>" + comp2.getText() + "</html>");
-                    }
+    void seleccionarBoton(JButton boton) {
+    // Obtén la fila y columna del botón
+    int fila = obtenerFila(boton);
+    int columna = obtenerColumna(boton);
+
+    // Si un número está seleccionado
+    for (Component comp : matriz.getBotonesCasillas()) {
+        if (comp.equals(boton)) {
+            for (JButton comp2 : matriz.getBotonesNumeros()) {
+                if (comp2.getBackground() == Color.GREEN) { // Número seleccionado en verde
+                    String valor = comp2.getText();
+                    boton.setText("<html>" + valor + "</html>");
+                    registrarJugada(fila, columna, valor); // Registrar la jugada en la pila principal
                 }
+            }
         }
-        if (pantalla.btnBorrador.getBackground()== Color.GREEN) boton.setText("");
     }
+
+    // Si el botón borrador está seleccionado (en verde)
+    if (pantalla.btnBorrador.getBackground() == Color.GREEN) {
+        // Registra la jugada actual en la pila principal antes de moverla a jugadas borradas
+        String valorActual = boton.getText();
+        if (!valorActual.isEmpty()) { // Solo registrar si hay algo que borrar
+            Movimiento jugadaActual = new Movimiento(fila, columna, valorActual);
+            pilaJugadas.push(jugadaActual); // Registra la jugada en la pila principal
+            pilaJugadasBorradas.push(jugadaActual); // Mueve la jugada a la pila de borradas
+        }
+        boton.setText(""); // Borra el texto del botón
+    }
+}
+
+    
+    private void registrarJugada(int fila, int columna, String valor) {
+        pilaJugadas.push(new Movimiento(fila, columna, valor));
+        pilaJugadasBorradas.clear(); // Limpiar las jugadas borradas porque se pierde la posibilidad de rehacer
+    }
+    
+    private int obtenerFila(JButton boton) {
+        int indice = pantalla.botones.indexOf(boton);
+        return indice / juego.getTamano(); // División entera
+    }
+
+    private int obtenerColumna(JButton boton) {
+        int indice = pantalla.botones.indexOf(boton);
+        return indice % juego.getTamano(); // Resto
+    }
+    
+    private void borrarJugada() {
+        if (!pilaJugadas.isEmpty()) {
+            // Sacar la última jugada de la pila principal
+            Movimiento ultimaJugada = pilaJugadas.pop();
+            pilaJugadasBorradas.push(ultimaJugada); // Guardar en la pila de jugadas borradas
+
+            // Actualizar el tablero: borrar el valor del botón
+            JButton boton = obtenerBoton(ultimaJugada.getFila(), ultimaJugada.getColumna());
+            boton.setText(""); // Dejar el botón vacío
+        } else {
+            JOptionPane.showMessageDialog(pantalla, "No hay jugadas para borrar.");
+        }
+    }
+    
+    private void rehacerJugada() {
+        if (!pilaJugadasBorradas.isEmpty()) {
+            // Sacar la última jugada borrada
+            Movimiento jugadaBorrada = pilaJugadasBorradas.pop();
+            pilaJugadas.push(jugadaBorrada); // Volver a agregarla a la pila principal
+
+            // Actualizar el tablero: restaurar el valor del botón
+            JButton boton = obtenerBoton(jugadaBorrada.getFila(), jugadaBorrada.getColumna());
+            boton.setText("<html><b>" + jugadaBorrada.getValor() + "</b></html>");
+        } else {
+            JOptionPane.showMessageDialog(pantalla, "No hay jugadas para rehacer.");
+        }
+    }
+    
+    private JButton obtenerBoton(int fila, int columna) {
+        return pantalla.botones.get(fila * juego.getTamano() + columna);
+    }
+    
+    
+
+
+
+
+    
+    
 }
 
     
