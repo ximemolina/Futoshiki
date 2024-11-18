@@ -1,7 +1,4 @@
-d,re,KZyr
-q,e,KZyr
-
-e,fas,KZyr
-f,ad,KZyr
-s,a,KZyr
-hola,hola,KZyr
+prueba, contraseña, correo@
+prueba2, contr, ximenamolinaportilla01@gmail.com
+nom, 123, correo@correo
+prueba3,contrasenaNueva,ximenamolinaportilla01@gmail.com

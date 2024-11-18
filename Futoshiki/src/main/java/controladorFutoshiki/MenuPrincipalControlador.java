@@ -4,6 +4,7 @@ import java.util.*;
 import vistaFutoshiki.*;
 import modeloFutoshiki.*;
 import java.awt.event.*;
+import javax.swing.JOptionPane;
 /**
  *
  * @author ximena molina - juan pablo cambronero
@@ -38,8 +39,7 @@ public class MenuPrincipalControlador {
                 PantallaJuego2 pantalla = new PantallaJuego2(juego); //inicializa pantalla jugar
                 menu.setVisible(false);
                 pantalla.setVisible(true);
-                PantallaJuegoControlador controlador = new PantallaJuegoControlador(juego,pantalla);// envia las clases
-                                                                                           //necesarias al controlador de la pantalla jugar
+                PantallaJuegoControlador controlador = new PantallaJuegoControlador(juego,pantalla);// envia las clases necesarias al controlador de la pantalla jugar
             }
         });
     

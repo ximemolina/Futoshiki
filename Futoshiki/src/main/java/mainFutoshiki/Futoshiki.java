@@ -56,8 +56,6 @@ public class Futoshiki {
             juego = archivo.cargarConfiguracion();
         }
         
-        
-
         //inicializa vista
         MenuPrincipal menu  = new MenuPrincipal();
         menu.setVisible(true);

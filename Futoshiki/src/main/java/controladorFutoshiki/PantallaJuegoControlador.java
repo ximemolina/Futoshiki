@@ -3,9 +3,6 @@ package controladorFutoshiki;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -38,7 +35,6 @@ public class PantallaJuegoControlador {
         this.matriz = juego.getMatriz();
         
         inicializarVista();
-        elementosJuego();
         
         this.pantalla.btnVolver.addActionListener(new ActionListener() { //espera a que usuario presione el boton de volver
             @Override
@@ -46,15 +42,23 @@ public class PantallaJuegoControlador {
                 MenuPrincipal pantalla2 = new MenuPrincipal(); //inicializa pantalla configuracion
                 pantalla.setVisible(false);
                 pantalla2.setVisible(true);
-                MenuPrincipalControlador controlador = new MenuPrincipalControlador(juego,pantalla2);// envia las clases
-                                                                                            //necesarias al controlador del menu principal
+                MenuPrincipalControlador controlador = new MenuPrincipalControlador(juego,pantalla2);// envia las clases necesarias al controlador del menu principal
             }
         });
         
         this.pantalla.btnJugar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                iniciarTemporizadorSiEsNecesario();
+                if (!matriz.getValoresArchivoPartida().isEmpty()){ //validar que si hayan partidas de esa cuadricula/dificultad
+                    iniciarTemporizadorSiEsNecesario();
+                    elementosJuego();
+                }else {
+                    JOptionPane.showMessageDialog(pantalla, "No hay partidas para este nivel");
+                    MenuPrincipal pantalla2 = new MenuPrincipal(); //inicializa pantalla configuracion
+                    pantalla.setVisible(false);
+                    pantalla2.setVisible(true);
+                    MenuPrincipalControlador controlador = new MenuPrincipalControlador(juego,pantalla2);// envia las clases necesarias al controlador del menu principal
+                }
             }
         });
         
@@ -257,9 +261,6 @@ public class PantallaJuegoControlador {
                    boton.setFont(new Font(boton.getFont().getName(), Font.BOLD, 14)); 
                }
                boton.setEnabled(false); // creo que ya funciona lo de negrita
-               
-               
-
 
             }
             contadorColum ++;

@@ -202,7 +202,7 @@ public class Archivo {
                     if (elementos.length > 0) {
                         String primerElemento = elementos[0].trim();
                         if (primerElemento.equals(nombre)) {
-                            return elementos[1].trim();
+                            return elementos[2].trim();
                         }
                     }
                 }catch(ArrayIndexOutOfBoundsException e){}
