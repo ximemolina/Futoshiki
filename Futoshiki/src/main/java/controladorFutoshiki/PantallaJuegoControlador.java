@@ -125,6 +125,21 @@ public class PantallaJuegoControlador {
                 }
             }
         });
+        
+        this.pantalla.btnTerminarJuego.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int confirmacion = JOptionPane.showConfirmDialog(pantalla, 
+                    "¿Estás seguro de que deseas terminar el juego y generar una nueva partida?", 
+                    "Confirmación", 
+                    JOptionPane.YES_NO_OPTION);
+
+                if (confirmacion == JOptionPane.YES_OPTION) {
+                    terminarJuego();
+                }
+            }
+        }); 
+
     }
 
     
@@ -550,6 +565,34 @@ public class PantallaJuegoControlador {
             MenuPrincipalControlador controlador = new MenuPrincipalControlador(juego,pantalla2);// envia las clases necesarias al controlador del menu principal
         }
     }
+    
+    private void terminarJuego() {
+        // Limpia el tablero actual
+        borrarJuego(); // Reutilizamos el método existente para limpiar el tablero excepto constantes y desigualdades.
+
+        // Selecciona una nueva partida al azar y actualiza los elementos del tablero
+        if (!matriz.getValoresArchivoPartida().isEmpty()) {
+            elementosJuego(); // Reutiliza el método para desplegar las constantes y desigualdades de la nueva partida.
+            JOptionPane.showMessageDialog(pantalla, "Se ha generado una nueva partida con la misma dificultad.");
+        } else {
+            JOptionPane.showMessageDialog(pantalla, "No hay más partidas disponibles para este nivel.");
+            MenuPrincipal pantalla2 = new MenuPrincipal(); // Regresa al menú principal
+            pantalla.setVisible(false);
+            pantalla2.setVisible(true);
+            new MenuPrincipalControlador(juego, pantalla2);
+        }
+
+        // Limpia las pilas de jugadas para el nuevo tablero
+        pilaJugadas.clear();
+        pilaJugadasBorradas.clear();
+    }
+    
+    
+
+    
+
+    
+    
 }
 
 
