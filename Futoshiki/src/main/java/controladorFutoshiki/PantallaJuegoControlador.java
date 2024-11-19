@@ -94,6 +94,7 @@ public class PantallaJuegoControlador {
                     try{
                         validarJugada(boton);
                         seleccionarBoton(boton);
+                        revisarGane();
                     }catch(Exception w){
                         JOptionPane.showMessageDialog(pantalla, w.getMessage());
                     }
@@ -405,6 +406,7 @@ public class PantallaJuegoControlador {
         // Si el botón borrador está seleccionado (en verde)
         if (pantalla.btnBorrador.getBackground() == Color.GREEN) {
             // Registra la jugada actual en la pila principal antes de moverla a jugadas borradas
+            boton.setBackground(new Color(240, 240, 240));
             String valorActual = boton.getText();
             if (!valorActual.isEmpty()) { // Solo registrar si hay algo que borrar
                 Movimiento jugadaActual = new Movimiento(fila, columna, valorActual);
@@ -520,7 +522,7 @@ public class PantallaJuegoControlador {
             }
         }
         
-        for (JButton boton : this.pantalla.botones){ //calidar fila
+        for (JButton boton : this.pantalla.botones){ //validar fila
             if (obtenerFila(boton) == fila) {
                 if ((boton.getText().replaceAll("<[^>]*>", "")).equals(valor)){
                     boton.setBackground(Color.red);
@@ -529,12 +531,27 @@ public class PantallaJuegoControlador {
             }
         }
         
+    }    
+    
+    //se encarga de revisar si todas las casillas están completadas
+    private void revisarGane(){
+        for (JButton boton : this.pantalla.botones){
+            if(boton.getText().isEmpty())return;
+        }
         
-    }
+        if(!juego.isMultinivel()){ //si es multinivel, continuaría con el siguiente nivel, no finalizaría la partida
+            JOptionPane.showMessageDialog(pantalla, "¡Excelente, juego terminado con éxito!");
+            // **********************aqui se revisa si el jugador va para top 10 o no **********************************
 
-    
-    
+            //luego de ganar, vuelve a menu principal
+            MenuPrincipal pantalla2 = new MenuPrincipal(); //inicializa pantalla configuracion
+            pantalla.setVisible(false);
+            pantalla2.setVisible(true);
+            MenuPrincipalControlador controlador = new MenuPrincipalControlador(juego,pantalla2);// envia las clases necesarias al controlador del menu principal
+        }
+    }
 }
+
 
     
     
