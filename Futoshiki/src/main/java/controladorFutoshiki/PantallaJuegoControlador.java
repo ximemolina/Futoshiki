@@ -12,7 +12,6 @@ import modeloFutoshiki.*;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.util.Stack;
 
 
@@ -52,6 +51,9 @@ public class PantallaJuegoControlador {
                 if (!matriz.getValoresArchivoPartida().isEmpty()){ //validar que si hayan partidas de esa cuadricula/dificultad
                     iniciarTemporizadorSiEsNecesario();
                     elementosJuego();
+                    pantalla.btnBorrarJuego.setEnabled(true);
+                    pantalla.btnJugar.setEnabled(false);
+                    
                 }else {
                     JOptionPane.showMessageDialog(pantalla, "No hay partidas para este nivel");
                     MenuPrincipal pantalla2 = new MenuPrincipal(); //inicializa pantalla configuracion
@@ -89,7 +91,12 @@ public class PantallaJuegoControlador {
             boton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    seleccionarBoton(boton);
+                    try{
+                        validarJugada(boton);
+                        seleccionarBoton(boton);
+                    }catch(Exception w){
+                        JOptionPane.showMessageDialog(pantalla, w.getMessage());
+                    }
                 }
             });
         }
@@ -98,8 +105,6 @@ public class PantallaJuegoControlador {
             @Override
             public void actionPerformed(ActionEvent e) {
                 resetearBotonesNumeros(pantalla.btnBorrador);
-                Border borde = BorderFactory.createLineBorder(Color.GREEN, 10);
-                System.out.println("hola");
                 pantalla.btnBorrador.setBackground(Color.GREEN);
                 
             }
@@ -107,18 +112,18 @@ public class PantallaJuegoControlador {
         });
         
         this.pantalla.btnBorrarJuego.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        int confirmacion = JOptionPane.showConfirmDialog(pantalla, 
-            "¿Estás seguro de que deseas reiniciar el tablero (excepto constantes)?", 
-            "Confirmación", 
-            JOptionPane.YES_NO_OPTION);
-        
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            borrarJuego();
-        }
-    }
-});
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int confirmacion = JOptionPane.showConfirmDialog(pantalla, 
+                    "¿Estás seguro de que deseas reiniciar el tablero (excepto constantes)?", 
+                    "Confirmación", 
+                    JOptionPane.YES_NO_OPTION);
+
+                if (confirmacion == JOptionPane.YES_OPTION) {
+                    borrarJuego();
+                }
+            }
+        });
     }
 
     
@@ -214,6 +219,7 @@ public class PantallaJuegoControlador {
         mostrarNombreJugador();
         mostrarNivel();
         inicializarTablaTemporizador();
+        pantalla.btnBorrarJuego.setEnabled(false);
     }
     
     // Muestra el nombre del jugador en la etiqueta lblNombre
@@ -372,7 +378,7 @@ public class PantallaJuegoControlador {
     void resetearBotonesNumeros(JButton boton){
         for (Component comp: matriz.getBotonesNumeros()){
             if (!comp.equals(boton)){ //verificar que no sea el boton que está siendo seleccionado
-                comp.setBackground(Color.WHITE);
+                comp.setBackground(new Color(240, 240, 240));
             } else comp.setBackground(Color.GREEN);
         }
         if(!boton.equals(pantalla.btnBorrador)) pantalla.btnBorrador.setBackground(Color.WHITE);
@@ -484,9 +490,47 @@ public class PantallaJuegoControlador {
         JOptionPane.showMessageDialog(pantalla, "El tablero ha sido reiniciado, excepto las constantes y desigualdades.");
     }
 
-
-
-
+    private void validarJugada(JButton botonSeleccionado) throws Exception{
+        if (pantalla.btnBorrador.getBackground() == Color.GREEN) return; //no se realizan validaciones con el borrador
+        
+        int columna = obtenerColumna(botonSeleccionado);
+        int fila = obtenerFila(botonSeleccionado);
+        String valor = "";
+       
+        
+        // Si un número está seleccionado
+        for (Component comp : matriz.getBotonesCasillas()) {
+            if (comp.equals(botonSeleccionado)) {
+                for (JButton comp2 : matriz.getBotonesNumeros()) {
+                    if (comp2.getBackground() == Color.GREEN) { // Número seleccionado en verde
+                        valor = (comp2.getText()).replaceAll("<[^>]*>", "");
+                    }
+                }
+            }
+            
+            if (comp.getBackground() == Color.red) comp.setBackground(new Color(240, 240, 240)); // quita las casilla en rojo de las validaciones
+        }
+        
+        for (JButton boton : this.pantalla.botones){ //validar columna
+            if (obtenerColumna(boton) == columna) {
+                if ((boton.getText().replaceAll("<[^>]*>", "")).equals(valor)){
+                    boton.setBackground(Color.red);
+                    throw new Exception("JUGADA NO ES VÁLIDA PORQUE EL ELEMENTO YA ESTÁ EN LA COLUMNA");
+                }
+            }
+        }
+        
+        for (JButton boton : this.pantalla.botones){ //calidar fila
+            if (obtenerFila(boton) == fila) {
+                if ((boton.getText().replaceAll("<[^>]*>", "")).equals(valor)){
+                    boton.setBackground(Color.red);
+                    throw new Exception("JUGADA NO ES VÁLIDA PORQUE EL ELEMENTO YA ESTÁ EN LA FILA");
+                }
+            }
+        }
+        
+        
+    }
 
     
     
