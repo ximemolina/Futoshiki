@@ -12,6 +12,7 @@ public class MatrizJuego {
     private ArrayList<JButton> botonesNumeros; // botones que están al lado que contienen los posibles números a poner
     private ArrayList<JLabel> desigualdades; //labels que contienen todas las desigualdades de la plantilla
     private Integer indicePartida;
+    
 
     //constructor
     public MatrizJuego(int dimension, List valores){

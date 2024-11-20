@@ -8,7 +8,7 @@ package modeloFutoshiki;
  *
  * @author rosel
  */
-public class Movimiento {
+public class Movimiento{
     private int fila;
     private int columna;
     private String valor;

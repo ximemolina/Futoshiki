@@ -13,6 +13,11 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 import java.util.Stack;
+import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.FileReader;
+
 
 
 /**
@@ -26,12 +31,15 @@ public class PantallaJuegoControlador {
     private MatrizJuego matriz;
     private Stack<Movimiento> pilaJugadas = new Stack<>();
     private Stack<Movimiento> pilaJugadasBorradas = new Stack<>();
+    private boolean juegoEnProgreso;
     
     //constructor
     public PantallaJuegoControlador(Juego juego, PantallaJuego2 pantalla) {
         this.juego = juego;
         this.pantalla = pantalla;
         this.matriz = juego.getMatriz();
+        this.juegoEnProgreso = false;
+        
         
         inicializarVista();
         
@@ -48,31 +56,23 @@ public class PantallaJuegoControlador {
         this.pantalla.btnJugar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!matriz.getValoresArchivoPartida().isEmpty()){ //validar que si hayan partidas de esa cuadricula/dificultad
-                    iniciarTemporizadorSiEsNecesario();
-                    int indice;
-                    if (matriz.getIndicePartida()==null){
-                        indice = partidaAzar();
-                        matriz.setIndicePartida(indice);
+                if (!juegoEnProgreso) {
+                    if (!matriz.getValoresArchivoPartida().isEmpty()) {
+                        iniciarTemporizadorSiEsNecesario();
+                        elementosJuego(partidaAzar()); // Generar una nueva partida
+                        pantalla.btnBorrarJuego.setEnabled(true);
+                        pantalla.btnGuardarJuego.setEnabled(true); // Habilitar el botón de guardar
+                        juegoEnProgreso = true;
                     } else {
-                        indice = matriz.getIndicePartida();
+                        JOptionPane.showMessageDialog(pantalla, "No hay partidas para este nivel");
                     }
-                    elementosJuego(indice);
-                    pantalla.btnBorrarJuego.setEnabled(true);
-                    pantalla.btnJugar.setEnabled(false);
-                    pantalla.btnGuardarJuego.setEnabled(true);
-                    pantalla.btnCargarJuego.setEnabled(false);
-                    
-                }else {
-                    JOptionPane.showMessageDialog(pantalla, "No hay partidas para este nivel");
-                    MenuPrincipal pantalla2 = new MenuPrincipal(); //inicializa pantalla configuracion
-                    pantalla.setVisible(false);
-                    pantalla2.setVisible(true);
-                    MenuPrincipalControlador controlador = new MenuPrincipalControlador(juego,pantalla2);// envia las clases necesarias al controlador del menu principal
+                } else {
+                    // Si ya hay un juego cargado, simplemente inicia el temporizador
+                    iniciarTemporizadorSiEsNecesario();
                 }
-            }
-        });
-        
+                    }
+                });
+
         this.pantalla.btnBorrarJugada.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -152,10 +152,27 @@ public class PantallaJuegoControlador {
         this.pantalla.btnGuardarJuego.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Archivo archivo = new Archivo();
-                archivo.guardarArchivoJuegoActual(juego);
+                if (juegoEnProgreso) { // Solo se puede guardar si el juego ya comenzó
+                    String archivo = "partida_guardada.txt";
+                    guardarJuego(archivo);
+                } else {
+                    JOptionPane.showMessageDialog(pantalla, "No puedes guardar un juego antes de iniciarlo.");
+                }
             }
         }); 
+        
+        this.pantalla.btnCargarJuego.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!juegoEnProgreso) { // Solo se puede cargar si el juego aún no ha comenzado
+                    String archivo = "partida_guardada.txt";
+                    cargarJuego(archivo); // Carga el juego pero no inicia el temporizador
+                    pantalla.btnGuardarJuego.setEnabled(true); // Habilitar guardar después de cargar
+                } else {
+                    JOptionPane.showMessageDialog(pantalla, "No puedes cargar un juego mientras hay uno en progreso.");
+                }
+            }
+        });
     }
 
     
@@ -519,6 +536,7 @@ public class PantallaJuegoControlador {
         // Limpiar las pilas de jugadas
         pilaJugadas.clear();
         pilaJugadasBorradas.clear();
+        juegoEnProgreso = false;
 
         // Mostrar mensaje de confirmación
         JOptionPane.showMessageDialog(pantalla, "El tablero ha sido reiniciado, excepto las constantes y desigualdades.");
@@ -604,17 +622,145 @@ public class PantallaJuegoControlador {
         // Limpia las pilas de jugadas para el nuevo tablero
         pilaJugadas.clear();
         pilaJugadasBorradas.clear();
+        juegoEnProgreso = false;
     }
     
-    
+    private void guardarJuego(String archivo) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, false))) {
+            // Guardar el estado de los botones
+            for (JButton boton : pantalla.botones) {
+                String texto = boton.getText().replaceAll("<[^>]*>", ""); // Elimina etiquetas HTML
+                boolean habilitado = boton.isEnabled();
+                if (!habilitado) { // Si el botón está deshabilitado, es una constante
+                    writer.write("CONSTANTE;" + texto + ";" + habilitado + "\n");
+                } else {
+                    writer.write(texto + ";" + habilitado + "\n");
+                }
+            }
 
-    
+            // Guardar las desigualdades
+            for (JLabel desigualdad : pantalla.desigualdades) {
+                writer.write("DESIGUALDAD;" + desigualdad.getText() + "\n");
+            }
 
-    
-    
+            // Guardar el tiempo del temporizador
+            Reloj reloj = juego.getReloj();
+            writer.write("TIEMPO;" + reloj.getHoras() + ";" + reloj.getMinutos() + ";" + reloj.getSegundos() + "\n");
+
+            // Guardar las pilas de jugadas
+            for (Movimiento jugada : pilaJugadas) {
+                writer.write("JUGADA;" + jugada.getFila() + ";" + jugada.getColumna() + ";" + jugada.getValor() + "\n");
+            }
+
+            for (Movimiento jugadaBorrada : pilaJugadasBorradas) {
+                writer.write("BORRADA;" + jugadaBorrada.getFila() + ";" + jugadaBorrada.getColumna() + ";" + jugadaBorrada.getValor() + "\n");
+            }
+
+            JOptionPane.showMessageDialog(pantalla, "Juego guardado con éxito.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(pantalla, "Error al guardar el juego: " + e.getMessage());
+        }
+    }
+
+
+    private void cargarJuego(String archivo) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            int botonIndex = 0; // Índice para rastrear los botones
+            int desigualdadIndex = 0; // Índice para rastrear las desigualdades
+
+            borrarJuego(); // Limpia el tablero actual antes de cargar
+
+            while ((linea = reader.readLine()) != null) {
+                String[] partes = linea.split(";");
+
+                if (partes.length > 0) {
+                    switch (partes[0]) {
+                        case "CONSTANTE":
+                            // Manejo de constantes
+                            if (botonIndex < pantalla.botones.size()) {
+                                JButton boton = pantalla.botones.get(botonIndex);
+                                String texto = partes[1]; // Recupera el valor limpio de la constante
+                                boton.setText("<html><b style='color: black; font-size: 14px;'>" + texto + "</b></html>");
+                                boton.setEnabled(false); // Deshabilita el botón para marcarlo como constante
+                                botonIndex++;
+                            }
+                            break;
+
+                        case "DESIGUALDAD":
+                            // Manejo de desigualdades
+                            if (desigualdadIndex < pantalla.desigualdades.size()) {
+                                String texto = partes.length > 1 ? partes[1] : ""; // Evitar problemas con desigualdades vacías
+                                pantalla.desigualdades.get(desigualdadIndex).setText(texto);
+                                desigualdadIndex++;
+                            }
+                            break;
+
+                        case "TIEMPO":
+                            // Manejo del tiempo del temporizador
+                            if (partes.length >= 4) {
+                                Reloj reloj = juego.getReloj();
+                                reloj.setHoras(Integer.parseInt(partes[1]));
+                                reloj.setMinutos(Integer.parseInt(partes[2]));
+                                reloj.setSegundos(Integer.parseInt(partes[3]));
+                                inicializarTablaTemporizador();
+                            }
+                            break;
+
+                        case "JUGADA":
+                            // Manejo de las jugadas
+                            if (partes.length >= 4) {
+                                int fila = Integer.parseInt(partes[1]);
+                                int columna = Integer.parseInt(partes[2]);
+                                String valor = partes[3];
+                                JButton boton = obtenerBoton(fila, columna);
+                                boton.setText(valor);
+                                boton.setEnabled(true); // Asegura que sea interactivo si no es constante
+                                pilaJugadas.push(new Movimiento(fila, columna, valor));
+                            }
+                            break;
+
+                        default:
+                            // Manejo de botones regulares
+                            if (botonIndex < pantalla.botones.size()) {
+                                JButton boton = pantalla.botones.get(botonIndex);
+                                if (partes.length >= 2) {
+                                    String texto = partes[0];
+                                    boolean habilitado = Boolean.parseBoolean(partes[1]);
+
+                                    if (!habilitado) {
+                                        // Si es constante, aplica el formato
+                                        boton.setText("<html><b style='color: black; font-size: 14px;'>" + texto + "</b></html>");
+                                    } else {
+                                        boton.setText(texto.isEmpty() ? "" : texto); // Asegúrate de que no quede vacío
+                                    }
+                                    boton.setEnabled(habilitado);
+                                } else {
+                                    boton.setText(""); // Por defecto, vacío si no hay texto
+                                    boton.setEnabled(true); // Por defecto, habilitado
+                                }
+                                botonIndex++;
+                            }
+                            break;
+                    }
+                }
+            }
+
+            JOptionPane.showMessageDialog(pantalla, "Juego cargado con éxito.");
+            juegoEnProgreso = true; // Indica que el juego está en progreso
+        } catch (Exception e) {
+            e.printStackTrace(); // Muestra detalles del error en la consola
+            JOptionPane.showMessageDialog(pantalla, "Error al cargar el juego: " + e.getMessage());
+        }
+    }
+
+
+
+
+
 }
 
 
-    
-    
+
+
 
