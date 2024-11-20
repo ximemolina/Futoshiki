@@ -50,9 +50,18 @@ public class PantallaJuegoControlador {
             public void actionPerformed(ActionEvent e) {
                 if (!matriz.getValoresArchivoPartida().isEmpty()){ //validar que si hayan partidas de esa cuadricula/dificultad
                     iniciarTemporizadorSiEsNecesario();
-                    elementosJuego();
+                    int indice;
+                    if (matriz.getIndicePartida()==null){
+                        indice = partidaAzar();
+                        matriz.setIndicePartida(indice);
+                    } else {
+                        indice = matriz.getIndicePartida();
+                    }
+                    elementosJuego(indice);
                     pantalla.btnBorrarJuego.setEnabled(true);
                     pantalla.btnJugar.setEnabled(false);
+                    pantalla.btnGuardarJuego.setEnabled(true);
+                    pantalla.btnCargarJuego.setEnabled(false);
                     
                 }else {
                     JOptionPane.showMessageDialog(pantalla, "No hay partidas para este nivel");
@@ -140,6 +149,13 @@ public class PantallaJuegoControlador {
             }
         }); 
 
+        this.pantalla.btnGuardarJuego.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Archivo archivo = new Archivo();
+                archivo.guardarArchivoJuegoActual(juego);
+            }
+        }); 
     }
 
     
@@ -236,6 +252,7 @@ public class PantallaJuegoControlador {
         mostrarNivel();
         inicializarTablaTemporizador();
         pantalla.btnBorrarJuego.setEnabled(false);
+        pantalla.btnGuardarJuego.setEnabled(false);
     }
     
     // Muestra el nombre del jugador en la etiqueta lblNombre
@@ -265,7 +282,7 @@ public class PantallaJuegoControlador {
     
     //despliega todas las constantes en la plantilla
     private void mostrarConstante(int columna, int fila, int constante){
-        ArrayList<JButton> lista = pantalla.botones;
+        ArrayList<JButton> lista = matriz.getBotonesCasillas();
         int contadorColum = 0;
         int contadorFila = 0;
         for (JButton boton : lista){
@@ -292,7 +309,7 @@ public class PantallaJuegoControlador {
     
     //se encargar de mostrar las desigualdades que están en las filas (maf - mef)
     private void desigualdadesFila(int columna, int fila, boolean identificador){
-        ArrayList<JLabel> lista = pantalla.desigualdades;
+        ArrayList<JLabel> lista = matriz.getDesigualdades();
         int contadorColum = 0;
         int contadorFila = 0;
         boolean revisar = true;
@@ -319,7 +336,7 @@ public class PantallaJuegoControlador {
     
     //se encargar de mostrar las desigualdades que están en las columnas(mac - mec)
     private void desigualdadesColumna(int columna, int fila, boolean identificador){
-        ArrayList<JLabel> lista = pantalla.desigualdades;
+        ArrayList<JLabel> lista = matriz.getDesigualdades();
         int contadorColum = 0;
         int contadorFila = 0;
         boolean revisar = true;
@@ -346,8 +363,8 @@ public class PantallaJuegoControlador {
     }
     
     // muestra constantes y desigualdades del tablero
-    private void elementosJuego(){
-        int indice = partidaAzar();
+    private void elementosJuego(int indice){
+
         String lista = String.valueOf(matriz.getValoresArchivoPartida().get(indice));
         String[] valores = lista.split(",");
         int columna = 0;
@@ -439,12 +456,12 @@ public class PantallaJuegoControlador {
     }
     
     private int obtenerFila(JButton boton) {
-        int indice = pantalla.botones.indexOf(boton);
+        int indice = matriz.getBotonesCasillas().indexOf(boton);
         return indice / juego.getTamano(); // División entera
     }
 
     private int obtenerColumna(JButton boton) {
-        int indice = pantalla.botones.indexOf(boton);
+        int indice = matriz.getBotonesCasillas().indexOf(boton);
         return indice % juego.getTamano(); // Resto
     }
     
@@ -477,14 +494,14 @@ public class PantallaJuegoControlador {
     }
     
     private JButton obtenerBoton(int fila, int columna) {
-        return pantalla.botones.get(fila * juego.getTamano() + columna);
+        return matriz.getBotonesCasillas().get(fila * juego.getTamano() + columna);
     }
     
     
     private void borrarJuego() {
         // Recorrer todos los botones del tablero
-        for (int i = 0; i < pantalla.botones.size(); i++) {
-            JButton boton = pantalla.botones.get(i);
+        for (int i = 0; i < matriz.getBotonesCasillas().size(); i++) {
+            JButton boton = matriz.getBotonesCasillas().get(i);
 
             // Verifica si el botón está deshabilitado (indicador de constante)
             if (!boton.isEnabled()) {
@@ -528,7 +545,7 @@ public class PantallaJuegoControlador {
             if (comp.getBackground() == Color.red) comp.setBackground(new Color(240, 240, 240)); // quita las casilla en rojo de las validaciones
         }
         
-        for (JButton boton : this.pantalla.botones){ //validar columna
+        for (JButton boton : matriz.getBotonesCasillas()){ //validar columna
             if (obtenerColumna(boton) == columna) {
                 if ((boton.getText().replaceAll("<[^>]*>", "")).equals(valor)){
                     boton.setBackground(Color.red);
@@ -537,7 +554,7 @@ public class PantallaJuegoControlador {
             }
         }
         
-        for (JButton boton : this.pantalla.botones){ //validar fila
+        for (JButton boton : matriz.getBotonesCasillas()){ //validar fila
             if (obtenerFila(boton) == fila) {
                 if ((boton.getText().replaceAll("<[^>]*>", "")).equals(valor)){
                     boton.setBackground(Color.red);
@@ -550,7 +567,7 @@ public class PantallaJuegoControlador {
     
     //se encarga de revisar si todas las casillas están completadas
     private void revisarGane(){
-        for (JButton boton : this.pantalla.botones){
+        for (JButton boton : matriz.getBotonesCasillas()){
             if(boton.getText().isEmpty())return;
         }
         
@@ -566,13 +583,15 @@ public class PantallaJuegoControlador {
         }
     }
     
+    
     private void terminarJuego() {
         // Limpia el tablero actual
         borrarJuego(); // Reutilizamos el método existente para limpiar el tablero excepto constantes y desigualdades.
 
         // Selecciona una nueva partida al azar y actualiza los elementos del tablero
         if (!matriz.getValoresArchivoPartida().isEmpty()) {
-            elementosJuego(); // Reutiliza el método para desplegar las constantes y desigualdades de la nueva partida.
+            int indice = partidaAzar();
+            elementosJuego(indice); // Reutiliza el método para desplegar las constantes y desigualdades de la nueva partida.
             JOptionPane.showMessageDialog(pantalla, "Se ha generado una nueva partida con la misma dificultad.");
         } else {
             JOptionPane.showMessageDialog(pantalla, "No hay más partidas disponibles para este nivel.");

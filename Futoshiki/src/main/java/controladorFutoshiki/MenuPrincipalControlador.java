@@ -4,7 +4,6 @@ import java.util.*;
 import vistaFutoshiki.*;
 import modeloFutoshiki.*;
 import java.awt.event.*;
-import javax.swing.JOptionPane;
 /**
  *
  * @author ximena molina - juan pablo cambronero

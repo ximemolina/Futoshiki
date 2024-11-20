@@ -1,5 +1,7 @@
 package modeloFutoshiki;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author ximena molina - juan pablo cambronero
@@ -30,7 +32,20 @@ public class Juego {
         return String.valueOf(getTamano())+ "," + String.valueOf(getNivel())+ "," + isMultinivel()+ "," + isPosicion()+ "," + getReloj().toString();
     }
     
+    public ArrayList listaInfo(){
+        ArrayList<String> lista = new ArrayList<>();
+        lista.add(String.valueOf(tamano));
+        lista.add(String.valueOf(nivel));
+        lista.add(String.valueOf(multinivel));
+        lista.add(String.valueOf(posicion));
+        lista.add(String.valueOf(reloj.toString()));
+        
+        for(int i = 0; i < lista.size(); i++){
+            System.out.println(lista.get(i));//para pruebas
+        }
+        return lista;
     
+    }
     
     // <editor-fold defaultstate="collapsed" desc="Setters-Getters">
     public int getTamano() {

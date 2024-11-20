@@ -68,15 +68,41 @@ public class Archivo {
     }
     
     //guardar el juego actual
-    public void guardarArchivoJuegoActual(String mensaje){
-        try{
-            File nombreArchivo = new File("futoshiki2024juegoactual.txt");
-            FileWriter escribir = new FileWriter(nombreArchivo, false); //permite escribir en diferentes ocasiones en archivos
-            escribir.write(mensaje); //escribe informarion de usuario
-            escribir.close(); //cierra escritor
-       } catch(Exception e){
-           System.out.print(e.getMessage());
-       }
+    public void guardarArchivoJuegoActual(Juego juego){
+        ArrayList<List> lista = new ArrayList<>();
+        lista.add(juego.getJugador().listaInfo());
+        lista.add(juego.listaInfo());
+        lista.add(juego.getMatriz().listaInfo());
+        /*    
+        List<String> lineas = new ArrayList<>();
+
+        // Leer todas las líneas del archivo
+        try (BufferedReader reader = new BufferedReader(new FileReader("futoshiki2024juegoactual.txt"))) {
+            String linea;
+
+            while ((linea = reader.readLine()) != null) {
+                String[] elementos = linea.split(",");
+                if (elementos.length >= 2 && elementos[0].trim().equals(juego.getJugador().getNombre())) {
+                    elementos[1] = contrasenaNueva; // Modificar el segundo elemento
+                    linea = String.join(",", elementos); // Reconstruir la línea
+                }
+                lineas.add(linea);
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo: " + e.getMessage());
+            return;
+        }
+
+        // Escribir las líneas modificadas de nuevo en el archivo
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("futoshiki2024juegoactual.txt"))) {
+            for (String linea : lineas) {
+                writer.write(linea);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error al escribir en el archivo: " + e.getMessage());
+        }*/
+
     }
     
     //cargar archivo tipo xml que contiene todas las posibles combinaciones de partidas
@@ -245,4 +271,6 @@ public class Archivo {
             System.out.println("Error al escribir en el archivo: " + e.getMessage());
         }
     }
+    
+
 }

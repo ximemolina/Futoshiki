@@ -1,6 +1,7 @@
 package modeloFutoshiki;
 
 import java.time.*;
+import java.util.ArrayList;
 /**
  *
  * @author ximena molina - juan pablo cambronero
@@ -23,6 +24,17 @@ public class Jugador {
     
     public String toString(){
         return nombre + "," + contrasena + "," + correo + "\n";
+    }
+    
+    public ArrayList listaInfo(){
+        ArrayList<String> lista = new ArrayList<>();
+        lista.add(String.valueOf(nombre));
+        lista.add(String.valueOf(contrasena));
+        lista.add(String.valueOf(correo));        
+        for(int i = 0; i < lista.size(); i++){
+            System.out.println(lista.get(i));//para pruebas
+        }
+        return lista;
     }
     
     // <editor-fold defaultstate="collapsed" desc="Setters-Getters">
