@@ -1,6 +1,7 @@
 package vistaFutoshiki;
 
-import java.awt.Dimension;
+
+import java.awt.Color;
 import modeloFutoshiki.*;
 
 import java.awt.Image;
@@ -17,7 +18,7 @@ public class PantallaJuego2 extends javax.swing.JFrame {
     private MatrizJuego matriz;
 
     /**
-     * Creates new form PantallaJuego
+     * Creates new form PantallaJuego2
      */
     public PantallaJuego2(Juego juego) {
         this.juego = juego;
@@ -152,28 +153,34 @@ public class PantallaJuego2 extends javax.swing.JFrame {
                 btnCargarJuegoActionPerformed(evt);
             }
         });
+        
+        if (juego.getReloj().getTipo()!= 0){ //reloj no se genera si no es necesario
+            jTable1.setModel(new javax.swing.table.DefaultTableModel(
+                new Object [][] {
+                    {null, null, null}
+                },
+                new String [] {
+                    "Horas", "Minutos", "Segundos"
+                }
+            ) {
+                Class[] types = new Class [] {
+                    java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+                };
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null}
-            },
-            new String [] {
-                "Horas", "Minutos", "Segundos"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jTable1.setGridColor(new java.awt.Color(0, 0, 0));
-        jTable1.setSelectionBackground(new java.awt.Color(204, 204, 204));
-        jTable1.setShowGrid(true);
-        jTable1.setShowHorizontalLines(false);
-        jScrollPane1.setViewportView(jTable1);
+                public Class getColumnClass(int columnIndex) {
+                    return types [columnIndex];
+                }
+            });
+            jTable1.setGridColor(new java.awt.Color(0, 0, 0));
+            jTable1.setSelectionBackground(new java.awt.Color(204, 204, 204));
+            jTable1.setShowGrid(true);
+            jTable1.setShowHorizontalLines(false);
+            jScrollPane1.setViewportView(jTable1);
+        }else {
+            jScrollPane1.setOpaque(false); // Hace que el ScrollPane sea "transparente"
+            jScrollPane1.getViewport().setOpaque(false); // Hace que el área de vista también sea transparente
+            jScrollPane1.setBorder(null); // Elimina los bordes visibles
+        }
         
         btnVolver.setFont(new java.awt.Font("Leelawadee UI", 0, 14)); // NOI18N
         btnVolver.setText("Volver");
@@ -313,13 +320,13 @@ public class PantallaJuego2 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PantallaJuego.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PantallaJuego2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PantallaJuego.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PantallaJuego2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PantallaJuego.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PantallaJuego2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PantallaJuego.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PantallaJuego2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         /* Create and display the form */

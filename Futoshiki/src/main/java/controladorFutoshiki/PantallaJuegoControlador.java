@@ -60,8 +60,6 @@ public class PantallaJuegoControlador {
                     if (!matriz.getValoresArchivoPartida().isEmpty()) {
                         iniciarTemporizadorSiEsNecesario();
                         elementosJuego(partidaAzar()); // Generar una nueva partida
-                        pantalla.btnBorrarJuego.setEnabled(true);
-                        pantalla.btnGuardarJuego.setEnabled(true); // Habilitar el botón de guardar
                         juegoEnProgreso = true;
                     } else {
                         JOptionPane.showMessageDialog(pantalla, "No hay partidas para este nivel");
@@ -270,6 +268,8 @@ public class PantallaJuegoControlador {
         inicializarTablaTemporizador();
         pantalla.btnBorrarJuego.setEnabled(false);
         pantalla.btnGuardarJuego.setEnabled(false);
+        pantalla.btnBorrarJugada.setEnabled(false);
+        pantalla.btnTerminarJuego.setEnabled(false);
     }
     
     // Muestra el nombre del jugador en la etiqueta lblNombre
@@ -381,7 +381,16 @@ public class PantallaJuegoControlador {
     
     // muestra constantes y desigualdades del tablero
     private void elementosJuego(int indice){
-
+        //activa botones
+        pantalla.btnBorrarJuego.setEnabled(true);
+        pantalla.btnGuardarJuego.setEnabled(true);
+        pantalla.btnBorrarJugada.setEnabled(true);
+        pantalla.btnTerminarJuego.setEnabled(true);
+        
+        //desactiva botones ya que solo se pueden utilizar cuando no se ha iniciado juego
+        pantalla.btnCargarJuego.setEnabled(false);
+        pantalla.btnJugar.setEnabled(false);
+        
         String lista = String.valueOf(matriz.getValoresArchivoPartida().get(indice));
         String[] valores = lista.split(",");
         int columna = 0;
@@ -563,6 +572,8 @@ public class PantallaJuegoControlador {
             if (comp.getBackground() == Color.red) comp.setBackground(new Color(240, 240, 240)); // quita las casilla en rojo de las validaciones
         }
         
+        if (valor.equals(""))throw new Exception("FALTA QUE SELECCIONE UN DÍGITO."); //revisar que si esté seleccionado un dígito
+        
         for (JButton boton : matriz.getBotonesCasillas()){ //validar columna
             if (obtenerColumna(boton) == columna) {
                 if ((boton.getText().replaceAll("<[^>]*>", "")).equals(valor)){
@@ -581,6 +592,93 @@ public class PantallaJuegoControlador {
             }
         }
         
+        boolean filaOColumna = true;
+        int cont= 0;
+        int contFilas = 0;
+        for (JLabel desigualdad : matriz.getDesigualdades()){
+            
+            if (cont+1 >= juego.getTamano() && filaOColumna){ // una vez que termina fila, baja una columna y continua con la siguiente fila
+                    cont = 0;
+                    contFilas ++;
+                    filaOColumna = false;
+            } else if (cont >= juego.getTamano() && !filaOColumna){
+                    cont = 0;
+                    filaOColumna = true;
+            }
+            
+            if (columna == cont && filaOColumna){ //aplicar desigualdad 
+                for (JButton boton : matriz.getBotonesCasillas()){
+                    if(obtenerFila(boton) == fila && !boton.getText().equals("") && fila == contFilas){ //verificar q estén en misma fila ya q desigualdad es mef o maf
+                        if (obtenerColumna(boton)-1 ==columna){
+                            if(desigualdad.getText().trim().equals(">")){
+                                if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) > Integer.parseInt(valor)){
+                                    boton.setBackground(Color.red);
+                                    throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MAYOR");
+                                    
+                                }
+                            } else  if(desigualdad.getText().trim().equals("<")){
+                                if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) < Integer.parseInt(valor)){
+                                    boton.setBackground(Color.red);
+                                    throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MENOR");
+                                }
+                            }
+                        }
+                    }
+                
+                }
+            } else if (columna == cont+1 && filaOColumna){
+                for (JButton boton : matriz.getBotonesCasillas()){
+                    if(obtenerFila(boton) == fila && !boton.getText().equals("") && fila == contFilas){ //verificar q estén en misma fila ya q desigualdad es mef o maf
+                        if (obtenerColumna(boton) ==columna-1){
+                            if(desigualdad.getText().trim().equals(">")){
+                                if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) < Integer.parseInt(valor)){
+                                    boton.setBackground(Color.red);
+                                    throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MENOR");
+                                }
+                            } else  if(desigualdad.getText().trim().equals("<")){
+                                if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) > Integer.parseInt(valor)){
+                                    boton.setBackground(Color.red);
+                                    throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MAYOR");
+                                }
+                            }
+                        }
+                    }
+                
+                }
+            } else if(columna == cont && !filaOColumna){
+                for (JButton boton : matriz.getBotonesCasillas()){
+                    if (obtenerFila(boton) == fila-1 && obtenerColumna(boton) == columna && !boton.getText().equals("") && fila ==contFilas){ //boton está justo arriba que el seleccionado
+                        if(desigualdad.getText().trim().equals("^")){
+                            if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) > Integer.parseInt(valor)){
+                                boton.setBackground(Color.red);
+                                throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MAYOR");
+                            }   
+                          }
+                        else if(desigualdad.getText().trim().equals("V")){
+                              if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) < Integer.parseInt(valor)){
+                                      boton.setBackground(Color.red);
+                                      throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MENOR");
+                                  } 
+                        }
+                    }else if (obtenerFila(boton) == fila+1 && obtenerColumna(boton) == columna && !boton.getText().equals("") && fila ==contFilas){ //boton está justo abajo del seleccionado
+                        if(desigualdad.getText().trim().equals("^")){
+                            if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) < Integer.parseInt(valor)){
+                                boton.setBackground(Color.red);
+                                throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MENOR 11");
+                            }   
+                          }
+                        else if(desigualdad.getText().trim().equals("V")){
+                              if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) > Integer.parseInt(valor)){
+                                  boton.setBackground(Color.red);
+                                  throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MAYOR 11");
+                              } 
+                        }
+                    }
+                }
+            
+            }
+            cont++;
+        }
     }    
     
     //se encarga de revisar si todas las casillas están completadas
@@ -753,9 +851,6 @@ public class PantallaJuegoControlador {
             JOptionPane.showMessageDialog(pantalla, "Error al cargar el juego: " + e.getMessage());
         }
     }
-
-
-
 
 
 }
