@@ -724,37 +724,84 @@ public class PantallaJuegoControlador {
     }
     
     private void guardarJuego(String archivo) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, false))) {
-            // Guardar el estado de los botones
-            for (JButton boton : pantalla.botones) {
-                String texto = boton.getText().replaceAll("<[^>]*>", ""); // Elimina etiquetas HTML
-                boolean habilitado = boton.isEnabled();
-                if (!habilitado) { // Si el botón está deshabilitado, es una constante
-                    writer.write("CONSTANTE;" + texto + ";" + habilitado + "\n");
-                } else {
-                    writer.write(texto + ";" + habilitado + "\n");
+        String jugador = pantalla.lblNombre.getText().trim(); // Obtiene el nombre del jugador desde la etiqueta
+
+        if (jugador.equalsIgnoreCase("Incógnito")) {
+            JOptionPane.showMessageDialog(pantalla, "No se puede guardar la partida con el nombre 'Incógnito'. Cambie el nombre del jugador.");
+            return; // Salir si el jugador es "Incógnito"
+        }
+
+        try {
+            // Leer las partidas existentes
+            ArrayList<String> partidasExistentes = new ArrayList<>();
+            try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+                String linea;
+                StringBuilder partidaActual = new StringBuilder();
+                boolean esPartidaJugador = false;
+
+                while ((linea = reader.readLine()) != null) {
+                    if (linea.startsWith("JUGADOR:")) {
+                        // Si ya hay una partida acumulada, guárdala en la lista
+                        if (partidaActual.length() > 0 && !esPartidaJugador) {
+                            partidasExistentes.add(partidaActual.toString());
+                        }
+                        // Inicia una nueva partida
+                        partidaActual = new StringBuilder();
+                        esPartidaJugador = linea.equalsIgnoreCase("JUGADOR:" + jugador);
+                    }
+                    // Acumula las líneas de la partida actual
+                    partidaActual.append(linea).append("\n");
+                }
+
+                // Agregar la última partida si no es del jugador actual
+                if (partidaActual.length() > 0 && !esPartidaJugador) {
+                    partidasExistentes.add(partidaActual.toString());
+                }
+            } catch (Exception e) {
+                // Si no existe el archivo, no hay partidas existentes
+            }
+
+            // Sobrescribir la partida del jugador actual
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, false))) {
+                // Guardar las partidas existentes (excepto la del jugador actual)
+                for (String partida : partidasExistentes) {
+                    writer.write(partida);
+                }
+
+                // Guardar la nueva partida del jugador actual
+                writer.write("JUGADOR:" + jugador + "\n");
+
+                // Guardar el estado de los botones
+                for (JButton boton : pantalla.botones) {
+                    String texto = boton.getText().replaceAll("<[^>]*>", ""); // Elimina etiquetas HTML
+                    boolean habilitado = boton.isEnabled();
+                    if (!habilitado) { // Si el botón está deshabilitado, es una constante
+                        writer.write("CONSTANTE;" + texto + ";" + habilitado + "\n");
+                    } else {
+                        writer.write(texto + ";" + habilitado + "\n");
+                    }
+                }
+
+                // Guardar las desigualdades
+                for (JLabel desigualdad : pantalla.desigualdades) {
+                    writer.write("DESIGUALDAD;" + desigualdad.getText() + "\n");
+                }
+
+                // Guardar el tiempo del temporizador
+                Reloj reloj = juego.getReloj();
+                writer.write("TIEMPO;" + reloj.getHoras() + ";" + reloj.getMinutos() + ";" + reloj.getSegundos() + "\n");
+
+                // Guardar las pilas de jugadas
+                for (Movimiento jugada : pilaJugadas) {
+                    writer.write("JUGADA;" + jugada.getFila() + ";" + jugada.getColumna() + ";" + jugada.getValor() + "\n");
+                }
+
+                for (Movimiento jugadaBorrada : pilaJugadasBorradas) {
+                    writer.write("BORRADA;" + jugadaBorrada.getFila() + ";" + jugadaBorrada.getColumna() + ";" + jugadaBorrada.getValor() + "\n");
                 }
             }
 
-            // Guardar las desigualdades
-            for (JLabel desigualdad : pantalla.desigualdades) {
-                writer.write("DESIGUALDAD;" + desigualdad.getText() + "\n");
-            }
-
-            // Guardar el tiempo del temporizador
-            Reloj reloj = juego.getReloj();
-            writer.write("TIEMPO;" + reloj.getHoras() + ";" + reloj.getMinutos() + ";" + reloj.getSegundos() + "\n");
-
-            // Guardar las pilas de jugadas
-            for (Movimiento jugada : pilaJugadas) {
-                writer.write("JUGADA;" + jugada.getFila() + ";" + jugada.getColumna() + ";" + jugada.getValor() + "\n");
-            }
-
-            for (Movimiento jugadaBorrada : pilaJugadasBorradas) {
-                writer.write("BORRADA;" + jugadaBorrada.getFila() + ";" + jugadaBorrada.getColumna() + ";" + jugadaBorrada.getValor() + "\n");
-            }
-
-            JOptionPane.showMessageDialog(pantalla, "Juego guardado con éxito.");
+            JOptionPane.showMessageDialog(pantalla, "Partida guardada con éxito para el jugador: " + jugador);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(pantalla, "Error al guardar el juego: " + e.getMessage());
         }
@@ -762,89 +809,120 @@ public class PantallaJuegoControlador {
 
 
     private void cargarJuego(String archivo) {
+        String jugador = pantalla.lblNombre.getText().trim(); // Obtiene el nombre del jugador desde la etiqueta
+
+        if (jugador.equalsIgnoreCase("Incógnito")) {
+            JOptionPane.showMessageDialog(pantalla, "No se puede cargar una partida para el jugador 'Incógnito'. Cambie el nombre del jugador.");
+            return; // Salir si el jugador es "Incógnito"
+        }
+
         try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
             String linea;
+            boolean esPartidaJugador = false;
             int botonIndex = 0; // Índice para rastrear los botones
             int desigualdadIndex = 0; // Índice para rastrear las desigualdades
 
             borrarJuego(); // Limpia el tablero actual antes de cargar
 
             while ((linea = reader.readLine()) != null) {
-                String[] partes = linea.split(";");
+                if (linea.startsWith("JUGADOR:")) {
+                    // Verifica si el jugador coincide
+                    esPartidaJugador = linea.equalsIgnoreCase("JUGADOR:" + jugador);
+                    continue; // Salta a la siguiente línea
+                }
 
-                if (partes.length > 0) {
-                    switch (partes[0]) {
-                        case "CONSTANTE":
-                            // Manejo de constantes
-                            if (botonIndex < pantalla.botones.size()) {
-                                JButton boton = pantalla.botones.get(botonIndex);
-                                String texto = partes[1]; // Recupera el valor limpio de la constante
-                                boton.setText("<html><b style='color: black; font-size: 14px;'>" + texto + "</b></html>");
-                                boton.setEnabled(false); // Deshabilita el botón para marcarlo como constante
-                                botonIndex++;
-                            }
-                            break;
+                if (esPartidaJugador) {
+                    String[] partes = linea.split(";");
 
-                        case "DESIGUALDAD":
-                            // Manejo de desigualdades
-                            if (desigualdadIndex < pantalla.desigualdades.size()) {
-                                String texto = partes.length > 1 ? partes[1] : ""; // Evitar problemas con desigualdades vacías
-                                pantalla.desigualdades.get(desigualdadIndex).setText(texto);
-                                desigualdadIndex++;
-                            }
-                            break;
-
-                        case "TIEMPO":
-                            // Manejo del tiempo del temporizador
-                            if (partes.length >= 4) {
-                                Reloj reloj = juego.getReloj();
-                                reloj.setHoras(Integer.parseInt(partes[1]));
-                                reloj.setMinutos(Integer.parseInt(partes[2]));
-                                reloj.setSegundos(Integer.parseInt(partes[3]));
-                                inicializarTablaTemporizador();
-                            }
-                            break;
-
-                        case "JUGADA":
-                            // Manejo de las jugadas
-                            if (partes.length >= 4) {
-                                int fila = Integer.parseInt(partes[1]);
-                                int columna = Integer.parseInt(partes[2]);
-                                String valor = partes[3];
-                                JButton boton = obtenerBoton(fila, columna);
-                                boton.setText(valor);
-                                boton.setEnabled(true); // Asegura que sea interactivo si no es constante
-                                pilaJugadas.push(new Movimiento(fila, columna, valor));
-                            }
-                            break;
-
-                        default:
-                            // Manejo de botones regulares
-                            if (botonIndex < pantalla.botones.size()) {
-                                JButton boton = pantalla.botones.get(botonIndex);
-                                if (partes.length >= 2) {
-                                    String texto = partes[0];
-                                    boolean habilitado = Boolean.parseBoolean(partes[1]);
-
-                                    if (!habilitado) {
-                                        // Si es constante, aplica el formato
-                                        boton.setText("<html><b style='color: black; font-size: 14px;'>" + texto + "</b></html>");
-                                    } else {
-                                        boton.setText(texto.isEmpty() ? "" : texto); // Asegúrate de que no quede vacío
-                                    }
-                                    boton.setEnabled(habilitado);
-                                } else {
-                                    boton.setText(""); // Por defecto, vacío si no hay texto
-                                    boton.setEnabled(true); // Por defecto, habilitado
+                    if (partes.length > 0) {
+                        switch (partes[0]) {
+                            case "CONSTANTE":
+                                // Manejo de constantes
+                                if (botonIndex < pantalla.botones.size()) {
+                                    JButton boton = pantalla.botones.get(botonIndex);
+                                    String texto = partes[1]; // Recupera el valor limpio de la constante
+                                    boton.setText("<html><b style='color: black; font-size: 14px;'>" + texto + "</b></html>");
+                                    boton.setEnabled(false); // Deshabilita el botón para marcarlo como constante
+                                    botonIndex++;
                                 }
-                                botonIndex++;
-                            }
-                            break;
+                                break;
+
+                            case "DESIGUALDAD":
+                                // Manejo de desigualdades
+                                if (desigualdadIndex < pantalla.desigualdades.size()) {
+                                    String texto = partes.length > 1 ? partes[1] : ""; // Evitar problemas con desigualdades vacías
+                                    pantalla.desigualdades.get(desigualdadIndex).setText(texto);
+                                    desigualdadIndex++;
+                                }
+                                break;
+
+                            case "TIEMPO":
+                                // Manejo del tiempo del temporizador
+                                if (partes.length >= 4) {
+                                    Reloj reloj = juego.getReloj();
+                                    reloj.setHoras(Integer.parseInt(partes[1]));
+                                    reloj.setMinutos(Integer.parseInt(partes[2]));
+                                    reloj.setSegundos(Integer.parseInt(partes[3]));
+                                    inicializarTablaTemporizador();
+                                }
+                                break;
+
+                            case "JUGADA":
+                                // Manejo de las jugadas
+                                if (partes.length >= 4) {
+                                    int fila = Integer.parseInt(partes[1]);
+                                    int columna = Integer.parseInt(partes[2]);
+                                    String valor = partes[3];
+                                    JButton boton = obtenerBoton(fila, columna);
+                                    boton.setText(valor);
+                                    boton.setEnabled(true); // Asegura que sea interactivo si no es constante
+                                    pilaJugadas.push(new Movimiento(fila, columna, valor));
+                                }
+                                break;
+
+                            case "BORRADA":
+                                // Manejo de jugadas borradas
+                                if (partes.length >= 4) {
+                                    int fila = Integer.parseInt(partes[1]);
+                                    int columna = Integer.parseInt(partes[2]);
+                                    String valor = partes[3];
+                                    pilaJugadasBorradas.push(new Movimiento(fila, columna, valor));
+                                }
+                                break;
+
+                            default:
+                                // Manejo de botones regulares
+                                if (botonIndex < pantalla.botones.size()) {
+                                    JButton boton = pantalla.botones.get(botonIndex);
+                                    if (partes.length >= 2) {
+                                        String texto = partes[0];
+                                        boolean habilitado = Boolean.parseBoolean(partes[1]);
+
+                                        if (!habilitado) {
+                                            // Si es constante, aplica el formato
+                                            boton.setText("<html><b style='color: black; font-size: 14px;'>" + texto + "</b></html>");
+                                        } else {
+                                            boton.setText(texto.isEmpty() ? "" : texto); // Asegúrate de que no quede vacío
+                                        }
+                                        boton.setEnabled(habilitado);
+                                    } else {
+                                        boton.setText(""); // Por defecto, vacío si no hay texto
+                                        boton.setEnabled(true); // Por defecto, habilitado
+                                    }
+                                    botonIndex++;
+                                }
+                                break;
+                        }
                     }
                 }
             }
 
-            JOptionPane.showMessageDialog(pantalla, "Juego cargado con éxito.");
+            if (!esPartidaJugador) {
+                JOptionPane.showMessageDialog(pantalla, "No se encontró una partida guardada para el jugador: " + jugador);
+                return; // Salir si no se encontró partida para el jugador
+            }
+
+            JOptionPane.showMessageDialog(pantalla, "Juego cargado con éxito para el jugador: " + jugador);
             juegoEnProgreso = true; // Indica que el juego está en progreso
         } catch (Exception e) {
             e.printStackTrace(); // Muestra detalles del error en la consola
