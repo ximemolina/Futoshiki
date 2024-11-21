@@ -17,6 +17,7 @@ import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.FileReader;
+import java.util.List;
 
 
 
@@ -398,7 +399,7 @@ public class PantallaJuegoControlador {
         int constante = 0;
         boolean identificador; //false: menor || true: mayor
         for (int i=0; i<valores.length;i++){
-            if ((String.valueOf(valores[i])).trim().equals("const")){
+            if ((String.valueOf(valores[i])).replaceAll("[\\[\\]]", "").trim().equals("const")){
 
                 constante = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
                 columna= Integer.parseInt((String.valueOf(valores[i+3]).replaceAll("[\\[\\]]", "").trim()));
@@ -415,12 +416,12 @@ public class PantallaJuegoControlador {
                 columna= Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
                 identificador = false;
                 desigualdadesFila(columna, fila, identificador);
-            } else if ((String.valueOf(valores[i])).trim().equals("mac")){ // mayor en columna
+            } else if ((String.valueOf(valores[i])).replaceAll("[\\[\\]]", "").trim().equals("mac")){ // mayor en columna
                 fila = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
                 columna= Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
                 identificador = true;
                 desigualdadesColumna(columna, fila, identificador);
-            } else if ((String.valueOf(valores[i])).trim().equals("mec")){ // menor en columna
+            } else if ((String.valueOf(valores[i])).replaceAll("[\\[\\]]", "").trim().equals("mec")){ // menor en columna
                 fila = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
                 columna= Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
                 identificador = false;
@@ -540,7 +541,6 @@ public class PantallaJuegoControlador {
         }
 
         // No borrar las desigualdades, así que no iteramos sobre pantalla.desigualdades
-        // Dejar explícito que no se hace nada aquí es opcional
 
         // Limpiar las pilas de jugadas
         pilaJugadas.clear();
@@ -668,7 +668,7 @@ public class PantallaJuegoControlador {
                             }   
                           }
                         else if(desigualdad.getText().trim().equals("V")){
-                              if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) > Integer.parseInt(valor)){
+                              if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", "").trim())) > Integer.parseInt(valor)){
                                   boton.setBackground(Color.red);
                                   throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MAYOR 11");
                               } 
@@ -681,6 +681,24 @@ public class PantallaJuegoControlador {
         }
     }    
     
+    //limpia todos los botones y desigualdades de la plantilla
+    private void limpiarTodo(){
+
+        for (int i = 0; i < matriz.getBotonesCasillas().size(); i++) {
+            JButton boton = matriz.getBotonesCasillas().get(i);
+            
+            boton.setText("");
+            boton.setEnabled(true); // Reactiva el botón si estaba deshabilitado
+        }
+        
+        for(JLabel desigualdad : matriz.getDesigualdades()){
+            desigualdad.setText("");
+        }
+        // Limpiar las pilas de jugadas
+        pilaJugadas.clear();
+        pilaJugadasBorradas.clear();
+    }
+    
     //se encarga de revisar si todas las casillas están completadas
     private void revisarGane(){
         for (JButton boton : matriz.getBotonesCasillas()){
@@ -690,12 +708,53 @@ public class PantallaJuegoControlador {
         if(!juego.isMultinivel()){ //si es multinivel, continuaría con el siguiente nivel, no finalizaría la partida
             JOptionPane.showMessageDialog(pantalla, "¡Excelente, juego terminado con éxito!");
             // **********************aqui se revisa si el jugador va para top 10 o no **********************************
-
+            //***********************también debe detener reloj**************************
+            
+            
+            
             //luego de ganar, vuelve a menu principal
             MenuPrincipal pantalla2 = new MenuPrincipal(); //inicializa pantalla configuracion
             pantalla.setVisible(false);
             pantalla2.setVisible(true);
             MenuPrincipalControlador controlador = new MenuPrincipalControlador(juego,pantalla2);// envia las clases necesarias al controlador del menu principal
+        } else{
+            limpiarTodo();
+            int numNivel = juego.getNivel() +1;
+            if (numNivel > 2){ //si ya llegó al nivel máximo (dificil) se queda jugando ahí
+                // Selecciona una nueva partida al azar y actualiza los elementos del tablero
+                if (!matriz.getValoresArchivoPartida().isEmpty()) {
+                    int indice = partidaAzar();
+                    elementosJuego(indice); 
+                    // **********************aqui se revisa si el jugador va para top 10 o no **********************************
+                    
+                    
+                } else {
+                    JOptionPane.showMessageDialog(pantalla, "No hay más partidas disponibles para este nivel.");
+                    MenuPrincipal pantalla2 = new MenuPrincipal(); 
+                    pantalla.setVisible(false);
+                    pantalla2.setVisible(true);
+                    new MenuPrincipalControlador(juego, pantalla2);
+                }
+            }else { //en caso de que esté en nivel facil o intermedio, solo muestra partida de ese nivel
+                juego.setNivel(numNivel);
+                Archivo archivo = new Archivo();
+                archivo.cargarArchivoPartidas(juego.getNivel(), juego.getTamano()); //carga todas las partidas del siguiente nivel
+                List datosJuego = archivo.cargarArchivoPartidas(juego.getNivel(),juego.getTamano()); // carga info de partidas
+                juego.getMatriz().setValoresArchivoPartida(datosJuego);
+                this.matriz = juego.getMatriz();
+                elementosJuego(partidaAzar());//muestra en pantalla partida
+                mostrarNivel(); //actualiza el label de nivel
+                resetearBotonesNumeros(pantalla.btnVolver); // manda un boton random para poder llamar a la funcion y asi limpiar cualquier num que haya quedado seleccionado
+                juegoEnProgreso = true;
+                
+                // **********************aqui se revisa si el jugador va para top 10 o no **********************************
+                /*
+                    En caso de que la opción Multinivel esté con el valor Si, el tiempo en el temporizador es
+                    el total para todos los niveles.
+
+                */
+                
+            }
         }
     }
     

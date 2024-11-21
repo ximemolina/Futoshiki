@@ -1,7 +1,5 @@
 package vistaFutoshiki;
 
-
-import java.awt.Color;
 import modeloFutoshiki.*;
 
 import java.awt.Image;
