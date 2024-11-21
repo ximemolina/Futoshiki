@@ -4,6 +4,9 @@ import java.io.*;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import java.util.*;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author ximena molina - juan pablo cambronero
@@ -67,43 +70,7 @@ public class Archivo {
        }
     }
     
-    //guardar el juego actual
-    public void guardarArchivoJuegoActual(Juego juego){
-        ArrayList<List> lista = new ArrayList<>();
-        lista.add(juego.getJugador().listaInfo());
-        lista.add(juego.listaInfo());
-        lista.add(juego.getMatriz().listaInfo());
-        /*    
-        List<String> lineas = new ArrayList<>();
 
-        // Leer todas las líneas del archivo
-        try (BufferedReader reader = new BufferedReader(new FileReader("futoshiki2024juegoactual.txt"))) {
-            String linea;
-
-            while ((linea = reader.readLine()) != null) {
-                String[] elementos = linea.split(",");
-                if (elementos.length >= 2 && elementos[0].trim().equals(juego.getJugador().getNombre())) {
-                    elementos[1] = contrasenaNueva; // Modificar el segundo elemento
-                    linea = String.join(",", elementos); // Reconstruir la línea
-                }
-                lineas.add(linea);
-            }
-        } catch (IOException e) {
-            System.out.println("Error al leer el archivo: " + e.getMessage());
-            return;
-        }
-
-        // Escribir las líneas modificadas de nuevo en el archivo
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("futoshiki2024juegoactual.txt"))) {
-            for (String linea : lineas) {
-                writer.write(linea);
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            System.out.println("Error al escribir en el archivo: " + e.getMessage());
-        }*/
-
-    }
     
     //cargar archivo tipo xml que contiene todas las posibles combinaciones de partidas
     public List cargarArchivoPartidas(int numNivel, int cuadricula){
@@ -272,5 +239,65 @@ public class Archivo {
         }
     }
     
+    //carga la tabla con las posiciones del tamano de cuadricula pedido
+    public static void cargarTablaPosiciones( int tamanoCuadricula, JTable tabla) {
+
+        DefaultTableModel modelo = new DefaultTableModel(new String[]{"Dificultad", "Jugador", "Tiempo"}, 0); //crea tabla
+
+        List<Object[]> filas = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader("futoshiki2024top10.txt"))) {
+            String linea;
+            boolean procesar = false;
+
+            while ((linea = br.readLine()) != null) {
+                linea = linea.trim();
+
+                // Identificar el tamaño de cuadrícula
+                if (linea.startsWith("Tamaño:")) {
+                    int tamanoActual = Integer.parseInt(linea.split(":")[1].trim());
+                    procesar = (tamanoActual == tamanoCuadricula); //si ambos son iguales retornan true
+                } else if (procesar && !linea.isEmpty()) {
+                    // Procesar solo si estamos en el tamaño de cuadrícula deseado
+                    String[] partes = linea.split(",");
+                    if (partes.length == 3) {
+                        String dificultad = partes[0].trim();
+                        String jugador = partes[1].trim();
+                        String tiempo = partes[2].trim();
+
+                        // Añadir los datos a la lista de filas
+                        filas.add(new Object[]{dificultad, jugador, tiempo});
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo: " + e.getMessage());
+        }
+
+        // Ordenar las filas directamente en la lista
+        filas.sort((fila1, fila2) -> {String dificultad1 = fila1[0].toString();String dificultad2 = fila2[0].toString();
+            return Integer.compare(obtenerPrioridad(dificultad1), obtenerPrioridad(dificultad2));});
+
+        for (Object[] fila : filas) {
+            modelo.addRow(fila);
+        }
+        
+        tabla.setModel(modelo);
+    } 
+    
+    //retorna prioridad en que se mostrarán las cosas en la tabla
+    public static int obtenerPrioridad(String dificultad) {
+        switch (dificultad.toLowerCase()) {
+            case "dificil":
+                return 1;
+            case "intermedio":
+                return 2;
+            case "facil":
+                return 3;
+            default:
+                return Integer.MAX_VALUE; // Cualquier otro valor tendrá menor prioridad
+        }
+    }
 
 }
