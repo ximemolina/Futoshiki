@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import vistaFutoshiki.*;
 import modeloFutoshiki.*;
 
@@ -89,7 +91,8 @@ public class MenuConfiguracionControlador {
                         JOptionPane.showMessageDialog(menu, "Por favor ingrese valores numéricos válidos para el temporizador", "Error", JOptionPane.ERROR_MESSAGE);
                         return; // Salir del método si hay un error de formato
                     } catch (IllegalArgumentException x){
-                        JOptionPane.showMessageDialog(menu, "Error de Configuracion", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(menu, x.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
 
                 } else if (menu.btnSinReloj.isSelected()) juego.getReloj().setTipo(0);
@@ -108,22 +111,39 @@ public class MenuConfiguracionControlador {
                             JOptionPane.ERROR_MESSAGE);
                         return; // Salir del método si la validación falla
                     }else {
+                        if(!correo.contains("@")){ //verificar que haya ingresado un correo válido
+                            JOptionPane.showMessageDialog(menu, "Ingrese un correo válido", "Error",JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
                         if (archivo.validarNombreUnico(nombre)){ //validar que el nombre sea único
-                            Jugador jugador = new Jugador(nombre, contraseña, correo);
-                            juego.setJugador(jugador);
-                            archivo.guardarArchivoJugadores(jugador.toString());
+                            try{
+                                Jugador jugador = new Jugador(nombre, contraseña, correo);
+                                juego.setJugador(jugador);
+                                archivo.guardarArchivoJugadores(jugador.toString());
+                            }catch(Exception m){
+                                JOptionPane.showMessageDialog(menu, m.getMessage(), "Error",JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
                         }else{
                             JOptionPane.showMessageDialog(menu, "Debe registrar otro nombre, ese ya está siendo utilizado", "Error",JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                     }
+                }else if (!contraseña.isEmpty() || !correo.isEmpty()){
+                    JOptionPane.showMessageDialog(menu, "Debe ingresar todos los datos correspondientes al usuario si desea crear uno", "Error",JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
                 
                 if(!menu.inpNombreIngresar.getText().isEmpty() && !menu.inpContraseñaIngresar.getText().isEmpty()){
                     String correo2 = archivo.validarContrasena(menu.inpNombreIngresar.getText(), menu.inpContraseñaIngresar.getText());
                     if (correo2 != null){
-                       Jugador jugador = new Jugador(menu.inpNombreIngresar.getText(),menu.inpContraseñaIngresar.getText(),correo2);
-                       juego.setJugador(jugador);
+                        try{
+                            Jugador jugador = new Jugador(menu.inpNombreIngresar.getText(),menu.inpContraseñaIngresar.getText(),correo2);
+                            juego.setJugador(jugador);
+                        }catch(Exception r){
+                            JOptionPane.showMessageDialog(menu, r.getMessage(), "Error",JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
                    } else{
                         JOptionPane.showMessageDialog(menu, "Usuario no encontrado", "Error",JOptionPane.ERROR_MESSAGE);
                         return;
@@ -315,9 +335,10 @@ public class MenuConfiguracionControlador {
                     Archivo archivo = new Archivo();
                     String correoUsuario = archivo.recuperarCorreo(menu.inpNombreIngresar.getText());
                     if (correoUsuario != null){
-                        
-                        Jugador jugador = new Jugador(menu.inpNombreIngresar.getText(), menu.inpContraseñaIngresar.getText(), correoUsuario);
-                        juego.setJugador(jugador); //se setea para utilizar datos en pantalla de olvido de contraseña
+                        try{
+                            Jugador jugador = new Jugador(menu.inpNombreIngresar.getText(), menu.inpContraseñaIngresar.getText(), correoUsuario);
+                            juego.setJugador(jugador); //se setea para utilizar datos en pantalla de olvido de contraseña
+                        }catch(Exception t){} //ignorar validación
                         
                         String pin = generarPin();
                         // Crear una instancia de la clase Correo
@@ -340,6 +361,91 @@ public class MenuConfiguracionControlador {
                 }else
                     JOptionPane.showMessageDialog(null, "Debe ingresar un usuario válido", "ERROR", JOptionPane.ERROR_MESSAGE);
                
+            }
+        });
+        
+        this.menu.inpNombre.getDocument().addDocumentListener(new DocumentListener() {//espera a que usuario ingrese algún dato en el input
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                revisarInputs();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                revisarInputs();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                revisarInputs();
+            }
+        });
+        
+        this.menu.inpCorreo.getDocument().addDocumentListener(new DocumentListener() { //espera a que usuario ingrese algún dato en el input
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                revisarInputs();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                revisarInputs();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                revisarInputs();
+            }
+        });
+        
+        this.menu.inpContraseña.getDocument().addDocumentListener(new DocumentListener() { //espera a que usuario ingrese algún dato en el input
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                revisarInputs();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                revisarInputs();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                revisarInputs();
+            }
+        });
+        
+        this.menu.inpNombreIngresar.getDocument().addDocumentListener(new DocumentListener() { //espera a que usuario ingrese algún dato en el input
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                revisarInputs();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                revisarInputs();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                revisarInputs();
+            }
+        });
+        
+        this.menu.inpContraseñaIngresar.getDocument().addDocumentListener(new DocumentListener() { //espera a que usuario ingrese algún dato en el input
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                revisarInputs();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                revisarInputs();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                revisarInputs();
             }
         });
     }
@@ -413,6 +519,32 @@ public class MenuConfiguracionControlador {
             }
             String pin = sb.toString();
         return pin;
+    }
+    
+    void revisarInputs(){
+        if(!menu.inpContraseña.getText().isEmpty() || !menu.inpNombre.getText().isEmpty() || !menu.inpCorreo.getText().isEmpty()){
+            menu.inpNombreIngresar.setEnabled(false);
+            menu.inpContraseñaIngresar.setEnabled(false);
+            menu.inpNombreIngresar.setText("");
+            menu.inpContraseñaIngresar.setText("");
+        }else{
+            menu.inpContraseñaIngresar.setEnabled(true);
+            menu.inpNombreIngresar.setEnabled(true);
+        }
+        if(!menu.inpContraseñaIngresar.getText().isEmpty() || !menu.inpNombreIngresar.getText().isEmpty()){
+            menu.inpNombre.setEnabled(false);
+            menu.inpContraseña.setEnabled(false);
+            menu.inpCorreo.setEnabled(false);
+            menu.inpNombre.setText("");
+            menu.inpContraseña.setText("");
+            menu.inpCorreo.setText("");
+        }else{
+            menu.inpContraseña.setEnabled(true);
+            menu.inpNombre.setEnabled(true);
+            menu.inpCorreo.setEnabled(true);
+        }    
+        
+    
     }
     
     void seleccionarBotones(){

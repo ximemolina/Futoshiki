@@ -21,22 +21,6 @@ public class MatrizJuego {
         botonesCasillas = new ArrayList <> ();
         botonesNumeros = new ArrayList <>();
         desigualdades = new ArrayList <> ();
-        
-    }
-    
-    //desplega ArrayList con toda la info de la matriz
-    public ArrayList listaInfo(){
-        ArrayList<String> lista = new ArrayList<>();
-        lista.add(String.valueOf(dimension));
-        lista.add(String.valueOf(valoresArchivoPartida));
-        lista.add(String.valueOf(botonesCasillas));
-        lista.add(String.valueOf(botonesNumeros));
-        lista.add(String.valueOf(desigualdades));
-        lista.add(String.valueOf(indicePartida));
-        for(int i = 0; i < lista.size(); i++){
-            System.out.println(lista.get(i));//para pruebas
-        }
-        return lista;
     }
     
     // <editor-fold defaultstate="collapsed" desc="Setters - Getters"> 
