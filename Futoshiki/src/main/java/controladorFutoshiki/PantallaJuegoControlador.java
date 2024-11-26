@@ -271,6 +271,10 @@ public class PantallaJuegoControlador {
         pantalla.btnGuardarJuego.setEnabled(false);
         pantalla.btnBorrarJugada.setEnabled(false);
         pantalla.btnTerminarJuego.setEnabled(false);
+        pantalla.btnBorrador.setEnabled(false);
+        for (JButton btn : pantalla.botonesNumeros){
+            btn.setEnabled(false);
+        }
     }
     
     // Muestra el nombre del jugador en la etiqueta lblNombre
@@ -387,7 +391,10 @@ public class PantallaJuegoControlador {
         pantalla.btnGuardarJuego.setEnabled(true);
         pantalla.btnBorrarJugada.setEnabled(true);
         pantalla.btnTerminarJuego.setEnabled(true);
-        
+        pantalla.btnBorrador.setEnabled(true);
+        for (JButton btn : pantalla.botonesNumeros){
+            btn.setEnabled(true);
+        }
         //desactiva botones ya que solo se pueden utilizar cuando no se ha iniciado juego
         pantalla.btnCargarJuego.setEnabled(false);
         pantalla.btnJugar.setEnabled(false);
@@ -707,11 +714,15 @@ public class PantallaJuegoControlador {
         
         if(!juego.isMultinivel()){ //si es multinivel, continuaría con el siguiente nivel, no finalizaría la partida
             JOptionPane.showMessageDialog(pantalla, "¡Excelente, juego terminado con éxito!");
-            // **********************aqui se revisa si el jugador va para top 10 o no **********************************
-            //***********************también debe detener reloj**************************
-            
-            
-            
+            /************************************************************************************************************************
+                    cuando ya se tiene el tiempo que duró el jugador, se pasa al formato q se ve ahi abajo (Hora : Mins : S)
+                    esa función ya se encarga de acomodar y clasificar todo en el archivo para el top 10
+                    
+                        try{
+                            Archivo.agregarInformacionTop10(juego, tiempo); "01:05:10"
+                        }catch(Exception e){}
+            */
+
             //luego de ganar, vuelve a menu principal
             MenuPrincipal pantalla2 = new MenuPrincipal(); //inicializa pantalla configuracion
             pantalla.setVisible(false);
@@ -721,18 +732,17 @@ public class PantallaJuegoControlador {
             limpiarTodo();
             int numNivel = juego.getNivel() +1;
             if (numNivel > 2){ //si ya llegó al nivel máximo (dificil) se queda jugando ahí
-                // Selecciona una nueva partida al azar y actualiza los elementos del tablero
-                if (!matriz.getValoresArchivoPartida().isEmpty()) {
-                    int indice = partidaAzar();
-                    elementosJuego(indice); 
-                    /***************************************************
+                 /************************************************************************************************************************
                     cuando ya se tiene el tiempo que duró el jugador, se pasa al formato q se ve ahi abajo (Hora : Mins : S)
                     esa función ya se encarga de acomodar y clasificar todo en el archivo para el top 10
                     
                         try{
                             Archivo.agregarInformacionTop10(juego, tiempo); "01:05:10"
                         }catch(Exception e){}
-                    */
+                */
+                if (!matriz.getValoresArchivoPartida().isEmpty()) {
+                    int indice = partidaAzar();
+                    elementosJuego(indice); 
                 } else {
                     JOptionPane.showMessageDialog(pantalla, "No hay más partidas disponibles para este nivel.");
                     MenuPrincipal pantalla2 = new MenuPrincipal(); 
@@ -741,6 +751,15 @@ public class PantallaJuegoControlador {
                     new MenuPrincipalControlador(juego, pantalla2);
                 }
             }else { //en caso de que esté en nivel facil o intermedio, solo muestra partida de ese nivel
+                
+                /****************************************************************************************************************************
+                cuando ya se tiene el tiempo que duro el jugador, se pasa al formato q se ve ahi abajo Hora : Mins : S
+                esa función ya se encarga de acomodar y clasificar todo en el archivo para el top 10
+                
+                    try{
+                        Archivo.agregarInformacionTop10(juego, tiempo); "01:05:10"
+                    }catch(Exception e){}
+                */
                 juego.setNivel(numNivel);
                 Archivo archivo = new Archivo();
                 archivo.cargarArchivoPartidas(juego.getNivel(), juego.getTamano()); //carga todas las partidas del siguiente nivel
@@ -749,19 +768,8 @@ public class PantallaJuegoControlador {
                 this.matriz = juego.getMatriz();
                 elementosJuego(partidaAzar());//muestra en pantalla partida
                 mostrarNivel(); //actualiza el label de nivel
-                resetearBotonesNumeros(pantalla.btnVolver); // manda un boton random para poder llamar a la funcion y asi limpiar cualquier num que haya quedado seleccionado
+                resetearBotonesNumeros(pantalla.btnVolver); // manda un boton random para poder llamar a la funcion y limpiar cualquier num que haya quedado seleccionado
                 juegoEnProgreso = true;
-                
-                /*************************************************** 
-                cuando ya se tiene el tiempo que duro el jugador, se pasa al formato q se ve ahi abajo Hora : Mins : S
-                esa función ya se encarga de acomodar y clasificar todo en el archivo para el top 10
-                
-                    try{
-                        Archivo.agregarInformacionTop10(juego, tiempo); "01:05:10"
-                    }catch(Exception e){}
-
-                */
-                
             }
         }
     }
