@@ -34,7 +34,7 @@ public class Correo {
         properties.put("mail.smtp.auth", "true"); // Habilitar autenticación SMTP
         properties.put("mail.smtp.starttls.enable", "true"); // Habilitar StartTLS
         properties.put("mail.smtp.host", host); // Servidor SMTP
-        properties.put("mail.smtp.port", "587"); // Puerto SMTP (comúnmente 587 para TLS)
+        properties.put("mail.smtp.port", "587"); // Puerto SMTP
         properties.put("mail.smtp.ssl.trust", host); // Confiar en el host SMTP
     }
     

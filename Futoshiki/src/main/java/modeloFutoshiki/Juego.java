@@ -31,6 +31,14 @@ public class Juego {
         return String.valueOf(getTamano())+ "," + String.valueOf(getNivel())+ "," + isMultinivel()+ "," + isPosicion()+ "," + getReloj().toString();
     }
     
+    //retorna la dificultad en String en lugar de un entero
+    public String obtenerStringDificultad(){
+        if(nivel == 0) return "facil";
+        if(nivel == 1) return "intermedio";
+        if(nivel == 2) return "dificil";
+        return "";
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="Setters-Getters">
     public int getTamano() {
         return tamano;

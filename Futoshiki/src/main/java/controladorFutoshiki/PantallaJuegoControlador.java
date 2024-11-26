@@ -725,9 +725,14 @@ public class PantallaJuegoControlador {
                 if (!matriz.getValoresArchivoPartida().isEmpty()) {
                     int indice = partidaAzar();
                     elementosJuego(indice); 
-                    // **********************aqui se revisa si el jugador va para top 10 o no **********************************
+                    /***************************************************
+                    cuando ya se tiene el tiempo que duró el jugador, se pasa al formato q se ve ahi abajo (Hora : Mins : S)
+                    esa función ya se encarga de acomodar y clasificar todo en el archivo para el top 10
                     
-                    
+                        try{
+                            Archivo.agregarInformacionTop10(juego, tiempo); "01:05:10"
+                        }catch(Exception e){}
+                    */
                 } else {
                     JOptionPane.showMessageDialog(pantalla, "No hay más partidas disponibles para este nivel.");
                     MenuPrincipal pantalla2 = new MenuPrincipal(); 
@@ -747,10 +752,13 @@ public class PantallaJuegoControlador {
                 resetearBotonesNumeros(pantalla.btnVolver); // manda un boton random para poder llamar a la funcion y asi limpiar cualquier num que haya quedado seleccionado
                 juegoEnProgreso = true;
                 
-                // **********************aqui se revisa si el jugador va para top 10 o no **********************************
-                /*
-                    En caso de que la opción Multinivel esté con el valor Si, el tiempo en el temporizador es
-                    el total para todos los niveles.
+                /*************************************************** 
+                cuando ya se tiene el tiempo que duro el jugador, se pasa al formato q se ve ahi abajo Hora : Mins : S
+                esa función ya se encarga de acomodar y clasificar todo en el archivo para el top 10
+                
+                    try{
+                        Archivo.agregarInformacionTop10(juego, tiempo); "01:05:10"
+                    }catch(Exception e){}
 
                 */
                 
@@ -761,7 +769,7 @@ public class PantallaJuegoControlador {
     
     private void terminarJuego() {
         // Limpia el tablero actual
-        borrarJuego(); // Reutilizamos el método existente para limpiar el tablero excepto constantes y desigualdades.
+        limpiarTodo(); // Reutilizamos el método existente para limpiar el tablero excepto constantes y desigualdades.
 
         // Selecciona una nueva partida al azar y actualiza los elementos del tablero
         if (!matriz.getValoresArchivoPartida().isEmpty()) {

@@ -299,5 +299,139 @@ public class Archivo {
                 return Integer.MAX_VALUE; // Cualquier otro valor tendrá menor prioridad
         }
     }
+    
+    public static void agregarInformacionTop10( Juego juego, String tiempo) throws IOException {
+        int tamaño = juego.getTamano();
+        String dificultad = juego.obtenerStringDificultad();
+        String nombre = juego.getJugador().getNombre();
+        
+        List<String> lineas = new ArrayList<>();
+        boolean encontrado = false;
+        List<String> registrosTamaño = new ArrayList<>();
+        String encabezadoTamaño = "Tamaño: " + tamaño;
 
+        // Leer el archivo línea por línea
+        try (BufferedReader reader = new BufferedReader(new FileReader("futoshiki2024top10.txt"))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                lineas.add(linea);
+            }
+        }
+
+        // Procesar las líneas para encontrar el bloque correspondiente
+        for (int i = 0; i < lineas.size(); i++) {
+            String linea = lineas.get(i);
+            if (linea.equals(encabezadoTamaño)) {
+                encontrado = true;
+                registrosTamaño.clear();
+                int j = i + 1;
+
+                // Extraer las líneas del tamaño actual
+                while (j < lineas.size() && !lineas.get(j).startsWith("Tamaño:")) {
+                    registrosTamaño.add(lineas.get(j));
+                    j++;
+                }
+
+                // Salir del bucle, ya que el bloque fue encontrado
+                break;
+            }
+        }
+
+        // Clasificar las líneas por dificultad y agregar el nuevo registro
+        List<String> facil = new ArrayList<>();
+        List<String> intermedio = new ArrayList<>();
+        List<String> dificil = new ArrayList<>();
+
+        for (String registro : registrosTamaño) {
+            if (registro.startsWith("facil,")) facil.add(registro);
+            else if (registro.startsWith("intermedio,")) intermedio.add(registro);
+            else if (registro.startsWith("dificil,")) dificil.add(registro);
+        }
+
+        String nuevoRegistro = String.format("%s,%s,%s", dificultad, nombre, tiempo);
+        List<String> listaObjetivo = switch (dificultad) {
+            case "facil" -> facil;
+            case "intermedio" -> intermedio;
+            case "dificil" -> dificil;
+            default -> throw new IllegalArgumentException("Dificultad no válida");
+        };
+
+        agregarOrdenado(listaObjetivo, nuevoRegistro);
+
+        // Limitar cada lista a un máximo de 10 registros
+        if (facil.size() > 10) facil = facil.subList(0, 10);
+        if (intermedio.size() > 10) intermedio = intermedio.subList(0, 10);
+        if (dificil.size() > 10) dificil = dificil.subList(0, 10);
+
+        // Construir los nuevos registros para el tamaño actual
+        List<String> nuevosRegistrosTamaño = new ArrayList<>();
+        nuevosRegistrosTamaño.addAll(facil);
+        nuevosRegistrosTamaño.addAll(intermedio);
+        nuevosRegistrosTamaño.addAll(dificil);
+
+        // Reemplazar o agregar el bloque del tamaño en las líneas generales
+        List<String> lineasFinales = new ArrayList<>();
+        boolean bloqueActualizado = false;
+
+        for (int i = 0; i < lineas.size(); i++) {
+            String linea = lineas.get(i);
+            if (linea.equals(encabezadoTamaño)) {
+                // Insertar el bloque actualizado
+                lineasFinales.add(linea);
+                lineasFinales.addAll(nuevosRegistrosTamaño);
+                bloqueActualizado = true;
+
+                // Saltar las líneas del bloque actual en el archivo original
+                while (i + 1 < lineas.size() && !lineas.get(i + 1).startsWith("Tamaño:")) {
+                    i++;
+                }
+            } else {
+                lineasFinales.add(linea);
+            }
+        }
+
+        if (!bloqueActualizado) {
+            // Si no existe el bloque, agregarlo al final
+            lineasFinales.add(encabezadoTamaño);
+            lineasFinales.addAll(nuevosRegistrosTamaño);
+        }
+
+        // Escribir las líneas actualizadas en el archivo
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("futoshiki2024top10.txt"))) {
+            for (String linea : lineasFinales) {
+                writer.write(linea + "\n");
+            }
+        }
+    }
+
+    // Método auxiliar para insertar una línea en orden por tiempo
+    public static void agregarOrdenado(List<String> lista, String nuevoRegistro) {
+        String nuevoTiempo = nuevoRegistro.split(",")[2]; // Extraer tiempo del nuevo registro
+        int indice = 0;
+
+        for (; indice < lista.size(); indice++) {
+            String tiempoExistente = lista.get(indice).split(",")[2]; // Extraer tiempo del registro existente
+            if (compararTiempos(nuevoTiempo, tiempoExistente) < 0) {
+                break;
+            }
+        }
+
+        lista.add(indice, nuevoRegistro); // Insertar en la posición adecuada
+    }
+
+    // Método para comparar dos tiempos en formato HH:MM:SS
+    public static int compararTiempos(String tiempo1, String tiempo2) {
+        String[] partes1 = tiempo1.split(":");
+        String[] partes2 = tiempo2.split(":");
+        int horas1 = Integer.parseInt(partes1[0].trim());
+        int minutos1 = Integer.parseInt(partes1[1].trim());
+        int segundos1 = Integer.parseInt(partes1[2].trim());
+        int horas2 = Integer.parseInt(partes2[0].trim());
+        int minutos2 = Integer.parseInt(partes2[1].trim());
+        int segundos2 = Integer.parseInt(partes2[2].trim());
+
+        if (horas1 != horas2) return Integer.compare(horas1, horas2);
+        if (minutos1 != minutos2) return Integer.compare(minutos1, minutos2);
+        return Integer.compare(segundos1, segundos2);
+    }
 }
