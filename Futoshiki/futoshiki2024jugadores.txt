@@ -1,6 +1,0 @@
-prueba, contraseña, correo@
-prueba2, contr, ximenamolinaportilla01@gmail.com
-nom, 123, correo@correo
-prueba3,contrasenaNueva,ximenamolinaportilla01@gmail.com
-Juan Pablo,12345,juanpacamal08@gmail.com
-Mariana,12345,mariana@gmail.com
