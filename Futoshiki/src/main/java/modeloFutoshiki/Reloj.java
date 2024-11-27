@@ -9,6 +9,9 @@ public class Reloj {
     private int horas;
     private int minutos;
     private int segundos;
+    private int horasIniciales;
+    private int minutosIniciales;
+    private int segundosIniciales;
     
     //constructor
     public Reloj (int tipo){
@@ -72,6 +75,30 @@ public class Reloj {
             throw new IllegalArgumentException("Los segundos deben estar entre 0 y 59.");
         }
 
+    }
+    
+    public int getHorasIniciales() {
+        return horasIniciales;
+    }
+
+    public void setHorasIniciales(int horasIniciales) {
+        this.horasIniciales = horasIniciales;
+    }
+
+    public int getMinutosIniciales() {
+        return minutosIniciales;
+    }
+
+    public void setMinutosIniciales(int minutosIniciales) {
+        this.minutosIniciales = minutosIniciales;
+    }
+
+    public int getSegundosIniciales() {
+        return segundosIniciales;
+    }
+
+    public void setSegundosIniciales(int segundosIniciales) {
+        this.segundosIniciales = segundosIniciales;
     }
     // </editor-fold>
 }

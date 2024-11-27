@@ -60,6 +60,9 @@ public class PantallaJuegoControlador {
                     if (!matriz.getValoresArchivoPartida().isEmpty()) {
                         iniciarTemporizadorSiEsNecesario();
                         elementosJuego(matriz.partidaAzar()); // Generar una nueva partida
+                        juego.getReloj().setHorasIniciales(juego.getReloj().getHoras());
+                        juego.getReloj().setMinutosIniciales(juego.getReloj().getMinutos());
+                        juego.getReloj().setSegundosIniciales(juego.getReloj().getSegundos());
                         juegoEnProgreso = true;
                     } else {
                         JOptionPane.showMessageDialog(pantalla, "No hay partidas para este nivel");
@@ -491,15 +494,13 @@ public class PantallaJuegoControlador {
         
         if(!juego.isMultinivel()){ //si es multinivel, continuaría con el siguiente nivel, no finalizaría la partida
             JOptionPane.showMessageDialog(pantalla, "¡Excelente, juego terminado con éxito!");
-            /************************************************************************************************************************
-                    cuando ya se tiene el tiempo que duró el jugador, se pasa al formato q se ve ahi abajo (Hora : Mins : S)
-                    esa función ya se encarga de acomodar y clasificar todo en el archivo para el top 10
-                    solo faltar validar que el jugador si tenga nombre y no sea incógnito
+            
                     
+                    String tiempo = tiempoGane();
                         try{
-                            Archivo.agregarInformacionTop10(juego, tiempo); "01:05:10"
+                            Archivo.agregarInformacionTop10(juego, tiempo); 
                         }catch(Exception e){}
-            */
+            
 
             //luego de ganar, vuelve a menu principal
             MenuPrincipal pantalla2 = new MenuPrincipal(); //inicializa pantalla configuracion
@@ -510,15 +511,13 @@ public class PantallaJuegoControlador {
             limpiarTodo();
             int numNivel = juego.getNivel() +1;
             if (numNivel > 2){ //si ya llegó al nivel máximo (dificil) se queda jugando ahí
-                 /************************************************************************************************************************
-                    cuando ya se tiene el tiempo que duró el jugador, se pasa al formato q se ve ahi abajo (Hora : Mins : S)
-                    esa función ya se encarga de acomodar y clasificar todo en el archivo para el top 10
-                     solo faltar validar que el jugador si tenga nombre y no sea incógnito
+                 
+                String tiempo = tiempoGane();
                     
                         try{
-                            Archivo.agregarInformacionTop10(juego, tiempo); "01:05:10"
+                            Archivo.agregarInformacionTop10(juego, tiempo); 
                         }catch(Exception e){}
-                */
+                
                 if (!matriz.getValoresArchivoPartida().isEmpty()) {
                     int indice = matriz.partidaAzar();
                     elementosJuego(indice); 
@@ -531,15 +530,12 @@ public class PantallaJuegoControlador {
                 }
             }else { //en caso de que esté en nivel facil o intermedio, solo muestra partida de ese nivel
                 
-                /****************************************************************************************************************************
-                cuando ya se tiene el tiempo que duro el jugador, se pasa al formato q se ve ahi abajo Hora : Mins : S
-                esa función ya se encarga de acomodar y clasificar todo en el archivo para el top 10
-                solo faltar validar que el jugador si tenga nombre y no sea incógnito
+                String tiempo = tiempoGane();
                 
                     try{
-                        Archivo.agregarInformacionTop10(juego, tiempo); "01:05:10"
+                        Archivo.agregarInformacionTop10(juego, tiempo); 
                     }catch(Exception e){}
-                */
+                
                 juego.setNivel(numNivel);
                 Archivo.cargarArchivoPartidas(juego.getNivel(), juego.getTamano()); //carga todas las partidas del siguiente nivel
                 List datosJuego = Archivo.cargarArchivoPartidas(juego.getNivel(),juego.getTamano()); // carga info de partidas
@@ -552,6 +548,46 @@ public class PantallaJuegoControlador {
             }
         }
     }
+    
+    // Calcula el tiempo de la partida desde que se presionó el botón Jugar hasta ganar
+    private String tiempoGane() {
+        Reloj reloj = juego.getReloj();
+        int horas = 0;
+        int minutos = 0;
+        int segundos = 0;
+
+        // Si el reloj está configurado como cronómetro
+        if (reloj.getTipo() == 1) { // Cronómetro
+            horas = reloj.getHoras();
+            minutos = reloj.getMinutos();
+            segundos = reloj.getSegundos();
+
+        } else if (reloj.getTipo() == 2) { // Temporizador
+            // En un temporizador, el tiempo restante debe ser restado del tiempo inicial
+            int horasIniciales = juego.getReloj().getHorasIniciales();
+            int minutosIniciales = juego.getReloj().getMinutosIniciales();
+            int segundosIniciales = juego.getReloj().getSegundosIniciales();
+
+            // Calculamos el tiempo transcurrido
+            int totalInicial = (horasIniciales * 3600) + (minutosIniciales * 60) + segundosIniciales;
+            int totalRestante = (reloj.getHoras() * 3600) + (reloj.getMinutos() * 60) + reloj.getSegundos();
+            int totalTranscurrido = totalInicial - totalRestante;
+
+            horas = totalTranscurrido / 3600;
+            minutos = (totalTranscurrido % 3600) / 60;
+            segundos = totalTranscurrido % 60;
+
+        } else { // Sin temporizador ni cronómetro
+            // Calculamos un tiempo aproximado si no hay medición real (podría ser manual o una variable fija)
+            // Aquí podrías incluir una forma de calcular el tiempo si hay una implementación base para esto.
+            return "00:00:00"; // Por defecto, retorna 0 si no hay registro
+        }
+
+        // Formatear las horas, minutos y segundos para que tengan siempre dos dígitos
+        String tiempoFormateado = String.format("%02d:%02d:%02d", horas, minutos, segundos);
+        return tiempoFormateado;
+    }
+
     
     
     private void terminarJuego() {
