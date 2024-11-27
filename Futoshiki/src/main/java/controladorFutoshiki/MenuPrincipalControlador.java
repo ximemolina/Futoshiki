@@ -66,7 +66,7 @@ public class MenuPrincipalControlador {
     
     // Método para abrir el manual de usuario en formato PDF
     private void abrirManualUsuario() {
-        String rutaManual = "manual_de_usuario.pdf"; // Ruta del archivo PDF
+        String rutaManual = "programa2_futoshiki_manual_de_usuario.pdf"; // Ruta del archivo PDF
         try {
             File archivo = new File(rutaManual); // Crear un objeto File con la ruta del archivo
 
