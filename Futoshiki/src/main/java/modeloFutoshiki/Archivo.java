@@ -13,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Archivo {
     //guardar la informacion de la configuracion del juego
-    public void guardarArchivoConfiguracion(String mensaje){
+    public static void guardarArchivoConfiguracion(String mensaje){
         try{
             File nombreArchivo = new File("futoshiki2024configuracion.txt");
             FileWriter escribir = new FileWriter(nombreArchivo, false); //permite escribir en diferentes ocasiones en archivos
@@ -24,7 +24,7 @@ public class Archivo {
        }
     }
     //cargar archivo de configuracion del juego
-    public Juego cargarConfiguracion(){
+    public static Juego cargarConfiguracion(){
         Juego juego = null;
         File archivo = new File("futoshiki2024configuracion.txt");
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
@@ -48,7 +48,7 @@ public class Archivo {
     }
     
     //guardar la informacion del top10
-    public void guardarArchivoTop10(String mensaje){
+    public static void guardarArchivoTop10(String mensaje){
         try{
             File nombreArchivo = new File("futoshiki2024top10.txt");
             FileWriter escribir = new FileWriter(nombreArchivo, true); //permite escribir en diferentes ocasiones en archivos
@@ -59,7 +59,7 @@ public class Archivo {
        }
     }
     //guardar la informacion del jugador
-    public void guardarArchivoJugadores(String mensaje){
+    public static void guardarArchivoJugadores(String mensaje){
         try{
             File nombreArchivo = new File("futoshiki2024jugadores.txt");
             FileWriter escribir = new FileWriter(nombreArchivo, true); //permite escribir en diferentes ocasiones en archivos
@@ -70,10 +70,8 @@ public class Archivo {
        }
     }
     
-
-    
     //cargar archivo tipo xml que contiene todas las posibles combinaciones de partidas
-    public List cargarArchivoPartidas(int numNivel, int cuadricula){
+    public static List cargarArchivoPartidas(int numNivel, int cuadricula){
         String nivelDeseado = "";
         if(numNivel == 0) nivelDeseado = "Facil";
         if(numNivel == 1) nivelDeseado = "Intermedio";
@@ -137,7 +135,7 @@ public class Archivo {
     }
     
     // válida que no exista otro nombre en el archivo igual al que se desea agregar
-    public boolean validarNombreUnico(String nombre){
+    public static boolean validarNombreUnico(String nombre){
         try (BufferedReader reader = new BufferedReader(new FileReader("futoshiki2024jugadores.txt"))) {
             String linea;
             int numeroLinea = 1;
@@ -159,7 +157,7 @@ public class Archivo {
     }
     
     //valida que la contrasena y el nombre de usuario coincidan. En caso de que coincidan retorna el String del correo, sino null
-    public String validarContrasena(String nombre, String contrasena){
+    public static String validarContrasena(String nombre, String contrasena){
         try (BufferedReader reader = new BufferedReader(new FileReader("futoshiki2024jugadores.txt"))) {
             String linea;
             int numeroLinea = 1;
@@ -184,7 +182,7 @@ public class Archivo {
     }
     
     // retorna el correo del usuario, si no encuentra usuario, retorna null
-    public String recuperarCorreo(String nombre){
+    public static String recuperarCorreo(String nombre){
         try (BufferedReader reader = new BufferedReader(new FileReader("futoshiki2024jugadores.txt"))) {
             String linea;
             int numeroLinea = 1;
@@ -208,7 +206,7 @@ public class Archivo {
     }
     
     // cambia el segundo elemento de la línea (contrasena) que contenga el nombre del jugador
-    public void modificarContrasena(String nombre, String contrasenaNueva){
+    public static void modificarContrasena(String nombre, String contrasenaNueva){
         List<String> lineas = new ArrayList<>();
 
         // Leer todas las líneas del archivo

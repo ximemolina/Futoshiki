@@ -101,8 +101,6 @@ public class MenuConfiguracionControlador {
                 String contraseña = menu.inpContraseña.getText();
                 String correo = menu.inpCorreo.getText();
                 
-                Archivo archivo = new Archivo();
-                
                 if (!nombre.isEmpty()){
                     if (contraseña.isEmpty() || correo.isEmpty()) {
                         JOptionPane.showMessageDialog(menu, 
@@ -115,11 +113,11 @@ public class MenuConfiguracionControlador {
                             JOptionPane.showMessageDialog(menu, "Ingrese un correo válido", "Error",JOptionPane.ERROR_MESSAGE);
                             return;
                         }
-                        if (archivo.validarNombreUnico(nombre)){ //validar que el nombre sea único
+                        if (Archivo.validarNombreUnico(nombre)){ //validar que el nombre sea único
                             try{
                                 Jugador jugador = new Jugador(nombre, contraseña, correo);
                                 juego.setJugador(jugador);
-                                archivo.guardarArchivoJugadores(jugador.toString());
+                                Archivo.guardarArchivoJugadores(jugador.toString());
                             }catch(Exception m){
                                 JOptionPane.showMessageDialog(menu, m.getMessage(), "Error",JOptionPane.ERROR_MESSAGE);
                                 return;
@@ -135,7 +133,7 @@ public class MenuConfiguracionControlador {
                 }
                 
                 if(!menu.inpNombreIngresar.getText().isEmpty() && !menu.inpContraseñaIngresar.getText().isEmpty()){
-                    String correo2 = archivo.validarContrasena(menu.inpNombreIngresar.getText(), menu.inpContraseñaIngresar.getText());
+                    String correo2 = Archivo.validarContrasena(menu.inpNombreIngresar.getText(), menu.inpContraseñaIngresar.getText());
                     if (correo2 != null){
                         try{
                             Jugador jugador = new Jugador(menu.inpNombreIngresar.getText(),menu.inpContraseñaIngresar.getText(),correo2);
@@ -152,7 +150,7 @@ public class MenuConfiguracionControlador {
                 }
                 
                 
-                archivo.guardarArchivoConfiguracion(juego.toString());
+                Archivo.guardarArchivoConfiguracion(juego.toString());
                 
                 // Confirmar configuración completada
                 JOptionPane.showMessageDialog(menu, "Configuración guardada exitosamente", "Configuración", JOptionPane.INFORMATION_MESSAGE);
@@ -332,8 +330,7 @@ public class MenuConfiguracionControlador {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!(menu.inpNombreIngresar.getText()).equals("")){ //validar que si se haya ingresado un usuario del cual agarrar el correo
-                    Archivo archivo = new Archivo();
-                    String correoUsuario = archivo.recuperarCorreo(menu.inpNombreIngresar.getText());
+                    String correoUsuario = Archivo.recuperarCorreo(menu.inpNombreIngresar.getText());
                     if (correoUsuario != null){
                         try{
                             Jugador jugador = new Jugador(menu.inpNombreIngresar.getText(), menu.inpContraseñaIngresar.getText(), correoUsuario);

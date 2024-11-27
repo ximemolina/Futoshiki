@@ -2,11 +2,9 @@ package controladorFutoshiki;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Random;
 import vistaFutoshiki.*;
 import modeloFutoshiki.*;
 import javax.swing.Timer;
@@ -47,6 +45,7 @@ public class PantallaJuegoControlador {
         this.pantalla.btnVolver.addActionListener(new ActionListener() { //espera a que usuario presione el boton de volver
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(temporizador != null) temporizador.stop();
                 MenuPrincipal pantalla2 = new MenuPrincipal(); //inicializa pantalla configuracion
                 pantalla.setVisible(false);
                 pantalla2.setVisible(true);
@@ -60,10 +59,14 @@ public class PantallaJuegoControlador {
                 if (!juegoEnProgreso) {
                     if (!matriz.getValoresArchivoPartida().isEmpty()) {
                         iniciarTemporizadorSiEsNecesario();
-                        elementosJuego(partidaAzar()); // Generar una nueva partida
+                        elementosJuego(matriz.partidaAzar()); // Generar una nueva partida
                         juegoEnProgreso = true;
                     } else {
                         JOptionPane.showMessageDialog(pantalla, "No hay partidas para este nivel");
+                        MenuPrincipal pantalla2 = new MenuPrincipal(); 
+                        pantalla.setVisible(false);
+                        pantalla2.setVisible(true);
+                        MenuPrincipalControlador controlador = new MenuPrincipalControlador(juego,pantalla2);
                     }
                 } else {
                     // Si ya hay un juego cargado, simplemente inicia el temporizador
@@ -100,7 +103,7 @@ public class PantallaJuegoControlador {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try{
-                        validarJugada(boton);
+                        matriz.validarJugada(boton, pantalla);
                         seleccionarBoton(boton);
                         revisarGane();
                     }catch(Exception w){
@@ -294,96 +297,7 @@ public class PantallaJuegoControlador {
         if (juego.getNivel() == 1)this.pantalla.lblNivel.setText("Nivel intermedio");
         if (juego.getNivel() == 2)this.pantalla.lblNivel.setText("Nivel difícil");
     }
-    
-    // selecciona al azar cual partida mostrar
-    private int partidaAzar(){
-        Random random = new Random();
-        return random.nextInt((matriz.getValoresArchivoPartida().size()-1 - 0) + 1) + 0;
         
-    }
-    
-    //despliega todas las constantes en la plantilla
-    private void mostrarConstante(int columna, int fila, int constante){
-        ArrayList<JButton> lista = matriz.getBotonesCasillas();
-        int contadorColum = 0;
-        int contadorFila = 0;
-        for (JButton boton : lista){
-            if (contadorColum == juego.getTamano()) {
-                contadorColum = 0;
-                contadorFila ++;
-            }
-            if (contadorColum == columna && contadorFila == fila){
-               boton.setText("<html><b style='color: black; font-size: 14px;'>" + constante + "</b></html>");
-               
-
-               // Condición para cambiar el color y la fuente dependiendo del nivel del juego
-               if(juego.getNivel() == 9 || juego.getNivel() == 8 || juego.getNivel() == 10){
-                   boton.setForeground(Color.BLACK); // Establecer el color del texto
-                   boton.setFont(new Font(boton.getFont().getName(), Font.BOLD, 14)); 
-               }
-               boton.setEnabled(false); // creo que ya funciona lo de negrita
-
-            }
-            contadorColum ++;
-        }
- 
-    }
-    
-    //se encargar de mostrar las desigualdades que están en las filas (maf - mef)
-    private void desigualdadesFila(int columna, int fila, boolean identificador){
-        ArrayList<JLabel> lista = matriz.getDesigualdades();
-        int contadorColum = 0;
-        int contadorFila = 0;
-        boolean revisar = true;
-        for (JLabel label : lista){
-            if (contadorColum >= juego.getTamano()-1) {
-                
-                if (!revisar && contadorColum >= juego.getTamano() ) {
-                    contadorFila++;
-                    revisar = true;
-                    contadorColum = 0;
-                }else if (revisar ){
-                    contadorColum = 0;
-                    revisar = false;
-                }
-            }
-            if (contadorFila == fila && contadorColum == columna && revisar){
-                if(identificador) label.setText(">");
-                else label.setText("<");
-                break;
-            }
-            contadorColum ++;
-        }
-    }
-    
-    //se encargar de mostrar las desigualdades que están en las columnas(mac - mec)
-    private void desigualdadesColumna(int columna, int fila, boolean identificador){
-        ArrayList<JLabel> lista = matriz.getDesigualdades();
-        int contadorColum = 0;
-        int contadorFila = 0;
-        boolean revisar = true;
-        for (JLabel label : lista){
-            if (contadorColum >= juego.getTamano()-1) {
-                
-                if (!revisar && contadorColum >= juego.getTamano() ) {
-                    contadorFila++;
-                    revisar = true;
-                    contadorColum = 0;
-                }else if (revisar ){
-                    contadorColum = 0;
-                    revisar = false;
-                }
-            }
-            if (contadorFila == fila && contadorColum == columna && !revisar){
-                if(identificador) label.setText("V");
-                else label.setText("^");
-                break;
-            }
-            contadorColum ++;
-        }
-    
-    }
-    
     // muestra constantes y desigualdades del tablero
     private void elementosJuego(int indice){
         //activa botones
@@ -411,28 +325,28 @@ public class PantallaJuegoControlador {
                 constante = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
                 columna= Integer.parseInt((String.valueOf(valores[i+3]).replaceAll("[\\[\\]]", "").trim()));
                 fila = Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
-                mostrarConstante(columna,fila, constante); //actualiza la pantalla con las constantes
+                matriz.mostrarConstante(columna,fila, constante); //actualiza la pantalla con las constantes
             }
             if ((String.valueOf(valores[i]).replaceAll("[\\[\\]]", "")).trim().equals("maf")){ //mayor en fila 
                 fila = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
                 columna= Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
                 identificador = true;
-                desigualdadesFila(columna, fila, identificador);
+                matriz.desigualdadesFila(columna, fila, identificador);
             } else if((String.valueOf(valores[i]).replaceAll("[\\[\\]]", "").trim().equals("mef"))){ // menor en fila
                 fila = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
                 columna= Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
                 identificador = false;
-                desigualdadesFila(columna, fila, identificador);
+                matriz.desigualdadesFila(columna, fila, identificador);
             } else if ((String.valueOf(valores[i])).replaceAll("[\\[\\]]", "").trim().equals("mac")){ // mayor en columna
                 fila = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
                 columna= Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
                 identificador = true;
-                desigualdadesColumna(columna, fila, identificador);
+                matriz.desigualdadesColumna(columna, fila, identificador);
             } else if ((String.valueOf(valores[i])).replaceAll("[\\[\\]]", "").trim().equals("mec")){ // menor en columna
                 fila = Integer.parseInt((String.valueOf(valores[i+1]).replaceAll("[\\[\\]]", "").trim()));
                 columna= Integer.parseInt((String.valueOf(valores[i+2]).replaceAll("[\\[\\]]", "").trim()));
                 identificador = false;
-                desigualdadesColumna(columna, fila, identificador);
+                matriz.desigualdadesColumna(columna, fila, identificador);
             }
             
         
@@ -454,8 +368,8 @@ public class PantallaJuegoControlador {
     // pone en el boton el número seleccionado
     void seleccionarBoton(JButton boton) {
         // Obtén la fila y columna del botón
-        int fila = obtenerFila(boton);
-        int columna = obtenerColumna(boton);
+        int fila = matriz.obtenerFila(boton);
+        int columna = matriz.obtenerColumna(boton);
 
         // Si un número está seleccionado
         for (Component comp : matriz.getBotonesCasillas()) {
@@ -488,17 +402,7 @@ public class PantallaJuegoControlador {
         pilaJugadas.push(new Movimiento(fila, columna, valor));
         pilaJugadasBorradas.clear(); // Limpiar las jugadas borradas porque se pierde la posibilidad de rehacer
     }
-    
-    private int obtenerFila(JButton boton) {
-        int indice = matriz.getBotonesCasillas().indexOf(boton);
-        return indice / juego.getTamano(); // División entera
-    }
-
-    private int obtenerColumna(JButton boton) {
-        int indice = matriz.getBotonesCasillas().indexOf(boton);
-        return indice % juego.getTamano(); // Resto
-    }
-    
+        
     private void borrarJugada() {
         if (!pilaJugadas.isEmpty()) {
             // Sacar la última jugada de la pila principal
@@ -506,7 +410,7 @@ public class PantallaJuegoControlador {
             pilaJugadasBorradas.push(ultimaJugada); // Guardar en la pila de jugadas borradas
 
             // Actualizar el tablero: borrar el valor del botón
-            JButton boton = obtenerBoton(ultimaJugada.getFila(), ultimaJugada.getColumna());
+            JButton boton = matriz.obtenerBoton(ultimaJugada.getFila(), ultimaJugada.getColumna());
             boton.setText(""); // Dejar el botón vacío
         } else {
             JOptionPane.showMessageDialog(pantalla, "No hay jugadas para borrar.");
@@ -520,18 +424,13 @@ public class PantallaJuegoControlador {
             pilaJugadas.push(jugadaBorrada); // Volver a agregarla a la pila principal
 
             // Actualizar el tablero: restaurar el valor del botón
-            JButton boton = obtenerBoton(jugadaBorrada.getFila(), jugadaBorrada.getColumna());
+            JButton boton = matriz.obtenerBoton(jugadaBorrada.getFila(), jugadaBorrada.getColumna());
             boton.setText("<html><b>" + jugadaBorrada.getValor() + "</b></html>");
         } else {
             JOptionPane.showMessageDialog(pantalla, "No hay jugadas para rehacer.");
         }
     }
-    
-    private JButton obtenerBoton(int fila, int columna) {
-        return matriz.getBotonesCasillas().get(fila * juego.getTamano() + columna);
-    }
-    
-    
+        
     private void borrarJuego() {
         // Recorrer todos los botones del tablero
         for (int i = 0; i < matriz.getBotonesCasillas().size(); i++) {
@@ -558,135 +457,7 @@ public class PantallaJuegoControlador {
         JOptionPane.showMessageDialog(pantalla, "El tablero ha sido reiniciado, excepto las constantes y desigualdades.");
     }
 
-    private void validarJugada(JButton botonSeleccionado) throws Exception{
-        if (pantalla.btnBorrador.getBackground() == Color.GREEN) return; //no se realizan validaciones con el borrador
-        
-        int columna = obtenerColumna(botonSeleccionado);
-        int fila = obtenerFila(botonSeleccionado);
-        String valor = "";
-       
-        
-        // Si un número está seleccionado
-        for (Component comp : matriz.getBotonesCasillas()) {
-            if (comp.equals(botonSeleccionado)) {
-                for (JButton comp2 : matriz.getBotonesNumeros()) {
-                    if (comp2.getBackground() == Color.GREEN) { // Número seleccionado en verde
-                        valor = (comp2.getText()).replaceAll("<[^>]*>", "");
-                    }
-                }
-            }
-            
-            if (comp.getBackground() == Color.red) comp.setBackground(new Color(240, 240, 240)); // quita las casilla en rojo de las validaciones
-        }
-        
-        if (valor.equals(""))throw new Exception("FALTA QUE SELECCIONE UN DÍGITO."); //revisar que si esté seleccionado un dígito
-        
-        for (JButton boton : matriz.getBotonesCasillas()){ //validar columna
-            if (obtenerColumna(boton) == columna) {
-                if ((boton.getText().replaceAll("<[^>]*>", "")).equals(valor)){
-                    boton.setBackground(Color.red);
-                    throw new Exception("JUGADA NO ES VÁLIDA PORQUE EL ELEMENTO YA ESTÁ EN LA COLUMNA");
-                }
-            }
-        }
-        
-        for (JButton boton : matriz.getBotonesCasillas()){ //validar fila
-            if (obtenerFila(boton) == fila) {
-                if ((boton.getText().replaceAll("<[^>]*>", "")).equals(valor)){
-                    boton.setBackground(Color.red);
-                    throw new Exception("JUGADA NO ES VÁLIDA PORQUE EL ELEMENTO YA ESTÁ EN LA FILA");
-                }
-            }
-        }
-        
-        boolean filaOColumna = true;
-        int cont= 0;
-        int contFilas = 0;
-        for (JLabel desigualdad : matriz.getDesigualdades()){
-            
-            if (cont+1 >= juego.getTamano() && filaOColumna){ // una vez que termina fila, baja una columna y continua con la siguiente fila
-                    cont = 0;
-                    contFilas ++;
-                    filaOColumna = false;
-            } else if (cont >= juego.getTamano() && !filaOColumna){
-                    cont = 0;
-                    filaOColumna = true;
-            }
-            
-            if (columna == cont && filaOColumna){ //aplicar desigualdad 
-                for (JButton boton : matriz.getBotonesCasillas()){
-                    if(obtenerFila(boton) == fila && !boton.getText().equals("") && fila == contFilas){ //verificar q estén en misma fila ya q desigualdad es mef o maf
-                        if (obtenerColumna(boton)-1 ==columna){
-                            if(desigualdad.getText().trim().equals(">")){
-                                if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) > Integer.parseInt(valor)){
-                                    boton.setBackground(Color.red);
-                                    throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MAYOR");
-                                    
-                                }
-                            } else  if(desigualdad.getText().trim().equals("<")){
-                                if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) < Integer.parseInt(valor)){
-                                    boton.setBackground(Color.red);
-                                    throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MENOR");
-                                }
-                            }
-                        }
-                    }
-                
-                }
-            } else if (columna == cont+1 && filaOColumna){
-                for (JButton boton : matriz.getBotonesCasillas()){
-                    if(obtenerFila(boton) == fila && !boton.getText().equals("") && fila == contFilas){ //verificar q estén en misma fila ya q desigualdad es mef o maf
-                        if (obtenerColumna(boton) ==columna-1){
-                            if(desigualdad.getText().trim().equals(">")){
-                                if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) < Integer.parseInt(valor)){
-                                    boton.setBackground(Color.red);
-                                    throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MENOR");
-                                }
-                            } else  if(desigualdad.getText().trim().equals("<")){
-                                if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) > Integer.parseInt(valor)){
-                                    boton.setBackground(Color.red);
-                                    throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MAYOR");
-                                }
-                            }
-                        }
-                    }
-                
-                }
-            } else if(columna == cont && !filaOColumna){
-                for (JButton boton : matriz.getBotonesCasillas()){
-                    if (obtenerFila(boton) == fila-1 && obtenerColumna(boton) == columna && !boton.getText().equals("") && fila ==contFilas){ //boton está justo arriba que el seleccionado
-                        if(desigualdad.getText().trim().equals("^")){
-                            if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) > Integer.parseInt(valor)){
-                                boton.setBackground(Color.red);
-                                throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MAYOR");
-                            }   
-                          }
-                        else if(desigualdad.getText().trim().equals("V")){
-                              if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) < Integer.parseInt(valor)){
-                                      boton.setBackground(Color.red);
-                                      throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MENOR");
-                                  } 
-                        }
-                    }else if (obtenerFila(boton) == fila+1 && obtenerColumna(boton) == columna && !boton.getText().equals("") && fila ==contFilas){ //boton está justo abajo del seleccionado
-                        if(desigualdad.getText().trim().equals("^")){
-                            if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) < Integer.parseInt(valor)){
-                                boton.setBackground(Color.red);
-                                throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MENOR 11");
-                            }   
-                          }
-                        else if(desigualdad.getText().trim().equals("V")){
-                              if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", "").trim())) > Integer.parseInt(valor)){
-                                  boton.setBackground(Color.red);
-                                  throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MAYOR 11");
-                              } 
-                        }
-                    }
-                }
-            
-            }
-            cont++;
-        }
-    }    
+   
     
     //limpia todos los botones y desigualdades de la plantilla
     private void limpiarTodo(){
@@ -717,6 +488,7 @@ public class PantallaJuegoControlador {
             /************************************************************************************************************************
                     cuando ya se tiene el tiempo que duró el jugador, se pasa al formato q se ve ahi abajo (Hora : Mins : S)
                     esa función ya se encarga de acomodar y clasificar todo en el archivo para el top 10
+                    solo faltar validar que el jugador si tenga nombre y no sea incógnito
                     
                         try{
                             Archivo.agregarInformacionTop10(juego, tiempo); "01:05:10"
@@ -735,16 +507,17 @@ public class PantallaJuegoControlador {
                  /************************************************************************************************************************
                     cuando ya se tiene el tiempo que duró el jugador, se pasa al formato q se ve ahi abajo (Hora : Mins : S)
                     esa función ya se encarga de acomodar y clasificar todo en el archivo para el top 10
+                     solo faltar validar que el jugador si tenga nombre y no sea incógnito
                     
                         try{
                             Archivo.agregarInformacionTop10(juego, tiempo); "01:05:10"
                         }catch(Exception e){}
                 */
                 if (!matriz.getValoresArchivoPartida().isEmpty()) {
-                    int indice = partidaAzar();
+                    int indice = matriz.partidaAzar();
                     elementosJuego(indice); 
                 } else {
-                    JOptionPane.showMessageDialog(pantalla, "No hay más partidas disponibles para este nivel.");
+                    JOptionPane.showMessageDialog(pantalla, "Ya no hay más partidas disponibles para este nivel.");
                     MenuPrincipal pantalla2 = new MenuPrincipal(); 
                     pantalla.setVisible(false);
                     pantalla2.setVisible(true);
@@ -755,18 +528,18 @@ public class PantallaJuegoControlador {
                 /****************************************************************************************************************************
                 cuando ya se tiene el tiempo que duro el jugador, se pasa al formato q se ve ahi abajo Hora : Mins : S
                 esa función ya se encarga de acomodar y clasificar todo en el archivo para el top 10
+                solo faltar validar que el jugador si tenga nombre y no sea incógnito
                 
                     try{
                         Archivo.agregarInformacionTop10(juego, tiempo); "01:05:10"
                     }catch(Exception e){}
                 */
                 juego.setNivel(numNivel);
-                Archivo archivo = new Archivo();
-                archivo.cargarArchivoPartidas(juego.getNivel(), juego.getTamano()); //carga todas las partidas del siguiente nivel
-                List datosJuego = archivo.cargarArchivoPartidas(juego.getNivel(),juego.getTamano()); // carga info de partidas
+                Archivo.cargarArchivoPartidas(juego.getNivel(), juego.getTamano()); //carga todas las partidas del siguiente nivel
+                List datosJuego = Archivo.cargarArchivoPartidas(juego.getNivel(),juego.getTamano()); // carga info de partidas
                 juego.getMatriz().setValoresArchivoPartida(datosJuego);
                 this.matriz = juego.getMatriz();
-                elementosJuego(partidaAzar());//muestra en pantalla partida
+                elementosJuego(matriz.partidaAzar());//muestra en pantalla partida
                 mostrarNivel(); //actualiza el label de nivel
                 resetearBotonesNumeros(pantalla.btnVolver); // manda un boton random para poder llamar a la funcion y limpiar cualquier num que haya quedado seleccionado
                 juegoEnProgreso = true;
@@ -781,7 +554,7 @@ public class PantallaJuegoControlador {
 
         // Selecciona una nueva partida al azar y actualiza los elementos del tablero
         if (!matriz.getValoresArchivoPartida().isEmpty()) {
-            int indice = partidaAzar();
+            int indice = matriz.partidaAzar();
             elementosJuego(indice); // Reutiliza el método para desplegar las constantes y desigualdades de la nueva partida.
             JOptionPane.showMessageDialog(pantalla, "Se ha generado una nueva partida con la misma dificultad.");
         } else {
@@ -948,7 +721,7 @@ public class PantallaJuegoControlador {
                                     int fila = Integer.parseInt(partes[1]);
                                     int columna = Integer.parseInt(partes[2]);
                                     String valor = partes[3];
-                                    JButton boton = obtenerBoton(fila, columna);
+                                    JButton boton = matriz.obtenerBoton(fila, columna);
                                     boton.setText(valor);
                                     boton.setEnabled(true); // Asegura que sea interactivo si no es constante
                                     pilaJugadas.push(new Movimiento(fila, columna, valor));
@@ -1007,8 +780,3 @@ public class PantallaJuegoControlador {
 
 
 }
-
-
-
-
-

@@ -56,8 +56,7 @@ public class PantallaOlvidoContraseñaControlador {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!menu.inpNuevaContraseña.getText().isEmpty()){
-                    Archivo archivo = new Archivo();
-                    archivo.modificarContrasena(juego.getJugador().getNombre(), menu.inpNuevaContraseña.getText()); //modifica la contrasena en el archivo
+                    Archivo.modificarContrasena(juego.getJugador().getNombre(), menu.inpNuevaContraseña.getText()); //modifica la contrasena en el archivo
                     juego.setJugador(null); // borra jugador que se habia guardado ya que ya fue utilizada su informacion
                     MenuConfiguracion pantalla = new MenuConfiguracion(); //inicializa pantalla configuracion
                     menu.setVisible(false);
