@@ -4,6 +4,10 @@ import java.util.*;
 import vistaFutoshiki.*;
 import modeloFutoshiki.*;
 import java.awt.event.*;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.JOptionPane;
 /**
  *
  * @author ximena molina - juan pablo cambronero
@@ -51,6 +55,38 @@ public class MenuPrincipalControlador {
                                                                                            //necesarias al controlador de la pantalla Top10
             }
         });
+        
+        this.menu.btnAyuda.addActionListener(new ActionListener() { // Espera a que usuario presione el botón de ayuda
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirManualUsuario(); // Llama a la función para abrir el manual de usuario
+            }
+        });
+    }
+    
+    // Método para abrir el manual de usuario en formato PDF
+    private void abrirManualUsuario() {
+        String rutaManual = "manual_de_usuario.pdf"; // Ruta del archivo PDF
+        try {
+            File archivo = new File(rutaManual); // Crear un objeto File con la ruta del archivo
+
+            if (!archivo.exists()) {
+                // Mostrar error si el archivo no existe
+                JOptionPane.showMessageDialog(menu, "El archivo del manual no se encontró.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (Desktop.isDesktopSupported()) { // Verificar si el sistema soporta Desktop
+                Desktop desktop = Desktop.getDesktop();
+                desktop.open(archivo); // Abrir el archivo con la aplicación predeterminada
+            } else {
+                // Mostrar error si Desktop no está soportado
+                JOptionPane.showMessageDialog(menu, "Esta funcionalidad no está soportada en este sistema.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException ex) {
+            // Manejo de errores durante la apertura del archivo
+            JOptionPane.showMessageDialog(menu, "Ocurrió un error al intentar abrir el manual: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     
