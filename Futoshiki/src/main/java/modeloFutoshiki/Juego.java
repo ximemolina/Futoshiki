@@ -15,6 +15,7 @@ public class Juego {
     private Jugador jugador;
     private Reloj reloj;
     private MatrizJuego matriz;
+    private String tiempoAcumulado;
     
     //constructor
     public Juego (int tamano, int nivel, boolean multinivel, boolean posicion, int tipoReloj){
@@ -94,6 +95,14 @@ public class Juego {
 
     public void setMatriz(MatrizJuego matriz) {
         this.matriz = matriz;
+    }
+    
+    public String getTiempoAcumulado() {
+        return tiempoAcumulado;
+    }
+
+    public void setTiempoAcumulado(String tiempoAcumulado) {
+        this.tiempoAcumulado = tiempoAcumulado;
     }
      
     //</editor-fold>

@@ -492,11 +492,13 @@ public class PantallaJuegoControlador {
             if(boton.getText().isEmpty())return;
         }
         
+        String tiempo = tiempoGane();
+        
         if(!juego.isMultinivel()){ //si es multinivel, continuaría con el siguiente nivel, no finalizaría la partida
             JOptionPane.showMessageDialog(pantalla, "¡Excelente, juego terminado con éxito!");
             
                     
-                    String tiempo = tiempoGane();
+                    
                         try{
                             Archivo.agregarInformacionTop10(juego, tiempo); 
                         }catch(Exception e){}
@@ -509,10 +511,10 @@ public class PantallaJuegoControlador {
             MenuPrincipalControlador controlador = new MenuPrincipalControlador(juego,pantalla2);// envia las clases necesarias al controlador del menu principal
         } else{
             limpiarTodo();
+            juego.setTiempoAcumulado(tiempo); // Guarda el tiempo acumulado del nivel actual
             int numNivel = juego.getNivel() +1;
             if (numNivel > 2){ //si ya llegó al nivel máximo (dificil) se queda jugando ahí
                  
-                String tiempo = tiempoGane();
                     
                         try{
                             Archivo.agregarInformacionTop10(juego, tiempo); 
@@ -530,7 +532,6 @@ public class PantallaJuegoControlador {
                 }
             }else { //en caso de que esté en nivel facil o intermedio, solo muestra partida de ese nivel
                 
-                String tiempo = tiempoGane();
                 
                     try{
                         Archivo.agregarInformacionTop10(juego, tiempo); 
@@ -541,6 +542,10 @@ public class PantallaJuegoControlador {
                 List datosJuego = Archivo.cargarArchivoPartidas(juego.getNivel(),juego.getTamano()); // carga info de partidas
                 juego.getMatriz().setValoresArchivoPartida(datosJuego);
                 this.matriz = juego.getMatriz();
+                
+                // Configura el tiempo inicial del nuevo nivel con el tiempo acumulado
+                tiempoInicial(matriz.partidaAzar(), juego.getTiempoAcumulado());
+                
                 elementosJuego(matriz.partidaAzar());//muestra en pantalla partida
                 mostrarNivel(); //actualiza el label de nivel
                 resetearBotonesNumeros(pantalla.btnVolver); // manda un boton random para poder llamar a la funcion y limpiar cualquier num que haya quedado seleccionado
@@ -587,6 +592,21 @@ public class PantallaJuegoControlador {
         String tiempoFormateado = String.format("%02d:%02d:%02d", horas, minutos, segundos);
         return tiempoFormateado;
     }
+    
+    private void tiempoInicial(int indicePartida, String tiempoAcumulado) {
+        if (tiempoAcumulado == null || tiempoAcumulado.isEmpty()) {
+            // Si no hay tiempo acumulado, inicia desde 00:00:00
+            juego.setTiempoAcumulado("00:00:00");
+        } else {
+            // Establece el tiempo acumulado como el tiempo inicial
+            juego.setTiempoAcumulado(tiempoAcumulado);
+        }
+
+        // Actualiza la lógica del juego para la partida específica
+        elementosJuego(indicePartida);
+
+    }
+
 
     
     
