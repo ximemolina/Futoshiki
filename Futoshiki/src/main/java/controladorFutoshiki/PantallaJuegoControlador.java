@@ -278,6 +278,9 @@ public class PantallaJuegoControlador {
         for (JButton btn : pantalla.botonesNumeros){
             btn.setEnabled(false);
         }
+        for(JButton btn: pantalla.botones){
+            btn.setEnabled(false);
+        }
     }
     
     // Muestra el nombre del jugador en la etiqueta lblNombre
@@ -307,6 +310,9 @@ public class PantallaJuegoControlador {
         pantalla.btnTerminarJuego.setEnabled(true);
         pantalla.btnBorrador.setEnabled(true);
         for (JButton btn : pantalla.botonesNumeros){
+            btn.setEnabled(true);
+        }
+        for(JButton btn: pantalla.botones){
             btn.setEnabled(true);
         }
         //desactiva botones ya que solo se pueden utilizar cuando no se ha iniciado juego

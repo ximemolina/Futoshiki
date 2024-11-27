@@ -159,17 +159,17 @@ public class MatrizJuego {
                                       throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MENOR");
                                   } 
                         }
-                    }else if (obtenerFila(boton) == fila+1 && obtenerColumna(boton) == columna && !boton.getText().equals("") && fila ==contFilas){ //boton está justo abajo del seleccionado
+                    }else if (obtenerFila(boton) == fila+1 && obtenerColumna(boton) == columna && !boton.getText().equals("") && fila ==contFilas-1){ //boton está justo abajo del seleccionado
                         if(desigualdad.getText().trim().equals("^")){
-                            if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", ""))) < Integer.parseInt(valor)){
+                            if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", "").trim())) < Integer.parseInt(valor)){
                                 boton.setBackground(Color.red);
-                                throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MENOR 11");
+                                throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MENOR");
                             }   
                           }
                         else if(desigualdad.getText().trim().equals("V")){
                               if( (Integer.parseInt(boton.getText().replaceAll("<[^>]*>", "").trim())) > Integer.parseInt(valor)){
                                   boton.setBackground(Color.red);
-                                  throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MAYOR 11");
+                                  throw new Exception("JUGADA NO ES VÁLIDA PORQUE NO CUMPLE CON LA RESTRICCIÓN DE MAYOR");
                               } 
                         }
                     }
