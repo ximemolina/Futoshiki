@@ -545,7 +545,7 @@ public class PantallaJuegoControlador {
                 
                 // Configura el tiempo inicial del nuevo nivel con el tiempo acumulado
                 tiempoInicial(matriz.partidaAzar(), juego.getTiempoAcumulado());
-                
+                limpiarTodo();
                 elementosJuego(matriz.partidaAzar());//muestra en pantalla partida
                 mostrarNivel(); //actualiza el label de nivel
                 resetearBotonesNumeros(pantalla.btnVolver); // manda un boton random para poder llamar a la funcion y limpiar cualquier num que haya quedado seleccionado
@@ -602,8 +602,6 @@ public class PantallaJuegoControlador {
             juego.setTiempoAcumulado(tiempoAcumulado);
         }
 
-        // Actualiza la lógica del juego para la partida específica
-        elementosJuego(indicePartida);
 
     }
 
