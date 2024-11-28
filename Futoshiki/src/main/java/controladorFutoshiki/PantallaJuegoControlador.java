@@ -45,7 +45,9 @@ public class PantallaJuegoControlador {
         this.pantalla.btnVolver.addActionListener(new ActionListener() { //espera a que usuario presione el boton de volver
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(temporizador != null) temporizador.stop();
+                juego.getReloj().setHoras(0);
+                juego.getReloj().setMinutos(0);
+                juego.getReloj().setSegundos(0);
                 MenuPrincipal pantalla2 = new MenuPrincipal(); //inicializa pantalla configuracion
                 pantalla.setVisible(false);
                 pantalla2.setVisible(true);

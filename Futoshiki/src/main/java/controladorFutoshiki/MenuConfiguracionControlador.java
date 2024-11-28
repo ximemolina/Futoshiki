@@ -28,7 +28,9 @@ public class MenuConfiguracionControlador {
         
         this.menu.btnVolver.addActionListener(new ActionListener() { //espera a que usuario presione el boton de volver
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {               
+                
+                
                 MenuPrincipal pantalla = new MenuPrincipal(); //inicializa pantalla configuracion
                 menu.setVisible(false);
                 pantalla.setVisible(true);
