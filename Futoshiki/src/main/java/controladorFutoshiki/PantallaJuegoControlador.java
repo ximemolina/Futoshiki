@@ -178,7 +178,7 @@ public class PantallaJuegoControlador {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!juegoEnProgreso) { // Solo se puede cargar si el juego aún no ha comenzado
-                    String archivo = "partida_guardada.txt";
+                    String archivo = "futoshiki2024juegoactual.txt";
                     cargarJuego(archivo); // Carga el juego pero no inicia el temporizador
                     pantalla.btnGuardarJuego.setEnabled(true); // Habilitar guardar después de cargar
                 } else {
