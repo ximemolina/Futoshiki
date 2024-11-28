@@ -45,6 +45,10 @@ public class PantallaJuegoControlador {
         this.pantalla.btnVolver.addActionListener(new ActionListener() { //espera a que usuario presione el boton de volver
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (juego.getReloj().getTipo() == 2 || juego.getReloj().getTipo() == 1 && temporizador != null && temporizador.isRunning()){
+                    temporizador.stop();
+                }
+                
                 juego.getReloj().setHoras(0);
                 juego.getReloj().setMinutos(0);
                 juego.getReloj().setSegundos(0);
@@ -237,10 +241,10 @@ public class PantallaJuegoControlador {
 
 
     
-    // Actualiza el temporizador en el JTable y detiene el temporizador cuando llega a cero
+   // Actualiza el temporizador en el JTable y detiene el temporizador cuando llega a cero
     private void actualizarTemporizador() {
         Reloj reloj = juego.getReloj();
-        
+
         if (reloj.getSegundos() > 0) {
             reloj.setSegundos(reloj.getSegundos() - 1);
         } else if (reloj.getMinutos() > 0) {
@@ -251,23 +255,53 @@ public class PantallaJuegoControlador {
             reloj.setMinutos(59);
             reloj.setHoras(reloj.getHoras() - 1);
         } else {
+            // Detenemos el temporizador
             temporizador.stop();
-            JOptionPane.showMessageDialog(pantalla, "¡El tiempo ha terminado!");
-            
-            // Ir al menú principal después de que se cierre el mensaje
-            pantalla.setVisible(false); // Oculta la pantalla actual
-            MenuPrincipal pantallaMenu = new MenuPrincipal();
-            pantallaMenu.setVisible(true);
 
-            new MenuPrincipalControlador(juego, pantallaMenu);
+            // Mostrar un cuadro de confirmación
+            int opcion = JOptionPane.showOptionDialog(
+                pantalla, 
+                "¡El tiempo ha terminado! ¿Deseas seguir jugando con el cronómetro o salir?", 
+                "Tiempo Finalizado", 
+                JOptionPane.YES_NO_OPTION, 
+                JOptionPane.QUESTION_MESSAGE, 
+                null, 
+                new Object[] {"Seguir jugando", "Salir"}, 
+                "Salir"
+            );
+
+            if (opcion == JOptionPane.YES_OPTION) {
+                // Si el usuario elige seguir jugando, desactiva el temporizador y continúa el juego
+                JOptionPane.showMessageDialog(pantalla, "El cronómetro ha sido activado. Puedes seguir jugando.");
+                temporizador.stop();
+                juego.getReloj().setHoras(0);
+                juego.getReloj().setMinutos(0);
+                juego.getReloj().setSegundos(0);
+                juego.getReloj().setTipo(1);
+                iniciarTemporizadorSiEsNecesario();
+
+
+                
+            } else {
+                // Si el usuario elige salir, lo redirige al menú principal
+                JOptionPane.showMessageDialog(pantalla, "Saliendo al menú principal...");
+
+                // Ir al menú principal después de que se cierre el mensaje
+                pantalla.setVisible(false); // Oculta la pantalla actual
+                MenuPrincipal pantallaMenu = new MenuPrincipal();
+                pantallaMenu.setVisible(true);
+
+                new MenuPrincipalControlador(juego, pantallaMenu);
+            }
         }
-        
+
         // Actualiza la fila del JTable con el tiempo restante
         DefaultTableModel model = (DefaultTableModel) pantalla.getTblTemporizador().getModel();
         model.setValueAt(reloj.getHoras(), 0, 0);
         model.setValueAt(reloj.getMinutos(), 0, 1);
         model.setValueAt(reloj.getSegundos(), 0, 2);
     }
+
     
     
     // Inicializa la vista con los datos del juego
