@@ -45,8 +45,10 @@ public class PantallaJuegoControlador {
         this.pantalla.btnVolver.addActionListener(new ActionListener() { //espera a que usuario presione el boton de volver
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (juego.getReloj().getTipo() == 2 || juego.getReloj().getTipo() == 1 && temporizador != null && temporizador.isRunning()){
-                    temporizador.stop();
+                if(temporizador != null){ //validar esto primero
+                    if (juego.getReloj().getTipo() == 2 || juego.getReloj().getTipo() == 1 && temporizador.isRunning()){
+                        temporizador.stop();
+                    }
                 }
                 
                 juego.getReloj().setHoras(0);
@@ -865,6 +867,9 @@ public class PantallaJuegoControlador {
                     pantalla.btnBorrarJugada.setEnabled(true);
                     pantalla.btnTerminarJuego.setEnabled(true);
                     pantalla.btnBorrador.setEnabled(true);
+                    for (JButton btn : pantalla.botonesNumeros){
+                        btn.setEnabled(true);
+                    }
                     //desactiva botones ya que solo se pueden utilizar cuando no se ha iniciado juego
                     pantalla.btnCargarJuego.setEnabled(false);
                     pantalla.btnJugar.setEnabled(false);
