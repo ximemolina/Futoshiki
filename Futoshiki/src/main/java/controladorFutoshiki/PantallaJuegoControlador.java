@@ -583,8 +583,6 @@ public class PantallaJuegoControlador {
             segundos = totalTranscurrido % 60;
 
         } else { // Sin temporizador ni cronómetro
-            // Calculamos un tiempo aproximado si no hay medición real (podría ser manual o una variable fija)
-            // Aquí podrías incluir una forma de calcular el tiempo si hay una implementación base para esto.
             return "00:00:00"; // Por defecto, retorna 0 si no hay registro
         }
 
@@ -730,7 +728,7 @@ public class PantallaJuegoControlador {
             int botonIndex = 0; // Índice para rastrear los botones
             int desigualdadIndex = 0; // Índice para rastrear las desigualdades
 
-            borrarJuego(); // Limpia el tablero actual antes de cargar
+            limpiarTodo(); // Limpia el tablero actual antes de cargar
 
             while ((linea = reader.readLine()) != null) {
                 if (linea.startsWith("JUGADOR:")) {
@@ -743,85 +741,97 @@ public class PantallaJuegoControlador {
                     String[] partes = linea.split(";");
 
                     if (partes.length > 0) {
-                        switch (partes[0]) {
-                            case "CONSTANTE":
-                                // Manejo de constantes
-                                if (botonIndex < pantalla.botones.size()) {
-                                    JButton boton = pantalla.botones.get(botonIndex);
-                                    String texto = partes[1]; // Recupera el valor limpio de la constante
-                                    boton.setText("<html><b style='color: black; font-size: 14px;'>" + texto + "</b></html>");
-                                    boton.setEnabled(false); // Deshabilita el botón para marcarlo como constante
-                                    botonIndex++;
-                                }
-                                break;
-
-                            case "DESIGUALDAD":
-                                // Manejo de desigualdades
-                                if (desigualdadIndex < pantalla.desigualdades.size()) {
-                                    String texto = partes.length > 1 ? partes[1] : ""; // Evitar problemas con desigualdades vacías
-                                    pantalla.desigualdades.get(desigualdadIndex).setText(texto);
-                                    desigualdadIndex++;
-                                }
-                                break;
-
-                            case "TIEMPO":
-                                // Manejo del tiempo del temporizador
-                                if (partes.length >= 4) {
-                                    Reloj reloj = juego.getReloj();
-                                    reloj.setHoras(Integer.parseInt(partes[1]));
-                                    reloj.setMinutos(Integer.parseInt(partes[2]));
-                                    reloj.setSegundos(Integer.parseInt(partes[3]));
-                                    inicializarTablaTemporizador();
-                                }
-                                break;
-
-                            case "JUGADA":
-                                // Manejo de las jugadas
-                                if (partes.length >= 4) {
-                                    int fila = Integer.parseInt(partes[1]);
-                                    int columna = Integer.parseInt(partes[2]);
-                                    String valor = partes[3];
-                                    JButton boton = matriz.obtenerBoton(fila, columna);
-                                    boton.setText(valor);
-                                    boton.setEnabled(true); // Asegura que sea interactivo si no es constante
-                                    pilaJugadas.push(new Movimiento(fila, columna, valor));
-                                }
-                                break;
-
-                            case "BORRADA":
-                                // Manejo de jugadas borradas
-                                if (partes.length >= 4) {
-                                    int fila = Integer.parseInt(partes[1]);
-                                    int columna = Integer.parseInt(partes[2]);
-                                    String valor = partes[3];
-                                    pilaJugadasBorradas.push(new Movimiento(fila, columna, valor));
-                                }
-                                break;
-
-                            default:
-                                // Manejo de botones regulares
-                                if (botonIndex < pantalla.botones.size()) {
-                                    JButton boton = pantalla.botones.get(botonIndex);
-                                    if (partes.length >= 2) {
-                                        String texto = partes[0];
-                                        boolean habilitado = Boolean.parseBoolean(partes[1]);
-
-                                        if (!habilitado) {
-                                            // Si es constante, aplica el formato
-                                            boton.setText("<html><b style='color: black; font-size: 14px;'>" + texto + "</b></html>");
-                                        } else {
-                                            boton.setText(texto.isEmpty() ? "" : texto); // Asegúrate de que no quede vacío
-                                        }
-                                        boton.setEnabled(habilitado);
-                                    } else {
-                                        boton.setText(""); // Por defecto, vacío si no hay texto
-                                        boton.setEnabled(true); // Por defecto, habilitado
+                        try{
+                            switch (partes[0]) {
+                                case "CONSTANTE":
+                                    // Manejo de constantes
+                                    if (botonIndex < pantalla.botones.size()) {
+                                        JButton boton = pantalla.botones.get(botonIndex);
+                                        String texto = partes[1]; // Recupera el valor limpio de la constante
+                                        boton.setText("<html><b style='color: black; font-size: 10px;'>" + texto + "</b></html>");
+                                        boton.setEnabled(false); // Deshabilita el botón para marcarlo como constante
+                                        botonIndex++;
                                     }
-                                    botonIndex++;
-                                }
-                                break;
+                                    break;
+
+                                case "DESIGUALDAD":
+                                    // Manejo de desigualdades
+                                    if (desigualdadIndex < pantalla.desigualdades.size()) {
+                                        String texto = partes.length > 1 ? partes[1] : ""; // Evitar problemas con desigualdades vacías
+                                        pantalla.desigualdades.get(desigualdadIndex).setText(texto);
+                                        desigualdadIndex++;
+                                    }
+                                    break;
+
+                                case "TIEMPO":
+                                    // Manejo del tiempo del temporizador
+                                    if (partes.length >= 4) {
+                                        Reloj reloj = juego.getReloj();
+                                        reloj.setHoras(Integer.parseInt(partes[1]));
+                                        reloj.setMinutos(Integer.parseInt(partes[2]));
+                                        reloj.setSegundos(Integer.parseInt(partes[3]));
+                                        inicializarTablaTemporizador();
+                                    }
+                                    break;
+
+                                case "JUGADA":
+                                    // Manejo de las jugadas
+                                    if (partes.length >= 4) {
+                                        int fila = Integer.parseInt(partes[1]);
+                                        int columna = Integer.parseInt(partes[2]);
+                                        String valor = partes[3];
+                                        JButton boton = matriz.obtenerBoton(fila, columna);
+                                        boton.setText(valor);
+                                        boton.setEnabled(true); // Asegura que sea interactivo si no es constante
+                                        pilaJugadas.push(new Movimiento(fila, columna, valor));
+                                    }
+                                    break;
+
+                                case "BORRADA":
+                                    // Manejo de jugadas borradas
+                                    if (partes.length >= 4) {
+                                        int fila = Integer.parseInt(partes[1]);
+                                        int columna = Integer.parseInt(partes[2]);
+                                        String valor = partes[3];
+                                        pilaJugadasBorradas.push(new Movimiento(fila, columna, valor));
+                                    }
+                                    break;
+
+                                default:
+                                    // Manejo de botones regulares
+                                    if (botonIndex < pantalla.botones.size()) {
+                                        JButton boton = pantalla.botones.get(botonIndex);
+                                        if (partes.length >= 2) {
+                                            String texto =String.valueOf( partes[0]);
+                                            boolean habilitado = Boolean.parseBoolean(partes[1]);
+
+                                            if (habilitado && !texto.isEmpty()) {
+                                                // Si es constante, aplica el formato
+                                                boton.setText("<html>" + texto + "</html>");
+                                            } 
+                                            boton.setEnabled(habilitado);
+                                        } else {
+                                            boton.setText(""); // Por defecto, vacío si no hay texto
+                                            boton.setEnabled(true); // Por defecto, habilitado
+                                        }
+                                        botonIndex++;
+                                    }
+                                    break;
+                            }
+                        }catch( Exception e){
+                            JOptionPane.showMessageDialog(pantalla, "Debe configurar el tamaño del nivel de acuerdo a la partida que desea cargar");
+                            return;
                         }
                     }
+                    iniciarTemporizadorSiEsNecesario();
+                    pantalla.btnBorrarJuego.setEnabled(true);
+                    pantalla.btnGuardarJuego.setEnabled(true);
+                    pantalla.btnBorrarJugada.setEnabled(true);
+                    pantalla.btnTerminarJuego.setEnabled(true);
+                    pantalla.btnBorrador.setEnabled(true);
+                    //desactiva botones ya que solo se pueden utilizar cuando no se ha iniciado juego
+                    pantalla.btnCargarJuego.setEnabled(false);
+                    pantalla.btnJugar.setEnabled(false);
                 }
             }
 
