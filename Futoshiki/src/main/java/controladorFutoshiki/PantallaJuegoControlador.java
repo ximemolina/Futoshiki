@@ -166,7 +166,7 @@ public class PantallaJuegoControlador {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (juegoEnProgreso) { // Solo se puede guardar si el juego ya comenzó
-                    String archivo = "partida_guardada.txt";
+                    String archivo = "futoshiki2024juegoactual.txt";
                     guardarJuego(archivo);
                 } else {
                     JOptionPane.showMessageDialog(pantalla, "No puedes guardar un juego antes de iniciarlo.");
@@ -541,7 +541,10 @@ public class PantallaJuegoControlador {
                             Archivo.agregarInformacionTop10(juego, tiempo); 
                         }catch(Exception e){}
             
-
+            temporizador.stop();
+            juego.getReloj().setHoras(0);
+            juego.getReloj().setMinutos(0);
+            juego.getReloj().setSegundos(0);               
             //luego de ganar, vuelve a menu principal
             MenuPrincipal pantalla2 = new MenuPrincipal(); //inicializa pantalla configuracion
             pantalla.setVisible(false);
@@ -563,6 +566,10 @@ public class PantallaJuegoControlador {
                     elementosJuego(indice); 
                 } else {
                     JOptionPane.showMessageDialog(pantalla, "Ya no hay más partidas disponibles para este nivel.");
+                    temporizador.stop();
+                    juego.getReloj().setHoras(0);
+                    juego.getReloj().setMinutos(0);
+                    juego.getReloj().setSegundos(0);
                     MenuPrincipal pantalla2 = new MenuPrincipal(); 
                     pantalla.setVisible(false);
                     pantalla2.setVisible(true);
@@ -652,9 +659,16 @@ public class PantallaJuegoControlador {
         if (!matriz.getValoresArchivoPartida().isEmpty()) {
             int indice = matriz.partidaAzar();
             elementosJuego(indice); // Reutiliza el método para desplegar las constantes y desigualdades de la nueva partida.
+            temporizador.stop();
+            iniciarTemporizadorSiEsNecesario();
             JOptionPane.showMessageDialog(pantalla, "Se ha generado una nueva partida con la misma dificultad.");
         } else {
             JOptionPane.showMessageDialog(pantalla, "No hay más partidas disponibles para este nivel.");
+            temporizador.stop();
+            juego.getReloj().setHoras(0);
+            juego.getReloj().setMinutos(0);
+            juego.getReloj().setSegundos(0);
+
             MenuPrincipal pantalla2 = new MenuPrincipal(); // Regresa al menú principal
             pantalla.setVisible(false);
             pantalla2.setVisible(true);
