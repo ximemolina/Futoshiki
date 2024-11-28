@@ -19,6 +19,12 @@ public class MatrizJuego {
     
 
     //constructor
+
+    /**
+     *
+     * @param dimension
+     * @param valores
+     */
     public MatrizJuego(int dimension, List valores){
         setDimension(dimension);
         setValoresArchivoPartida(valores);
@@ -27,30 +33,53 @@ public class MatrizJuego {
         desigualdades = new ArrayList <> ();
     }
     
-    //retorna botón dada la fila y columna
+
+    /**
+     *
+     * @param fila
+     * @param columna
+     * @return botón dada la fila y columna
+     */
     public JButton obtenerBoton(int fila, int columna) {
         return botonesCasillas.get(fila * dimension + columna);
     }    
     
-    //retorna la fila del boton
+
+    /**
+     *
+     * @param boton
+     * @return fila del boton
+     */
     public int obtenerFila(JButton boton) {
         int indice = getBotonesCasillas().indexOf(boton);
         return indice / dimension; // División entera
     }
 
-    //retorna la columan del boton
+    /**
+     *
+     * @param boton
+     * @return columan del boton
+     */
     public int obtenerColumna(JButton boton) {
         int indice = getBotonesCasillas().indexOf(boton);
         return indice % dimension; // Resto
     }    
     
-    // selecciona al azar cual partida mostrar
+    /**
+     *
+     * @return partida mostrar al azar
+     */
     public int partidaAzar(){
         Random random = new Random();
         return random.nextInt((valoresArchivoPartida.size()-1 - 0) + 1) + 0;
     }
     
-    //revisa que las jugadas cumplan con las reglas del juego
+    /**
+     *
+     * @param botonSeleccionado
+     * @param pantalla
+     * @throws Exception
+     */
     public void validarJugada(JButton botonSeleccionado, PantallaJuego2 pantalla) throws Exception{
         if (pantalla.btnBorrador.getBackground() == Color.GREEN) return; //no se realizan validaciones con el borrador
         
@@ -181,6 +210,13 @@ public class MatrizJuego {
     }     
     
     
+
+    /**
+     *
+     * @param columna
+     * @param fila
+     * @param constante
+     */
     //despliega todas las constantes en la plantilla
     public void mostrarConstante(int columna, int fila, int constante){
         ArrayList<JButton> lista = botonesCasillas;
@@ -209,6 +245,13 @@ public class MatrizJuego {
     }
     
     //se encargar de mostrar las desigualdades que están en las filas (maf - mef)
+
+    /**
+     *
+     * @param columna
+     * @param fila
+     * @param identificador
+     */
     public void desigualdadesFila(int columna, int fila, boolean identificador){
         ArrayList<JLabel> lista = desigualdades;
         int contadorColum = 0;
@@ -236,6 +279,13 @@ public class MatrizJuego {
     }
     
     //se encargar de mostrar las desigualdades que están en las columnas(mac - mec)
+
+    /**
+     *
+     * @param columna
+     * @param fila
+     * @param identificador
+     */
     public void desigualdadesColumna(int columna, int fila, boolean identificador){
         ArrayList<JLabel> lista = desigualdades;
         int contadorColum = 0;
@@ -263,51 +313,99 @@ public class MatrizJuego {
     
     }    
     // <editor-fold defaultstate="collapsed" desc="Setters - Getters"> 
+
+    /**
+     *
+     * @return
+     */
     public int getDimension() {
         return dimension;
     }
 
+    /**
+     *
+     * @param dimension
+     */
     public void setDimension(int dimension) {
         this.dimension = dimension;
     }
 
+    /**
+     *
+     * @return
+     */
     public List getValoresArchivoPartida() {
         return valoresArchivoPartida;
     }
 
+    /**
+     *
+     * @param valoresArchivoPartida
+     */
     public void setValoresArchivoPartida(List valoresArchivoPartida) {
         this.valoresArchivoPartida = valoresArchivoPartida;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<JButton> getBotonesCasillas() {
         return botonesCasillas;
     }
 
+    /**
+     *
+     * @param botonesCasillas
+     */
     public void setBotonesCasillas(ArrayList<JButton> botonesCasillas) {
         this.botonesCasillas = botonesCasillas;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<JButton> getBotonesNumeros() {
         return botonesNumeros;
     }
 
+    /**
+     *
+     * @param botonesNumeros
+     */
     public void setBotonesNumeros(ArrayList<JButton> botonesNumeros) {
         this.botonesNumeros = botonesNumeros;
     }
     
- 
+    /**
+     *
+     * @return
+     */
     public ArrayList<JLabel> getDesigualdades() {
         return desigualdades;
     }
 
+    /**
+     *
+     * @param desigualdades
+     */
     public void setDesigualdades(ArrayList<JLabel> desigualdades) {
         this.desigualdades = desigualdades;
     }
        
+    /**
+     *
+     * @return
+     */
     public Integer getIndicePartida() {
         return indicePartida;
     }
 
+    /**
+     *
+     * @param indicePartida
+     */
     public void setIndicePartida(int indicePartida) {
         this.indicePartida = indicePartida;
     }

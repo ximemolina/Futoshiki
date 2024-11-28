@@ -33,6 +33,12 @@ public class PantallaJuegoControlador {
     private boolean juegoEnProgreso;
     
     //constructor
+
+    /**
+     *
+     * @param juego
+     * @param pantalla
+     */
     public PantallaJuegoControlador(Juego juego, PantallaJuego2 pantalla) {
         this.juego = juego;
         this.pantalla = pantalla;

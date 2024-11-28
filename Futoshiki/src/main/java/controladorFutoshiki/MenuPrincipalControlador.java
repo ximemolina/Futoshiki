@@ -17,6 +17,12 @@ public class MenuPrincipalControlador {
     private MenuPrincipal menu;
     
     //constructor
+
+    /**
+     *
+     * @param juego
+     * @param menu
+     */
     public MenuPrincipalControlador(Juego juego, MenuPrincipal menu) {
         this.juego = juego;
         this.menu = menu;

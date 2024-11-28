@@ -17,6 +17,7 @@ public class PantallaJuego2 extends javax.swing.JFrame {
 
     /**
      * Creates new form PantallaJuego2
+     * @param juego
      */
     public PantallaJuego2(Juego juego) {
         this.juego = juego;
@@ -29,6 +30,10 @@ public class PantallaJuego2 extends javax.swing.JFrame {
         
     }
     
+    /**
+     *
+     * @return
+     */
     public JTable getTblTemporizador() {
         return jTable1;
     }
@@ -308,6 +313,11 @@ public class PantallaJuego2 extends javax.swing.JFrame {
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Main">   
+
+    /**
+     *
+     * @param args
+     */
     public void main(String args[]) {
 
         try {
@@ -336,6 +346,11 @@ public class PantallaJuego2 extends javax.swing.JFrame {
     }
     //</editor-fold>
     
+    /**
+     *
+     * @param botones
+     * @param botonesNumeros
+     */
     public void botonesJuego(ArrayList <JButton> botones, ArrayList <JButton> botonesNumeros){
     // Inicialización tamaño de botones
         int tamano = 40;
@@ -422,6 +437,10 @@ public class PantallaJuego2 extends javax.swing.JFrame {
         matriz.setBotonesNumeros(botonesNumeros);
     }
     
+    /**
+     *
+     * @param desigualdades
+     */
     public void desigualdadesLabels(ArrayList <JLabel> desigualdades){
         int tamano = 40;
         int x = 80;
@@ -501,6 +520,10 @@ public class PantallaJuego2 extends javax.swing.JFrame {
         matriz.setBotonesCasillas(botones);
     }
     
+    /**
+     *
+     * @return
+     */
     public ImageIcon setearBorrador(){
         ImageIcon imagen = new ImageIcon("src/main/java/imagenes/borrador.png");  // Ruta a la imagen
         Image imagen2 = imagen.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
@@ -509,24 +532,84 @@ public class PantallaJuego2 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
+
+    /**
+     *
+     */
     public javax.swing.JButton btnBorrarJuego;
+
+    /**
+     *
+     */
     public javax.swing.JButton btnBorrarJugada;
+
+    /**
+     *
+     */
     public javax.swing.JButton btnCargarJuego;
+
+    /**
+     *
+     */
     public javax.swing.JButton btnGuardarJuego;
+
+    /**
+     *
+     */
     public javax.swing.JButton btnJugar;
+
+    /**
+     *
+     */
     public javax.swing.JButton btnRehacerJugada;
+
+    /**
+     *
+     */
     public javax.swing.JButton btnTerminarJuego;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+
+    /**
+     *
+     */
     public javax.swing.JButton btnVolver;
     private javax.swing.JScrollPane jScrollPane1;
+
+    /**
+     *
+     */
     public javax.swing.JTable jTable1;
+
+    /**
+     *
+     */
     public javax.swing.JLabel lblNivel;
+
+    /**
+     *
+     */
     public javax.swing.JLabel lblNombre;
+
+    /**
+     *
+     */
     public ArrayList <JButton> botones; 
+
+    /**
+     *
+     */
     public ArrayList <JButton> botonesNumeros ;
+
+    /**
+     *
+     */
     public ArrayList <JLabel> desigualdades;
     private javax.swing.JLabel lblNombre2;
+
+    /**
+     *
+     */
     public javax.swing.JButton btnBorrador;
     // End of variables declaration                   
 }

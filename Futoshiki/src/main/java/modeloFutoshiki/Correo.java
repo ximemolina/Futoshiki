@@ -38,6 +38,12 @@ public class Correo {
         properties.put("mail.smtp.ssl.trust", host); // Confiar en el host SMTP
     }
     
+    /**
+     *
+     * @param to
+     * @param asunto
+     * @param cuerpo
+     */
     public void enviarCorreo(String to, String asunto, String cuerpo) {
         // Crear una sesión con autenticación
         Session session = Session.getInstance(properties, new Authenticator() {

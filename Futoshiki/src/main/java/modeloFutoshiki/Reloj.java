@@ -14,16 +14,30 @@ public class Reloj {
     private int segundosIniciales;
     
     //constructor
+
+    /**
+     *
+     * @param tipo
+     */
     public Reloj (int tipo){
         setTipo(tipo);
     }
     
+    /**
+     *
+     * @return
+     */
     public String toString(){
         if (getTipo() == 2) return String.valueOf(tipo) + ","+ String.valueOf(horas)+ "," + String.valueOf(minutos) + ","+ String.valueOf(segundos);
         else return String.valueOf(tipo);
     }
     
     // Método en la clase Reloj para obtener datos del temporizador
+
+    /**
+     *
+     * @return
+     */
     public int[] obtenerDatosTemporizador() {
         if (tipo == 2) { // Tipo 2 es temporizador
             return new int[]{horas, minutos, segundos};
@@ -34,16 +48,35 @@ public class Reloj {
 
     
     // <editor-fold defaultstate="collapsed" desc="Setters-Getters">
+
+    /**
+     *
+     * @return
+     */
     public int getTipo() {
         return tipo;
     }
+
+    /**
+     *
+     * @param tipo
+     */
     public void setTipo(int tipo) {
         this.tipo = tipo;
     }
+
+    /**
+     *
+     * @return
+     */
     public int getHoras(){
         return horas;
     }
     
+    /**
+     *
+     * @param horas
+     */
     public void setHoras(int horas){
         if (horas >= 0 && horas <= 5){
             this.horas = horas;
@@ -52,10 +85,18 @@ public class Reloj {
         }
     }
     
+    /**
+     *
+     * @return
+     */
     public int getMinutos(){
         return minutos;
     }
     
+    /**
+     *
+     * @param minutos
+     */
     public void setMinutos(int minutos){
         if (minutos >= 0 && minutos <= 59 ){
             this.minutos = minutos;
@@ -64,10 +105,18 @@ public class Reloj {
         }
     }
     
+    /**
+     *
+     * @return
+     */
     public int getSegundos(){
         return segundos;
     }
     
+    /**
+     *
+     * @param segundos
+     */
     public void setSegundos(int segundos){
         if (segundos >= 0 && segundos <= 59 ){
             this.segundos = segundos;
@@ -77,26 +126,50 @@ public class Reloj {
 
     }
     
+    /**
+     *
+     * @return
+     */
     public int getHorasIniciales() {
         return horasIniciales;
     }
 
+    /**
+     *
+     * @param horasIniciales
+     */
     public void setHorasIniciales(int horasIniciales) {
         this.horasIniciales = horasIniciales;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getMinutosIniciales() {
         return minutosIniciales;
     }
 
+    /**
+     *
+     * @param minutosIniciales
+     */
     public void setMinutosIniciales(int minutosIniciales) {
         this.minutosIniciales = minutosIniciales;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getSegundosIniciales() {
         return segundosIniciales;
     }
 
+    /**
+     *
+     * @param segundosIniciales
+     */
     public void setSegundosIniciales(int segundosIniciales) {
         this.segundosIniciales = segundosIniciales;
     }

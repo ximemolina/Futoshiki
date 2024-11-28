@@ -20,6 +20,12 @@ public class MenuConfiguracionControlador {
     private MenuConfiguracion menu;
 
     //constructor
+
+    /**
+     *
+     * @param juego
+     * @param menu
+     */
     public MenuConfiguracionControlador(Juego juego, MenuConfiguracion menu) {
         this.juego = juego;
         this.menu = menu;

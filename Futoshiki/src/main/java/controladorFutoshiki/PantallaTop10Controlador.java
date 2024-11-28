@@ -13,6 +13,12 @@ public class PantallaTop10Controlador {
     private PantallaTop10 pantalla;
     
     //constructor
+
+    /**
+     *
+     * @param juego
+     * @param pantalla
+     */
     public PantallaTop10Controlador(Juego juego, PantallaTop10 pantalla) {
         this.juego = juego;
         this.pantalla = pantalla;

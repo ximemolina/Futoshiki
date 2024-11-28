@@ -12,6 +12,10 @@ import java.io.File; //uso de archivos
  */
 public class Futoshiki {
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         //Verifica existencia de los archivos
         File archivoConfiguracion = new File("futoshiki2024configuracion.txt");

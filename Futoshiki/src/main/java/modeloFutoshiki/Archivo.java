@@ -13,6 +13,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Archivo {
     //guardar la informacion de la configuracion del juego
+
+    /**
+     *
+     * @param mensaje
+     */
     public static void guardarArchivoConfiguracion(String mensaje){
         try{
             File nombreArchivo = new File("futoshiki2024configuracion.txt");
@@ -24,6 +29,11 @@ public class Archivo {
        }
     }
     //cargar archivo de configuracion del juego
+
+    /**
+     *
+     * @return
+     */
     public static Juego cargarConfiguracion(){
         Juego juego = null;
         File archivo = new File("futoshiki2024configuracion.txt");
@@ -48,6 +58,11 @@ public class Archivo {
     }
     
     //guardar la informacion del top10
+
+    /**
+     *
+     * @param mensaje
+     */
     public static void guardarArchivoTop10(String mensaje){
         try{
             File nombreArchivo = new File("futoshiki2024top10.txt");
@@ -59,6 +74,11 @@ public class Archivo {
        }
     }
     //guardar la informacion del jugador
+
+    /**
+     *
+     * @param mensaje
+     */
     public static void guardarArchivoJugadores(String mensaje){
         try{
             File nombreArchivo = new File("futoshiki2024jugadores.txt");
@@ -71,6 +91,13 @@ public class Archivo {
     }
     
     //cargar archivo tipo xml que contiene todas las posibles combinaciones de partidas
+
+    /**
+     *
+     * @param numNivel
+     * @param cuadricula
+     * @return
+     */
     public static List cargarArchivoPartidas(int numNivel, int cuadricula){
         String nivelDeseado = "";
         if(numNivel == 0) nivelDeseado = "Facil";
@@ -135,6 +162,12 @@ public class Archivo {
     }
     
     // válida que no exista otro nombre en el archivo igual al que se desea agregar
+
+    /**
+     *
+     * @param nombre
+     * @return
+     */
     public static boolean validarNombreUnico(String nombre){
         try (BufferedReader reader = new BufferedReader(new FileReader("futoshiki2024jugadores.txt"))) {
             String linea;
@@ -157,6 +190,13 @@ public class Archivo {
     }
     
     //valida que la contrasena y el nombre de usuario coincidan. En caso de que coincidan retorna el String del correo, sino null
+
+    /**
+     *
+     * @param nombre
+     * @param contrasena
+     * @return
+     */
     public static String validarContrasena(String nombre, String contrasena){
         try (BufferedReader reader = new BufferedReader(new FileReader("futoshiki2024jugadores.txt"))) {
             String linea;
@@ -182,6 +222,12 @@ public class Archivo {
     }
     
     // retorna el correo del usuario, si no encuentra usuario, retorna null
+
+    /**
+     *
+     * @param nombre
+     * @return
+     */
     public static String recuperarCorreo(String nombre){
         try (BufferedReader reader = new BufferedReader(new FileReader("futoshiki2024jugadores.txt"))) {
             String linea;
@@ -206,6 +252,12 @@ public class Archivo {
     }
     
     // cambia el segundo elemento de la línea (contrasena) que contenga el nombre del jugador
+
+    /**
+     *
+     * @param nombre
+     * @param contrasenaNueva
+     */
     public static void modificarContrasena(String nombre, String contrasenaNueva){
         List<String> lineas = new ArrayList<>();
 
@@ -238,6 +290,12 @@ public class Archivo {
     }
     
     //carga la tabla con las posiciones del tamano de cuadricula pedido
+
+    /**
+     *
+     * @param tamanoCuadricula
+     * @param tabla
+     */
     public static void cargarTablaPosiciones( int tamanoCuadricula, JTable tabla) {
 
         DefaultTableModel modelo = new DefaultTableModel(new String[]{"Dificultad", "Jugador", "Tiempo"}, 0); //crea tabla
@@ -285,6 +343,12 @@ public class Archivo {
     } 
     
     //retorna prioridad en que se mostrarán las cosas en la tabla
+
+    /**
+     *
+     * @param dificultad
+     * @return
+     */
     public static int obtenerPrioridad(String dificultad) {
         switch (dificultad.toLowerCase()) {
             case "dificil":
@@ -298,6 +362,12 @@ public class Archivo {
         }
     }
     
+    /**
+     *
+     * @param juego
+     * @param tiempo
+     * @throws IOException
+     */
     public static void agregarInformacionTop10( Juego juego, String tiempo) throws IOException {
         int tamaño = juego.getTamano();
         String dificultad = juego.obtenerStringDificultad();
@@ -403,6 +473,12 @@ public class Archivo {
     }
 
     // Método auxiliar para insertar una línea en orden por tiempo
+
+    /**
+     *
+     * @param lista
+     * @param nuevoRegistro
+     */
     public static void agregarOrdenado(List<String> lista, String nuevoRegistro) {
         String nuevoTiempo = nuevoRegistro.split(",")[2]; // Extraer tiempo del nuevo registro
         int indice = 0;
@@ -418,6 +494,13 @@ public class Archivo {
     }
 
     // Método para comparar dos tiempos en formato HH:MM:SS
+
+    /**
+     *
+     * @param tiempo1
+     * @param tiempo2
+     * @return
+     */
     public static int compararTiempos(String tiempo1, String tiempo2) {
         String[] partes1 = tiempo1.split(":");
         String[] partes2 = tiempo2.split(":");

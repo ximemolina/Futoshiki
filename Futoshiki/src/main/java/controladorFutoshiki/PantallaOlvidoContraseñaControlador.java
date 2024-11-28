@@ -17,6 +17,13 @@ public class PantallaOlvidoContraseñaControlador {
     private Juego juego;
     private String pin;
     //constructor
+
+    /**
+     *
+     * @param menu
+     * @param juego
+     * @param pin
+     */
     public PantallaOlvidoContraseñaControlador(PantallaOlvidoContraseña menu, Juego juego, String pin) {
         this.menu = menu;
         this.juego = juego;
