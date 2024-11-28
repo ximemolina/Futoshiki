@@ -1,7 +1,37 @@
 <partidasFutoshiki>
 
     <!-- **********************PARTIDAS PARA LA CUADRICULA DE TAMANO 3X3********************** -->
+    <partida>
+        <nivel>Facil</nivel>
+        <cuadricula>3</cuadricula>
+        <des>maf,0,1</des>
+        <des>mef,1,2</des>
+        <des>mac,2,1</des>
+        <cons>1,0,0</cons>
+        <cons>3,2,2</cons>
+    </partida>
 
+    <!-- 3x3 - Nivel Intermedio -->
+    <partida>
+        <nivel>Intermedio</nivel>
+        <cuadricula>3</cuadricula>
+        <des>mac,1,0</des>
+        <des>maf,2,1</des>
+        <des>mef,0,2</des>
+        <cons>2,1,1</cons>
+        <cons>3,2,2</cons>
+    </partida>
+
+    <!-- 3x3 - Nivel Dificil -->
+    <partida>
+        <nivel>Dificil</nivel>
+        <cuadricula>3</cuadricula>
+        <des>maf,0,1</des>
+        <des>mef,1,2</des>
+        <des>mac,2,0</des>
+        <cons>3,0,0</cons>
+        <cons>1,2,2</cons>
+    </partida>
     <!-- **********************PARTIDAS PARA LA CUADRICULA DE TAMANO 4X4********************** -->
     <partida>
         <nivel>Facil</nivel>
@@ -90,9 +120,69 @@
     </partida>
 
     <!-- **********************PARTIDAS PARA LA CUADRICULA DE TAMANO 5X5********************** -->
+    <partida>
+        <nivel>Facil</nivel>
+        <cuadricula>5</cuadricula>
+        <des>maf,1,2</des>
+        <des>mef,3,4</des>
+        <des>mac,2,1</des>
+        <cons>1,0,0</cons>
+        <cons>5,4,4</cons>
+    </partida>
 
+    <!-- 5x5 - Nivel Intermedio -->
+    <partida>
+        <nivel>Intermedio</nivel>
+        <cuadricula>5</cuadricula>
+        <des>mac,0,1</des>
+        <des>maf,3,2</des>
+        <des>mef,4,0</des>
+        <cons>2,0,0</cons>
+        <cons>4,4,4</cons>
+    </partida>
+
+    <!-- 5x5 - Nivel Dificil -->
+    <partida>
+        <nivel>Dificil</nivel>
+        <cuadricula>5</cuadricula>
+        <des>maf,2,1</des>
+        <des>mef,4,3</des>
+        <des>mac,3,0</des>
+        <cons>5,0,0</cons>
+        <cons>1,4,4</cons>
+    </partida>
     <!-- **********************PARTIDAS PARA LA CUADRICULA DE TAMANO 6X6********************** -->
+    <partida>
+        <nivel>Facil</nivel>
+        <cuadricula>6</cuadricula>
+        <des>maf,0,1</des>
+        <des>mef,4,5</des>
+        <des>mac,3,2</des>
+        <cons>1,0,0</cons>
+        <cons>6,5,5</cons>
+    </partida>
 
+    <!-- 6x6 - Nivel Intermedio -->
+    <partida>
+        <nivel>Intermedio</nivel>
+        <cuadricula>6</cuadricula>
+        <des>mac,1,0</des>
+        <des>maf,5,4</des>
+        <des>mef,3,2</des>
+        <cons>3,0,0</cons>
+        <cons>2,5,5</cons>
+    </partida>
+
+    <!-- 6x6 - Nivel Dificil -->
+    <partida>
+        <nivel>Dificil</nivel>
+        <cuadricula>6</cuadricula>
+        <des>maf,2,1</des>
+        <des>mef,4,3</des>
+        <des>mac,5,0</des>
+        <cons>6,0,0</cons>
+        <cons>1,5,5</cons>
+    </partida>
     <!-- **********************PARTIDAS PARA LA CUADRICULA DE TAMANO 7X7********************** -->
     <partida>
         <nivel>Facil</nivel>
@@ -983,5 +1073,128 @@
     </partida>
 
     <!-- **********************PARTIDAS PARA LA CUADRICULA DE TAMANO 10X10********************** -->
+   <partida>
+        <nivel>Facil</nivel>
+        <cuadricula>10</cuadricula>
+       
+        <!-- Constantes -->
+        <cons>3,0,0</cons>
+        <cons>6,0,5</cons>
+        <cons>4,0,6</cons>
+        <cons>6,1,1</cons>
+        <cons>3,1,3</cons>
+        <cons>2,1,5</cons>
+        <cons>1,1,6</cons>
+        <cons>5,2,1</cons>
+        <cons>4,2,2</cons>
+        <cons>3,2,6</cons>
+        <cons>6,4,3</cons>
+        <cons>1,4,4</cons>
+        <cons>7,4,6</cons>
+        <cons>2,5,0</cons>
+        <cons>3,5,2</cons>
+        <cons>5,5,5</cons>
+        <cons>3,6,1</cons>
+        <cons>2,6,3</cons>
+        <cons>1,6,5</cons>
+    </partida>
 
+    <partida>
+        <nivel>Facil</nivel>
+        <cuadricula>10</cuadricula>
+        <des>maf,1,2</des>
+        <des>mef,8,9</des>
+        <des>mac,4,3</des>
+        <cons>1,0,0</cons>
+        <cons>10,9,9</cons>
+    </partida>
+    
+    <partida>
+        <nivel>Intermedio</nivel>
+        <cuadricula>10</cuadricula>
+        
+        <des>mef,0,0</des>
+        <des>mef,0,2</des>
+        <des>maf,0,5</des>
+        <des>maf,0,7</des>
+        <des>mac,0,0</des>
+
+        <des>maf,1,1</des>
+        <des>mef,1,3</des>
+        <des>mef,1,5</des>
+        <des>mec,1,1</des>
+        <des>mec,1,6</des>
+        <des>mec,1,8</des>
+        
+
+        <des>mef,2,1</des>
+        <des>mef,2,5</des>
+        <des>mec,2,1</des>
+        <des>mac,2,3</des>
+        <des>mec,2,4</des>
+
+        <des>mef,3,1</des>
+        <des>maf,3,2</des>
+        <des>mef,3,3</des>
+        <des>mac,3,0</des>
+        <des>mec,3,5</des>
+        
+        <des>maf,4,4</des>
+        <des>maf,4,6</des>
+        <des>mef,4,7</des>
+        <des>mac,4,0</des>
+        <des>mac,4,1</des>
+       
+        <des>maf,5,4</des>
+        <des>mec,5,2</des>
+        <des>mec,5,7</des>
+        
+        
+        <des>maf,6,1</des>
+        <des>maf,6,4</des>
+        <des>maf,6,6</des>
+        <des>maf,6,7</des>
+
+        <des>maf,7,4</des>
+        <des>mec,7,0</des>
+
+        <des>maf,9,0</des>
+        <des>maf,9,1</des>
+        <des>mef,9,2</des>
+        <des>maf,9,6</des>
+
+        
+
+
+        <!-- Constantes -->
+        <cons>4,5,1</cons>
+        <cons>3,5,3</cons>
+        <cons>5,6,3</cons>
+        <cons>1,5,8</cons>
+        <cons>7,7,7</cons>
+        <cons>2,8,7</cons>
+    </partida>
+
+
+    <!-- 10x10 - Nivel Intermedio -->
+    <partida>
+        <nivel>Intermedio</nivel>
+        <cuadricula>10</cuadricula>
+        <des>mac,0,1</des>
+        <des>maf,5,4</des>
+        <des>mef,7,9</des>
+        <cons>5,2,1</cons>
+        <cons>3,8,8</cons>
+    </partida>
+
+    <!-- 10x10 - Nivel Dificil -->
+    <partida>
+        <nivel>Dificil</nivel>
+        <cuadricula>10</cuadricula>
+        <des>maf,2,1</des>
+        <des>mef,9,8</des>
+        <des>mac,6,7</des>
+        <cons>10,0,0</cons>
+        <cons>1,9,9</cons>
+    </partida>
 </partidasFutoshiki>
