@@ -180,7 +180,6 @@ public class PantallaJuegoControlador {
                 if (!juegoEnProgreso) { // Solo se puede cargar si el juego aún no ha comenzado
                     String archivo = "futoshiki2024juegoactual.txt";
                     cargarJuego(archivo); // Carga el juego pero no inicia el temporizador
-                    pantalla.btnGuardarJuego.setEnabled(true); // Habilitar guardar después de cargar
                 } else {
                     JOptionPane.showMessageDialog(pantalla, "No puedes cargar un juego mientras hay uno en progreso.");
                 }
@@ -765,7 +764,16 @@ public class PantallaJuegoControlador {
         }
     }
 
-
+    private void reescribirBotones(){
+        String texto;
+        for(JButton btn : matriz.getBotonesCasillas()){
+            if(!btn.getText().isEmpty()){
+                texto = btn.getText();
+                btn.setText("<html><b style='color: black; font-size: 10px;'>" + texto + "</b></html>");
+            }
+        }
+    
+    }
     private void cargarJuego(String archivo) {
         String jugador = pantalla.lblNombre.getText().trim(); // Obtiene el nombre del jugador desde la etiqueta
 
@@ -875,6 +883,7 @@ public class PantallaJuegoControlador {
                             return;
                         }
                     }
+                    reescribirBotones();
                     iniciarTemporizadorSiEsNecesario();
                     pantalla.btnBorrarJuego.setEnabled(true);
                     pantalla.btnGuardarJuego.setEnabled(true);
